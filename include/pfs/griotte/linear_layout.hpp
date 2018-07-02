@@ -1,5 +1,4 @@
 #pragma once
-
 #include <list>
 #include <pfs/griotte/layout.hpp>
 
