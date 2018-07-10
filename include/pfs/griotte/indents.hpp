@@ -21,10 +21,10 @@ public:
     indents (indents const & rhs) = default;
     indents & operator = (indents const & rhs) = default;
 
-    constexpr unit_t top () const noexcept { return _top; }
-    constexpr unit_t right () const noexcept { return _right; }
-    constexpr unit_t bottom () const noexcept { return _bottom; }
-    constexpr unit_t left () const noexcept { return _left; }
+    unit_t top () const noexcept { return _top; }
+    unit_t right () const noexcept { return _right; }
+    unit_t bottom () const noexcept { return _bottom; }
+    unit_t left () const noexcept { return _left; }
 };
 
 using margins = indents;
