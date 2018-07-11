@@ -3,9 +3,9 @@
 #define PFS_GRIOTTE_SOURCE
 #include <pfs/griotte/rect.hpp>
 
-SCENARIO("Rect constructors", "[rect]") {
-    using rect = pfs::griotte::rect;
+using rect = pfs::griotte::rect;
 
+SCENARIO("Rect constructors", "[rect]") {
     GIVEN("A rect") {
         WHEN("created with default constructor") {
             rect r;
@@ -46,7 +46,6 @@ SCENARIO("Rect constructors", "[rect]") {
 }
 
 TEST_CASE("Rect contains point including edges", "[rect]") {
-    using rect = pfs::griotte::rect;
     rect r(10, 20, 30, 40);
 
     REQUIRE(r.contains(10, 20) == true);  // point on bottom-left corner
@@ -62,4 +61,22 @@ TEST_CASE("Rect contains point including edges", "[rect]") {
     REQUIRE(r.contains(40, 40) == false); // point to the right of the rect
     REQUIRE(r.contains(25, 60) == false); // point higher the rect
     REQUIRE(r.contains(9 , 40) == false); // point to the left of the rect
+}
+
+TEST_CASE("Rect contains point excluding edges", "[rect]") {
+    rect r(10, 20, 30, 40);
+
+    REQUIRE(r.contains_exclude_edge(10, 20) == false); // point on bottom-left corner
+    REQUIRE(r.contains_exclude_edge(39, 59) == false); // point on top-right corner
+    REQUIRE(r.contains_exclude_edge(39, 20) == false); // point on bottom-right corner
+    REQUIRE(r.contains_exclude_edge(10, 59) == false); // point on top-left corner
+    REQUIRE(r.contains_exclude_edge(25, 20) == false); // point on bottom edge
+    REQUIRE(r.contains_exclude_edge(39, 40) == false); // point on right edge
+    REQUIRE(r.contains_exclude_edge(25, 59) == false); // point on top edge
+    REQUIRE(r.contains_exclude_edge(10, 40) == false); // point on left edge
+    REQUIRE(r.contains_exclude_edge(25, 40) == true);  // point on near the rect center
+    REQUIRE(r.contains_exclude_edge(25, 19) == false); // point below the rect
+    REQUIRE(r.contains_exclude_edge(40, 40) == false); // point to the right of the rect
+    REQUIRE(r.contains_exclude_edge(25, 60) == false); // point higher the rect
+    REQUIRE(r.contains_exclude_edge(9 , 40) == false); // point to the left of the rect
 }

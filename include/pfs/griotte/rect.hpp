@@ -15,7 +15,7 @@ public:
     /**
      * @brief Constructs a null rectangle (with zero coordinates).
      */
-    rect () noexcept
+    constexpr rect () noexcept
         : _x1(0)
         , _y1(0)
         , _x2(-1)
@@ -26,7 +26,7 @@ public:
      * @brief Constructs a rectangle with (x, y) as its top-left corner
      *        and the given width and height.
      */
-    rect (unit_t x, unit_t y, unit_t width, unit_t height) noexcept
+    constexpr rect (unit_t x, unit_t y, unit_t width, unit_t height) noexcept
         : _x1(x)
         , _y1(y)
         , _x2(x + width - 1)
@@ -39,7 +39,7 @@ public:
     /**
      * @return The x-coordinate of the rectangle's left edge.
      */
-    unit_t x () const noexcept
+    constexpr inline unit_t x () const noexcept
     {
         return _x1;
     }
@@ -47,7 +47,7 @@ public:
     /**
      * @return The y-coordinate of the rectangle's left edge.
      */
-    unit_t y () const noexcept
+    constexpr inline unit_t y () const noexcept
     {
         return _y1;
     }
@@ -55,7 +55,7 @@ public:
     /**
      * @return The width of the rectangle.
      */
-    unit_t width () const noexcept
+    constexpr inline unit_t width () const noexcept
     {
         return _x2 - _x1 + 1;
     }
@@ -63,7 +63,7 @@ public:
     /**
      * @return The height of the rectangle.
      */
-    unit_t height () const noexcept
+    constexpr inline unit_t height () const noexcept
     {
         return _y2 - _y1 + 1;
     }
@@ -72,16 +72,16 @@ public:
      * @return @c true if the point (@a x, @a y) is inside this rectangle
      *         including on the edge, otherwise returns @c false.
      */
-    bool contains (unit_t x, unit_t y) const;
+    inline bool contains (unit_t x, unit_t y) const noexcept;
 
     /**
      * @return @c true if the point (@a x, @a y) is inside this rectangle
      *         excluding on the edge, otherwise returns @c false.
      */
-    bool contains_exclude_edge (unit_t x, unit_t y) const;
+    inline bool contains_exclude_edge (unit_t x, unit_t y) const noexcept;
 };
 
-inline bool rect::contains (unit_t x, unit_t y) const
+inline bool rect::contains (unit_t x, unit_t y) const noexcept
 {
     return (x < _x1
             || x > _x2
@@ -89,7 +89,7 @@ inline bool rect::contains (unit_t x, unit_t y) const
             || y > _y2) ? false : true;
 }
 
-inline bool rect::contains_exclude_edge (unit_t x, unit_t y) const
+inline bool rect::contains_exclude_edge (unit_t x, unit_t y) const noexcept
 {
     return (x <= _x1
             || x >= _x2

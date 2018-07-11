@@ -7,8 +7,10 @@ add_library(CATCH2_OBJLIB OBJECT catch2-main.cpp)
 set_property(TARGET CATCH2_OBJLIB PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 # Add unit test targets
-list(APPEND MY_TEST_TARGETS indents)
+list(APPEND MY_TEST_TARGETS round)
+list(APPEND MY_TEST_TARGETS point)
 list(APPEND MY_TEST_TARGETS rect)
+list(APPEND MY_TEST_TARGETS indents)
 
 # Porcess all unit test targets
 foreach(MY_TEST_TARGET ${MY_TEST_TARGETS})
