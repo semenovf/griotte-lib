@@ -6,6 +6,7 @@
 #include <QMenuBar>
 #include "Surface.hpp"
 #include "MainWindow.hpp"
+#include "pfs/griotte/painter/qt.hpp"
 
 #include <QDebug>
 

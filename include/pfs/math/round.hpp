@@ -3,7 +3,6 @@
 
 namespace pfs {
 
-#if 1
 /**
  * @return The rounded (nearest) integer value.
  */
@@ -28,24 +27,28 @@ constexpr inline long double round (long double x)
     return std::round(x);
 }
 
-#else
-constexpr inline float round (float d) noexcept
+/**
+ * @return The rounded (nearest) integer value.
+ */
+constexpr inline long int lround (float x)
 {
-    return d >= 0.0f ? int(d + 0.5f) : int(d - float(int(d-1)) + 0.5f) + int(d-1);
+    return std::lround(x);
 }
 
-constexpr inline double round (double d) noexcept
+/**
+ * @return The rounded (nearest) integer value.
+ */
+constexpr inline long int lround (double x)
 {
-     return d >= 0.0 ? int(d + 0.5) : int(d - double(int(d-1)) + 0.5) + int(d-1);
+    return std::lround(x);
 }
 
-constexpr inline long double round (long double d) noexcept
+/**
+ * @return The rounded (nearest) integer value.
+ */
+constexpr inline long int lround (long double x)
 {
-    return d >= 0.0
-            ? static_cast<long long int>(d + 0.5)
-            : static_cast<long long int>(d - double(static_cast<long long int>(d-1)) + 0.5) + static_cast<long long int>(d-1);
+    return std::lround(x);
 }
-
-#endif
 
 } // namespace pfs

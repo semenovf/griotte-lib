@@ -4,12 +4,15 @@
 namespace pfs {
 namespace griotte {
 
+template <typename UnitT>
 class rect
 {
-    unit_t _x1;
-    unit_t _y1;
-    unit_t _x2;
-    unit_t _y2;
+    using unit_type = UnitT;
+
+    unit_type _x1;
+    unit_type _y1;
+    unit_type _x2;
+    unit_type _y2;
 
 public:
     /**
@@ -26,7 +29,10 @@ public:
      * @brief Constructs a rectangle with (x, y) as its top-left corner
      *        and the given width and height.
      */
-    constexpr rect (unit_t x, unit_t y, unit_t width, unit_t height) noexcept
+    constexpr rect (unit_type x
+                , unit_type y
+                , unit_type width
+                , unit_type height) noexcept
         : _x1(x)
         , _y1(y)
         , _x2(x + width - 1)
@@ -39,7 +45,7 @@ public:
     /**
      * @return The x-coordinate of the rectangle's left edge.
      */
-    constexpr inline unit_t x () const noexcept
+    constexpr inline unit_type x () const noexcept
     {
         return _x1;
     }
@@ -47,7 +53,7 @@ public:
     /**
      * @return The y-coordinate of the rectangle's left edge.
      */
-    constexpr inline unit_t y () const noexcept
+    constexpr inline unit_type y () const noexcept
     {
         return _y1;
     }
@@ -55,7 +61,7 @@ public:
     /**
      * @return The width of the rectangle.
      */
-    constexpr inline unit_t width () const noexcept
+    constexpr inline unit_type width () const noexcept
     {
         return _x2 - _x1 + 1;
     }
@@ -63,7 +69,7 @@ public:
     /**
      * @return The height of the rectangle.
      */
-    constexpr inline unit_t height () const noexcept
+    constexpr inline unit_type height () const noexcept
     {
         return _y2 - _y1 + 1;
     }
@@ -72,33 +78,27 @@ public:
      * @return @c true if the point (@a x, @a y) is inside this rectangle
      *         including on the edge, otherwise returns @c false.
      */
-    inline bool contains (unit_t x, unit_t y) const noexcept;
+    constexpr inline bool contains (unit_type x
+            , unit_type y) const noexcept
+    {
+        return (x < _x1
+                || x > _x2
+                || y < _y1
+                || y > _y2) ? false : true;
+    }
 
     /**
      * @return @c true if the point (@a x, @a y) is inside this rectangle
      *         excluding on the edge, otherwise returns @c false.
      */
-    inline bool contains_exclude_edge (unit_t x, unit_t y) const noexcept;
+    constexpr inline bool contains_exclude_edge (unit_type x
+            , unit_type y) const noexcept
+    {
+        return (x <= _x1
+                || x >= _x2
+                || y <= _y1
+                || y >= _y2) ? false : true;
+    }
 };
-
-inline bool rect::contains (unit_t x, unit_t y) const noexcept
-{
-    return (x < _x1
-            || x > _x2
-            || y < _y1
-            || y > _y2) ? false : true;
-}
-
-inline bool rect::contains_exclude_edge (unit_t x, unit_t y) const noexcept
-{
-    return (x <= _x1
-            || x >= _x2
-            || y <= _y1
-            || y >= _y2) ? false : true;
-}
-
-#ifdef PFS_GRIOTTE_SOURCE
-
-#endif
 
 }} // namespace pfs::griotte

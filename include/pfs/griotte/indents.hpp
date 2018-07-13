@@ -6,25 +6,25 @@ namespace griotte {
 
 class indents
 {
-    unit_t _top;
-    unit_t _right;
-    unit_t _bottom;
-    unit_t _left;
+    unit _top;
+    unit _right;
+    unit _bottom;
+    unit _left;
 
 public:
     indents () noexcept
         : _top(0), _right(0), _bottom(0), _left(0) {}
 
-    indents (unit_t top, unit_t right, unit_t bottom, unit_t left) noexcept
+    indents (unit top, unit right, unit bottom, unit left) noexcept
         : _top(top), _right(right), _bottom(bottom), _left(left) {}
 
     indents (indents const & rhs) = default;
     indents & operator = (indents const & rhs) = default;
 
-    unit_t top () const noexcept { return _top; }
-    unit_t right () const noexcept { return _right; }
-    unit_t bottom () const noexcept { return _bottom; }
-    unit_t left () const noexcept { return _left; }
+    unit top () const noexcept { return _top; }
+    unit right () const noexcept { return _right; }
+    unit bottom () const noexcept { return _bottom; }
+    unit left () const noexcept { return _left; }
 };
 
 using margins = indents;

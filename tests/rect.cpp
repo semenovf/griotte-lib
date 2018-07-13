@@ -3,7 +3,7 @@
 #define PFS_GRIOTTE_SOURCE
 #include <pfs/griotte/rect.hpp>
 
-using rect = pfs::griotte::rect;
+using rect = pfs::griotte::rect<int>;
 
 SCENARIO("Rect constructors", "[rect]") {
     GIVEN("A rect") {

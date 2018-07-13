@@ -12,14 +12,14 @@ class argb_color
     uint8_t _blue;
 
 public:
-    argb_color () noexcept
+    constexpr argb_color () noexcept
         : _alpha(0)
         , _red(0)
         , _green(0)
         , _blue(0)
     {}
 
-    argb_color (int red, int green, int blue, int alpha = 255) noexcept
+    constexpr argb_color (int red, int green, int blue, int alpha = 255) noexcept
         : _alpha(static_cast<uint8_t>(alpha))
         , _red(static_cast<uint8_t>(red))
         , _green(static_cast<uint8_t>(green))

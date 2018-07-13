@@ -5,10 +5,13 @@
 namespace pfs {
 namespace griotte {
 
+template <typename UnitT>
 class point
 {
-    unit_t _x;
-    unit_t _y;
+    using unit_type = UnitT;
+
+    unit_type _x;
+    unit_type _y;
 
 public:
     /**
@@ -22,7 +25,7 @@ public:
     /**
      * @brief Constructs a point with the given coordinates (@a x, @a y).
      */
-    constexpr point (unit_t x, unit_t y) noexcept
+    constexpr point (unit_type x, unit_type y) noexcept
         : _x(x)
         , _y(y)
     {}
@@ -33,7 +36,7 @@ public:
     /**
      * @return The @c x coordinate of this point.
      */
-    constexpr inline unit_t x () const noexcept
+    constexpr inline unit_type x () const noexcept
     {
         return _x;
     }
@@ -41,7 +44,7 @@ public:
     /**
      * @return The @c y coordinate of this point.
      */
-    constexpr inline unit_t y () const noexcept
+    constexpr inline unit_type y () const noexcept
     {
         return _y;
     }
@@ -49,7 +52,7 @@ public:
     /**
      * @brief Sets the @c x coordinate of this point to the given @a x coordinate.
      */
-    inline void set_x (unit_t x) noexcept
+    inline void set_x (unit_type x) noexcept
     {
         _x = x;
     }
@@ -57,7 +60,7 @@ public:
     /**
      * @brief Sets the @c y coordinate of this point to the given @a y coordinate.
      */
-    inline void set_y (unit_t y) noexcept
+    inline void set_y (unit_type y) noexcept
     {
         _y = y;
     }
@@ -65,7 +68,7 @@ public:
     /**
      * @brief Increments @c x by @a dx.
      */
-    inline void increment_x (int dx) noexcept
+    inline void increment_x (unit_type dx) noexcept
     {
         _x += dx;
     }
@@ -73,7 +76,7 @@ public:
     /**
      * @brief Increments @c y by @a dy.
      */
-    inline void increment_y (int dy) noexcept
+    inline void increment_y (unit_type dy) noexcept
     {
         _y += dy;
     }
@@ -81,7 +84,7 @@ public:
     /**
      * @brief Increments @c x and @c y by @a dx and @a dy respectively.
      */
-    inline void increment (int dx, int dy) noexcept
+    inline void increment (unit_type dx, unit_type dy) noexcept
     {
         _x += dx;
         _y += dy;
@@ -116,8 +119,8 @@ public:
      */
     inline point & operator *= (float factor) noexcept
     {
-        _x = pfs::round(_x * factor);
-        _y = pfs::round(_y * factor);
+        _x = static_cast<unit_type>(pfs::round(_x * factor));
+        _y = static_cast<unit_type>(pfs::round(_y * factor));
         return *this;
     }
 
@@ -127,8 +130,8 @@ public:
      */
     inline point & operator *= (double factor) noexcept
     {
-        _x = pfs::round(_x * factor);
-        _y = pfs::round(_y * factor);
+        _x = static_cast<unit_type>(pfs::round(_x * factor));
+        _y = static_cast<unit_type>(pfs::round(_y * factor));
         return *this;
     }
 
@@ -141,6 +144,16 @@ public:
         _x *= factor;
         _y *= factor;
         return *this;
+    }
+
+    constexpr inline bool operator == (point const & rhs) const
+    {
+        return _x == rhs._x && _y == rhs._y;
+    }
+
+    constexpr inline bool operator != (point const & rhs) const
+    {
+        return ! operator == (rhs);
     }
 };
 

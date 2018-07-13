@@ -1,7 +1,7 @@
 namespace pfs {
 namespace griotte {
 
-using unit_t = int;
+using unit = int;
 
 }} // namespace pfs::griotte
 

@@ -1,9 +1,11 @@
 #include "catch.hpp"
 
+#include <utility>
+
 #define PFS_GRIOTTE_SOURCE
 #include <pfs/griotte/point.hpp>
 
-using point = pfs::griotte::point;
+using point = pfs::griotte::point<int>;
 
 SCENARIO("Point constructors", "[point]") {
     GIVEN("A point") {
@@ -137,75 +139,80 @@ TEST_CASE("Multiplies by the given factor", "[point]") {
     point p;
 
     p = point{10, 10};
-    p *= static_cast<float>(0.35f);
+    p *= static_cast<float>(0.35);
 
     REQUIRE(p.x() == 4);
     REQUIRE(p.y() == 4);
 
     p = point{10, 10};
-    p *= static_cast<float>(0.33f);
+    p *= static_cast<float>(0.33);
 
     REQUIRE(p.x() == 3);
     REQUIRE(p.y() == 3);
 
     p = point{10, 10};
-    p *= static_cast<float>(0.55f);
+    p *= static_cast<float>(0.55);
 
     REQUIRE(p.x() == 6);
     REQUIRE(p.y() == 6);
 
     p = point{10, 10};
-    p *= static_cast<float>(-0.35f);
+    p *= static_cast<float>(-0.35);
 
     REQUIRE(p.x() == -4);
     REQUIRE(p.y() == -4);
 
     p = point{10, 10};
-    p *= static_cast<float>(-0.33f);
+    p *= static_cast<float>(-0.33);
 
     REQUIRE(p.x() == -3);
     REQUIRE(p.y() == -3);
 
     p = point{10, 10};
-    p *= static_cast<float>(-0.55f);
+    p *= static_cast<float>(-0.55);
 
     REQUIRE(p.x() == -6);
     REQUIRE(p.y() == -6);
 
     p = point{10, 10};
-    p *= static_cast<double>(0.35f);
+    p *= static_cast<double>(0.35);
 
     REQUIRE(p.x() == 4);
     REQUIRE(p.y() == 4);
 
     p = point{10, 10};
-    p *= static_cast<double>(0.33f);
+    p *= static_cast<double>(0.33);
 
     REQUIRE(p.x() == 3);
     REQUIRE(p.y() == 3);
 
     p = point{10, 10};
-    p *= static_cast<double>(0.55f);
+    p *= static_cast<double>(0.55);
 
     REQUIRE(p.x() == 6);
     REQUIRE(p.y() == 6);
 
     p = point{10, 10};
-    p *= static_cast<double>(-0.35f);
+    p *= static_cast<double>(-0.35);
 
     REQUIRE(p.x() == -4);
     REQUIRE(p.y() == -4);
 
     p = point{10, 10};
-    p *= static_cast<double>(-0.33f);
+    p *= static_cast<double>(-0.33);
 
     REQUIRE(p.x() == -3);
     REQUIRE(p.y() == -3);
 
     p = point{10, 10};
-    p *= static_cast<double>(-0.55f);
+    p *= static_cast<double>(-0.55);
 
     REQUIRE(p.x() == -6);
     REQUIRE(p.y() == -6);
+}
 
+TEST_CASE("Points comparison", "[point]") {
+    REQUIRE(point{10, 10} == point{10, 10});
+    REQUIRE(point{10, 10} != point{10, 11});
+    REQUIRE(point{10, 10} != point{11, 11});
 }
