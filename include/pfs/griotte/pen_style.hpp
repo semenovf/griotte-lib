@@ -1,5 +1,8 @@
 #pragma once
 
+//FIXME DEPRECATED
+#if __DEPRECATED__
+
 namespace pfs {
 namespace griotte {
 
@@ -29,3 +32,5 @@ enum class pen_join_style : int
 };
 
 }} // namespace pfs::griotte
+
+#endif

@@ -11,10 +11,10 @@ SCENARIO("Rect constructors", "[line]") {
             line l;
 
             THEN("all attributes are zero") {
-                REQUIRE(l.p1().x() == 0);
-                REQUIRE(l.p1().y() == 0);
-                REQUIRE(l.p2().x() == 0);
-                REQUIRE(l.p2().y() == 0);
+                REQUIRE(l.get_start_point().get_x() == 0);
+                REQUIRE(l.get_start_point().get_y() == 0);
+                REQUIRE(l.get_end_point().get_x() == 0);
+                REQUIRE(l.get_end_point().get_y() == 0);
             }
         }
 
@@ -23,10 +23,10 @@ SCENARIO("Rect constructors", "[line]") {
             line l2(l1);
 
             THEN("all attributes are zero") {
-                REQUIRE(l2.p1().x() == 0);
-                REQUIRE(l2.p1().y() == 0);
-                REQUIRE(l2.p2().x() == 0);
-                REQUIRE(l2.p2().y() == 0);
+                REQUIRE(l2.get_start_point().get_x() == 0);
+                REQUIRE(l2.get_start_point().get_y() == 0);
+                REQUIRE(l2.get_end_point().get_x() == 0);
+                REQUIRE(l2.get_end_point().get_y() == 0);
             }
         }
 
@@ -36,12 +36,11 @@ SCENARIO("Rect constructors", "[line]") {
             l2 = l1;
 
             THEN("all attributes are zero") {
-                REQUIRE(l2.p1().x() == 0);
-                REQUIRE(l2.p1().y() == 0);
-                REQUIRE(l2.p2().x() == 0);
-                REQUIRE(l2.p2().y() == 0);
+                REQUIRE(l2.get_start_point().get_x() == 0);
+                REQUIRE(l2.get_start_point().get_y() == 0);
+                REQUIRE(l2.get_end_point().get_x() == 0);
+                REQUIRE(l2.get_end_point().get_y() == 0);
             }
         }
     }
 }
-

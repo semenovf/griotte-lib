@@ -4,9 +4,13 @@
 namespace pfs {
 namespace griotte {
 
+template <typename UnitT>
 class view
 {
-    rect _rect;
+    using unit_type = UnitT;
+    using rect_type = rect<unit_type>;
+
+    rect_type _rect;
 
 // class QWidgetData
 // {

@@ -1,6 +1,5 @@
 #pragma once
 #include <pfs/math/round.hpp>
-#include <pfs/griotte/unit.hpp>
 
 namespace pfs {
 namespace griotte {
@@ -30,13 +29,16 @@ public:
         , _y(y)
     {}
 
+    ~point () = default;
     point (point const & rhs) = default;
     point & operator = (point const & rhs) = default;
+    point (point && rhs) = default;
+    point & operator = (point && rhs) = default;
 
     /**
      * @return The @c x coordinate of this point.
      */
-    constexpr inline unit_type x () const noexcept
+    constexpr inline unit_type get_x () const noexcept
     {
         return _x;
     }
@@ -44,7 +46,7 @@ public:
     /**
      * @return The @c y coordinate of this point.
      */
-    constexpr inline unit_type y () const noexcept
+    constexpr inline unit_type get_y () const noexcept
     {
         return _y;
     }
@@ -155,11 +157,21 @@ public:
     {
         return ! operator == (rhs);
     }
+
+    friend inline point operator + (point const & p1, point const & p2) noexcept
+    {
+        point p{p1};
+        p += p2;
+        return p;
+    }
+
+    friend inline point operator - (point const & p1, point const & p2) noexcept
+    {
+        point p{p1};
+        p -= p2;
+        return p;
+    }
 };
-
-#ifdef PFS_GRIOTTE_SOURCE
-
-#endif
 
 }} // namespace pfs::griotte
 

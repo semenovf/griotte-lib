@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "MainWindow.hpp"
+#include <pfs/griotte/griotte_impl.hpp>
 
 int main (int argc, char * argv[])
 {

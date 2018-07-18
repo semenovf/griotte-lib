@@ -34,11 +34,13 @@ public:
     ~line () = default;
     line (line const & rhs) = default;
     line & operator = (line const & rhs) = default;
+    line (line && rhs) = default;
+    line & operator = (line && rhs) = default;
 
     /**
      * @return The line's start point.
      */
-    constexpr inline point_type p1 () const noexcept
+    constexpr inline point_type get_start_point () const noexcept
     {
         return _p1;
     }
@@ -46,15 +48,11 @@ public:
     /**
      * @return The line's end point.
      */
-    constexpr inline point_type p2 () const noexcept
+    constexpr inline point_type get_end_point () const noexcept
     {
         return _p2;
     }
 };
-
-#ifdef PFS_GRIOTTE_SOURCE
-
-#endif
 
 }} // namespace pfs::griotte
 

@@ -13,8 +13,8 @@ SCENARIO("Point constructors", "[point]") {
             point p;
 
             THEN("all attributes are zero") {
-                REQUIRE(p.x() == 0);
-                REQUIRE(p.y() == 0);
+                REQUIRE(p.get_x() == 0);
+                REQUIRE(p.get_y() == 0);
             }
         }
 
@@ -23,8 +23,8 @@ SCENARIO("Point constructors", "[point]") {
             point p2{p1};
 
             THEN("all attributes are zero") {
-                REQUIRE(p2.x() == 0);
-                REQUIRE(p2.y() == 0);
+                REQUIRE(p2.get_x() == 0);
+                REQUIRE(p2.get_y() == 0);
             }
         }
 
@@ -34,8 +34,8 @@ SCENARIO("Point constructors", "[point]") {
             p2 = p1;
 
             THEN("all attributes are zero") {
-                REQUIRE(p2.x() == 0);
-                REQUIRE(p2.y() == 0);
+                REQUIRE(p2.get_x() == 0);
+                REQUIRE(p2.get_y() == 0);
             }
         }
     }
@@ -45,8 +45,8 @@ SCENARIO("Point constructors", "[point]") {
             point p{10, 20};
 
             THEN("attributes are set properly") {
-                REQUIRE(p.x() == 10);
-                REQUIRE(p.y() == 20);
+                REQUIRE(p.get_x() == 10);
+                REQUIRE(p.get_y() == 20);
             }
         }
 
@@ -55,8 +55,8 @@ SCENARIO("Point constructors", "[point]") {
             point p2{p1};
 
             THEN("attributes are set properly") {
-                REQUIRE(p2.x() == 10);
-                REQUIRE(p2.y() == 20);
+                REQUIRE(p2.get_x() == 10);
+                REQUIRE(p2.get_y() == 20);
             }
         }
 
@@ -66,8 +66,8 @@ SCENARIO("Point constructors", "[point]") {
             p2 = p1;
 
             THEN("attributes are set properly") {
-                REQUIRE(p2.x() == 10);
-                REQUIRE(p2.y() == 20);
+                REQUIRE(p2.get_x() == 10);
+                REQUIRE(p2.get_y() == 20);
             }
         }
     }
@@ -79,8 +79,8 @@ TEST_CASE("Set x and y coordinates", "[point]") {
     p.set_x(10);
     p.set_y(20);
 
-    REQUIRE(p.x() == 10);
-    REQUIRE(p.y() == 20);
+    REQUIRE(p.get_x() == 10);
+    REQUIRE(p.get_y() == 20);
 }
 
 TEST_CASE("Increment x and y coordinates", "[point]") {
@@ -89,24 +89,24 @@ TEST_CASE("Increment x and y coordinates", "[point]") {
     p.increment_x(10);
     p.increment_y(20);
 
-    REQUIRE(p.x() == 20);
-    REQUIRE(p.y() == 40);
+    REQUIRE(p.get_x() == 20);
+    REQUIRE(p.get_y() == 40);
 
     p.increment_x(-10);
     p.increment_y(-20);
 
-    REQUIRE(p.x() == 10);
-    REQUIRE(p.y() == 20);
+    REQUIRE(p.get_x() == 10);
+    REQUIRE(p.get_y() == 20);
 
     p.increment(10, 20);
 
-    REQUIRE(p.x() == 20);
-    REQUIRE(p.y() == 40);
+    REQUIRE(p.get_x() == 20);
+    REQUIRE(p.get_y() == 40);
 
     p.increment(-10, -20);
 
-    REQUIRE(p.x() == 10);
-    REQUIRE(p.y() == 20);
+    REQUIRE(p.get_x() == 10);
+    REQUIRE(p.get_y() == 20);
 }
 
 TEST_CASE("Adds and substructs operations", "[point]") {
@@ -116,23 +116,23 @@ TEST_CASE("Adds and substructs operations", "[point]") {
 
     p += p1;
 
-    REQUIRE(p.x() == 20);
-    REQUIRE(p.y() == 40);
+    REQUIRE(p.get_x() == 20);
+    REQUIRE(p.get_y() == 40);
 
     p += p2;
 
-    REQUIRE(p.x() == 10);
-    REQUIRE(p.y() == 20);
+    REQUIRE(p.get_x() == 10);
+    REQUIRE(p.get_y() == 20);
 
     p -= p2;
 
-    REQUIRE(p.x() == 20);
-    REQUIRE(p.y() == 40);
+    REQUIRE(p.get_x() == 20);
+    REQUIRE(p.get_y() == 40);
 
     p -= p1;
 
-    REQUIRE(p.x() == 10);
-    REQUIRE(p.y() == 20);
+    REQUIRE(p.get_x() == 10);
+    REQUIRE(p.get_y() == 20);
 }
 
 TEST_CASE("Multiplies by the given factor", "[point]") {
@@ -141,74 +141,74 @@ TEST_CASE("Multiplies by the given factor", "[point]") {
     p = point{10, 10};
     p *= static_cast<float>(0.35);
 
-    REQUIRE(p.x() == 4);
-    REQUIRE(p.y() == 4);
+    REQUIRE(p.get_x() == 4);
+    REQUIRE(p.get_y() == 4);
 
     p = point{10, 10};
     p *= static_cast<float>(0.33);
 
-    REQUIRE(p.x() == 3);
-    REQUIRE(p.y() == 3);
+    REQUIRE(p.get_x() == 3);
+    REQUIRE(p.get_y() == 3);
 
     p = point{10, 10};
     p *= static_cast<float>(0.55);
 
-    REQUIRE(p.x() == 6);
-    REQUIRE(p.y() == 6);
+    REQUIRE(p.get_x() == 6);
+    REQUIRE(p.get_y() == 6);
 
     p = point{10, 10};
     p *= static_cast<float>(-0.35);
 
-    REQUIRE(p.x() == -4);
-    REQUIRE(p.y() == -4);
+    REQUIRE(p.get_x() == -4);
+    REQUIRE(p.get_y() == -4);
 
     p = point{10, 10};
     p *= static_cast<float>(-0.33);
 
-    REQUIRE(p.x() == -3);
-    REQUIRE(p.y() == -3);
+    REQUIRE(p.get_x() == -3);
+    REQUIRE(p.get_y() == -3);
 
     p = point{10, 10};
     p *= static_cast<float>(-0.55);
 
-    REQUIRE(p.x() == -6);
-    REQUIRE(p.y() == -6);
+    REQUIRE(p.get_x() == -6);
+    REQUIRE(p.get_y() == -6);
 
     p = point{10, 10};
     p *= static_cast<double>(0.35);
 
-    REQUIRE(p.x() == 4);
-    REQUIRE(p.y() == 4);
+    REQUIRE(p.get_x() == 4);
+    REQUIRE(p.get_y() == 4);
 
     p = point{10, 10};
     p *= static_cast<double>(0.33);
 
-    REQUIRE(p.x() == 3);
-    REQUIRE(p.y() == 3);
+    REQUIRE(p.get_x() == 3);
+    REQUIRE(p.get_y() == 3);
 
     p = point{10, 10};
     p *= static_cast<double>(0.55);
 
-    REQUIRE(p.x() == 6);
-    REQUIRE(p.y() == 6);
+    REQUIRE(p.get_x() == 6);
+    REQUIRE(p.get_y() == 6);
 
     p = point{10, 10};
     p *= static_cast<double>(-0.35);
 
-    REQUIRE(p.x() == -4);
-    REQUIRE(p.y() == -4);
+    REQUIRE(p.get_x() == -4);
+    REQUIRE(p.get_y() == -4);
 
     p = point{10, 10};
     p *= static_cast<double>(-0.33);
 
-    REQUIRE(p.x() == -3);
-    REQUIRE(p.y() == -3);
+    REQUIRE(p.get_x() == -3);
+    REQUIRE(p.get_y() == -3);
 
     p = point{10, 10};
     p *= static_cast<double>(-0.55);
 
-    REQUIRE(p.x() == -6);
-    REQUIRE(p.y() == -6);
+    REQUIRE(p.get_x() == -6);
+    REQUIRE(p.get_y() == -6);
 }
 
 TEST_CASE("Points comparison", "[point]") {

@@ -11,10 +11,10 @@ SCENARIO("Rect constructors", "[rect]") {
             rect r;
 
             THEN("all attributes are zero") {
-                REQUIRE(r.x() == 0);
-                REQUIRE(r.y() == 0);
-                REQUIRE(r.width() == 0);
-                REQUIRE(r.height() == 0);
+                REQUIRE(r.get_x() == 0);
+                REQUIRE(r.get_y() == 0);
+                REQUIRE(r.get_width() == 0);
+                REQUIRE(r.get_height() == 0);
             }
         }
 
@@ -23,10 +23,10 @@ SCENARIO("Rect constructors", "[rect]") {
             rect r2(r1);
 
             THEN("all attributes are zero") {
-                REQUIRE(r2.x() == 0);
-                REQUIRE(r2.y() == 0);
-                REQUIRE(r2.width() == 0);
-                REQUIRE(r2.height() == 0);
+                REQUIRE(r2.get_x() == 0);
+                REQUIRE(r2.get_y() == 0);
+                REQUIRE(r2.get_width() == 0);
+                REQUIRE(r2.get_height() == 0);
             }
         }
 
@@ -36,10 +36,10 @@ SCENARIO("Rect constructors", "[rect]") {
             r2 = r1;
 
             THEN("all attributes are zero") {
-                REQUIRE(r2.x() == 0);
-                REQUIRE(r2.y() == 0);
-                REQUIRE(r2.width() == 0);
-                REQUIRE(r2.height() == 0);
+                REQUIRE(r2.get_x() == 0);
+                REQUIRE(r2.get_y() == 0);
+                REQUIRE(r2.get_width() == 0);
+                REQUIRE(r2.get_height() == 0);
             }
         }
     }

@@ -1,5 +1,4 @@
 #pragma once
-#include <pfs/griotte/unit.hpp>
 
 namespace pfs {
 namespace griotte {
@@ -39,13 +38,16 @@ public:
         , _y2(y + height - 1)
     {}
 
+    ~rect () = default;
     rect (rect const & rhs) = default;
     rect & operator = (rect const & rhs) = default;
+    rect (rect && rhs) = default;
+    rect & operator = (rect && rhs) = default;
 
     /**
      * @return The x-coordinate of the rectangle's left edge.
      */
-    constexpr inline unit_type x () const noexcept
+    constexpr inline unit_type get_x () const noexcept
     {
         return _x1;
     }
@@ -53,7 +55,7 @@ public:
     /**
      * @return The y-coordinate of the rectangle's left edge.
      */
-    constexpr inline unit_type y () const noexcept
+    constexpr inline unit_type get_y () const noexcept
     {
         return _y1;
     }
@@ -61,7 +63,7 @@ public:
     /**
      * @return The width of the rectangle.
      */
-    constexpr inline unit_type width () const noexcept
+    constexpr inline unit_type get_width () const noexcept
     {
         return _x2 - _x1 + 1;
     }
@@ -69,7 +71,7 @@ public:
     /**
      * @return The height of the rectangle.
      */
-    constexpr inline unit_type height () const noexcept
+    constexpr inline unit_type get_height () const noexcept
     {
         return _y2 - _y1 + 1;
     }

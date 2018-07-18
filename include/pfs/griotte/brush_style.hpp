@@ -1,5 +1,8 @@
 #pragma once
 
+//FIXME __DEPRECATED__
+#if __DEPRECATED__
+
 namespace pfs {
 namespace griotte {
 
@@ -28,3 +31,4 @@ enum class brush_pattern_style : int
 
 }} // namespace pfs::griotte
 
+#endif

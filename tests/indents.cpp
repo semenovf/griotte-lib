@@ -2,17 +2,17 @@
 #include <pfs/griotte/indents.hpp>
 
 SCENARIO("Indents constructors", "[indents]") {
-    using indents = pfs::griotte::indents;
+    using indents = pfs::griotte::indents<int>;
 
     GIVEN("A indents") {
         WHEN("created with default constructor") {
             indents x;
 
             THEN("all attributes are zero") {
-                REQUIRE(x.top() == 0);
-                REQUIRE(x.right() == 0);
-                REQUIRE(x.bottom() == 0);
-                REQUIRE(x.left() == 0);
+                REQUIRE(x.get_top() == 0);
+                REQUIRE(x.get_right() == 0);
+                REQUIRE(x.get_bottom() == 0);
+                REQUIRE(x.get_left() == 0);
             }
         }
 
@@ -21,10 +21,10 @@ SCENARIO("Indents constructors", "[indents]") {
             indents y(x);
 
             THEN("all attributes are zero") {
-                REQUIRE(y.top() == 0);
-                REQUIRE(y.right() == 0);
-                REQUIRE(y.bottom() == 0);
-                REQUIRE(y.left() == 0);
+                REQUIRE(y.get_top() == 0);
+                REQUIRE(y.get_right() == 0);
+                REQUIRE(y.get_bottom() == 0);
+                REQUIRE(y.get_left() == 0);
             }
         }
 
@@ -34,10 +34,10 @@ SCENARIO("Indents constructors", "[indents]") {
             y = x;
 
             THEN("all attributes are zero") {
-                REQUIRE(y.top() == 0);
-                REQUIRE(y.right() == 0);
-                REQUIRE(y.bottom() == 0);
-                REQUIRE(y.left() == 0);
+                REQUIRE(y.get_top() == 0);
+                REQUIRE(y.get_right() == 0);
+                REQUIRE(y.get_bottom() == 0);
+                REQUIRE(y.get_left() == 0);
             }
         }
     }
