@@ -85,6 +85,15 @@
   Official Git Repository: [https://github.com/vurtun/nuklear](https://github.com/vurtun/nuklear)  
   Initial Release:  
 
+# Graphics Engines for C/C++.
+
+1. [Allegro](https://liballeg.org)
+  Description: Allegro is a cross-platform library mainly aimed at video game and multimedia programming.  
+  License: Allegro 5 (Copyright © 2008-2010 the Allegro 5 Development Team).  
+  Operation System: Cross-platform.  
+  Official Git Repository: [https://github.com/liballeg/allegro5](https://github.com/liballeg/allegro5).  
+  Initial Release: 199?.  
+
 ## Extra links    
 * [Retained Mode Versus Immediate Mode](https://msdn.microsoft.com/library/windows/desktop/ff684178(v=vs.85).aspx)  
 * [Retained mode](https://en.wikipedia.org/wiki/Retained_mode)  

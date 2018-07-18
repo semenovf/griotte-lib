@@ -98,9 +98,9 @@ void Surface::paintEvent (QPaintEvent * event)
         //path4.quad_to(250, 50, 400, 350);
 
 
-        stroker{path1}.outline(p, pen1);
-        stroker{path2}.outline(p, pen2);
-        stroker{path3}.outline(p, pen3);
-        stroker{path4}.outline(p, pen4);
+        stroker{path1}.stroke(p, pen1);
+        stroker{path2}.stroke(p, pen2);
+        stroker{path3}.stroke(p, pen3);
+        stroker{path4}.stroke(p, pen4);
     }
 }

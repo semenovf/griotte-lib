@@ -2,6 +2,10 @@
 #include <cassert>
 #include <vector>
 #include <pfs/griotte/point.hpp>
+#include <pfs/griotte/rect.hpp>
+
+
+// FIXME Implement path using relative coordinates internally.
 
 //
 // [8.3.8 The grammar for path data](https://www.w3.org/TR/SVGTiny12/paths.html#PathElement)
@@ -133,8 +137,9 @@ template <typename UnitT>
 class path
 {
 public:
-    using unit_type = UnitT;
+    using unit_type  = UnitT;
     using point_type = point<unit_type>;
+    using rect_type  = rect<unit_type>;
 
     struct entry
     {
@@ -155,13 +160,16 @@ public:
     using const_reference  = typename entry_collection::const_reference;
 
 private:
-    entry_collection _v;
+    entry_collection _v; // collection of the path antries
 
 public:
     /**
-     * @brief Constructs a path without start point.
+     * @brief Constructs a path with start point at (0, 0).
      */
-    path () noexcept {}
+    path () noexcept
+    {
+        move_to(point_type{0, 0});
+    }
 
     /**
      * @brief Constructs a path with start point at @a start.
@@ -343,6 +351,9 @@ public:
     {
         _v.insert(_v.begin(), apath._v.cbegin(), apath._v.cend());
     }
+
+    friend rect_type bounding_rect (path const & apath);
+    friend rect_type control_point_rect (path const & apath);
 };
 
 template <typename UnitT>
@@ -403,5 +414,40 @@ void path<UnitT>::quad_to (point_type const & c
 
     cubic_to(c1, c2, end_point, is_relative);
 }
+
+/**
+ * @return Calculated bounding rectangle of painter path @a apath.
+ */
+template <typename UnitT>
+rect<UnitT> bounding_rect (path<UnitT> const & apath)
+{
+    using rect_type = rect<UnitT>;
+    rect_type r;
+
+    // TODO Implement bounding_rect()
+    // // see qt5/qtbase/src/gui/painting/qpainterpath.cpp:computeBoundingRect()
+
+    return r;
+}
+
+/**
+ * @return Calculated rectangle containing all the points and
+ *         control points in path @a apath.
+ * @note This function is significantly faster to compute than the exact
+ *        bounding_rect(), and the returned rectangle is always a superset
+ *        of the rectangle returned by bounding_rect().
+ */
+template <typename UnitT>
+rect<UnitT> control_point_rect (path<UnitT> const & apath)
+{
+    using rect_type = rect<UnitT>;
+    rect_type r;
+
+    // TODO Implement control_point_rect()
+    // see qt5/qtbase/src/gui/painting/qpainterpath.cpp:computeControlPointRect()
+
+    return r;
+}
+
 
 }} // namespace pfs::griotte

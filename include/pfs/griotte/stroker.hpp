@@ -27,15 +27,15 @@ public:
     }
 
     template <typename Painter>
-    void outline (Painter & apainter
+    void stroke (Painter & apainter
             , pen<UnitT> const & apen
             , std::error_code & ec) noexcept;
 
     template <typename Painter>
-    void outline (Painter & apainter, pen<UnitT> const & apen)
+    void stroke (Painter & apainter, pen<UnitT> const & apen)
     {
         std::error_code ec;
-        outline(apainter, apen, ec);
+        stroke(apainter, apen, ec);
         if (ec) throw exception(ec);
     }
 };
@@ -45,7 +45,7 @@ public:
  */
 template <typename UnitT>
 template <typename Painter>
-void stroker<UnitT>::outline (Painter & apainter
+void stroker<UnitT>::stroke (Painter & apainter
         , pen<UnitT> const & apen
         , std::error_code & ec) noexcept
 {
