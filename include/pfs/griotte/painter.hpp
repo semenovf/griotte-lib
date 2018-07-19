@@ -1,3 +1,7 @@
+/**
+ * @file
+ */
+
 #pragma once
 #include <memory>
 #include <pfs/griotte/point.hpp>
@@ -6,9 +10,19 @@
 #include <pfs/griotte/pen.hpp>
 #include <pfs/griotte/error.hpp>
 
+/**
+ * @namespace pfs
+ */
 namespace pfs {
+
+/**
+ * @namespace griotte
+ */
 namespace griotte {
 
+/**
+ * @class painter painter.hpp "pfs/griotte/painter.hpp"
+ */
 template <typename Backend>
 class painter
 {
@@ -39,8 +53,8 @@ public:
     }
 
     /**
-     * @fn void painter::draw_line (line const & aline)
-     * @brief Draws a line defined by @ aline.
+     * @fn void painter::draw_line (line const & aline, pen const & apen)
+     * @brief Draws a line defined by @a aline.
      * @param aline The line to draw.
      */
     template <typename UnitT>
