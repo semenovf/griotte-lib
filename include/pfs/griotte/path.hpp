@@ -121,15 +121,8 @@ namespace griotte {
 enum class path_entry_enum : int
 {
       move_to      ///!<Move to
-    , rel_move_to  ///!<Relative move to
     , line_to      ///!<Line to
-    , rel_line_to  ///!<Relative line to
-    , hline_to     ///!<Horizontal line to
-    , rel_hline_to ///!<Relative horizontal line to
-    , vline_to     ///!<Vertical line to
-    , rel_vline_to ///!<Relative vertical line to
     , curve_to     ///!<Curve to
-    , rel_curve_to ///!<Relative curve to
     , close_path   ///!<Close path
 };
 
@@ -221,16 +214,16 @@ public:
         return _v.cend();
     }
 
-    void move_to (point_type const & apoint, bool is_relative = false);
+    void move_to (point_type const & p, bool is_relative = false);
 
     inline void move_to (unit_type x, unit_type y, bool is_relative = false)
     {
         move_to(point_type{x, y}, is_relative);
     }
 
-    inline void rel_move_to (point_type const & apoint)
+    inline void rel_move_to (point_type const & p)
     {
-        move_to(apoint, true);
+        move_to(p, true);
     }
 
     inline void rel_move_to (unit_type x, unit_type y)
@@ -238,22 +231,16 @@ public:
         move_to(point_type{x, y}, true);
     }
 
-    inline void line_to (point_type const & apoint, bool is_relative = false)
-    {
-        assert(!_v.empty());
-        _v.emplace_back(is_relative
-                ? path_entry_enum::rel_line_to
-                : path_entry_enum::line_to, apoint);
-    }
+    inline void line_to (point_type const & p, bool is_relative = false);
 
     inline void line_to (unit_type x, unit_type y, bool is_relative = false)
     {
         line_to(point_type{x, y}, is_relative);
     }
 
-    inline void rel_line_to (point_type const & apoint)
+    inline void rel_line_to (point_type const & p)
     {
-        line_to(apoint, true);
+        line_to(p, true);
     }
 
     inline void rel_line_to (unit_type x, unit_type y)
@@ -263,28 +250,22 @@ public:
 
     inline void hline_to (unit_type x, bool is_relative = false)
     {
-        assert(!_v.empty());
-        _v.emplace_back(is_relative
-                ? path_entry_enum::rel_hline_to
-                : path_entry_enum::hline_to, point_type(x, 0));
+        line_to(x, 0, is_relative);
     }
 
     inline void rel_hline_to (unit_type x)
     {
-        hline_to(x, true);
+        line_to(x, 0, true);
     }
 
     inline void vline_to (unit_type y, bool is_relative = false)
     {
-        assert(!_v.empty());
-        _v.emplace_back(is_relative
-                ? path_entry_enum::rel_vline_to
-                : path_entry_enum::vline_to, point_type(0, y));
+        line_to(0, y, is_relative);
     }
 
     inline void rel_vline_to (unit_type y)
     {
-        vline_to(y, true);
+        line_to(0, y, true);
     }
 
     /**
@@ -297,18 +278,8 @@ public:
      */
     inline void curve_to (point_type const & c1
             , point_type const & c2
-            , point_type const & end_point
-            , bool is_relative = false)
-    {
-        assert(!_v.empty());
-        path_entry_enum pet = is_relative
-                ? path_entry_enum::rel_curve_to
-                : path_entry_enum::curve_to;
-
-        _v.emplace_back(pet, c1);
-        _v.emplace_back(pet, c2);
-        _v.emplace_back(pet, end_point);
-    }
+            , point_type const & ep
+            , bool is_relative = false);
 
     inline void curve_to (unit_type cx1, unit_type cy1
             , unit_type cx2, unit_type cy2
@@ -321,9 +292,19 @@ public:
                 , is_relative);
     }
 
+    /**
+     *
+     */
     inline void rel_curve_to (point_type const & c1
             , point_type const & c2
-            , point_type const & end_point)
+            , point_type const & ep)
+    {
+        curve_to(c1, c2, ep);
+    }
+
+    inline void rel_curve_to (unit_type cx1, unit_type cy1
+            , unit_type cx2, unit_type cy2
+            , unit_type ex, unit_type ey)
     {
         curve_to(point_type{cx1, cy1}
                 , point_type{cx2, cy2}
@@ -335,10 +316,10 @@ public:
      * @brief Adds a quadratic Bezier curve between the current position and
      *        the given @a end_point with the control point specified by @a c.
      * @param c Control point.
-     * @param end_point End point.
+     * @param ep End point.
      */
     void curve_to (point_type const & c
-            , point_type const & end_point
+            , point_type const & ep
             , bool is_relative = false);
 
     inline void curve_to (unit_type cx, unit_type cy
@@ -351,9 +332,9 @@ public:
     }
 
     inline void rel_curve_to (point_type const & c
-            , point_type const & end_point)
+            , point_type const & ep)
     {
-        curve_to(c, end_point, true);
+        curve_to(c, ep, true);
     }
 
     inline void rel_curve_to (unit_type cx, unit_type cy
@@ -391,55 +372,96 @@ void path<UnitT>::move_to (point_type const & apoint, bool is_relative)
     // Collection of entries is always non-empty (according to constructors).
     assert(!_v.empty());
 
-    path_entry_enum type = is_relative
-                ? path_entry_enum::rel_move_to
-                : path_entry_enum::move_to;
-
+    point_type abspoint{apoint};
     reference back = _v.back();
 
-    if (!(back.type == path_entry_enum::move_to
-            || back.type == path_entry_enum::rel_move_to)) {
-        _v.emplace_back(type, apoint);
-        return;
-    }
+    if (is_relative)
+        abspoint += back.p;
 
-    //
-    // There are four variants:
-    // 1. M x1 y1 M x2 y2
-    // 2. m x1 y1 M x2 y2
-    // 3. M x1 y1 m x2 y2
-    // 4. m x1 y1 m x2 y2
-    //
-
-    // Variants 1 and 2.
-    if (!is_relative) {
-        back.p = apoint;
-        back.type = path_entry_enum::move_to;
-        return;
-    }
-
-    // Variants 3 and 4.
-    back.p += apoint;
+    if (back.type != path_entry_enum::move_to)
+        _v.emplace_back(path_entry_enum::move_to, abspoint);
+    else
+        back.p = abspoint; // Replace point
 }
 
 template <typename UnitT>
-void path<UnitT>::curve_to (point_type const & c
+void path<UnitT>::line_to (point_type const & apoint, bool is_relative)
+{
+    assert(!_v.empty());
+
+    if (is_relative) {
+        point_type abspoint{_v.back().p};
+        abspoint += apoint;
+        _v.emplace_back(path_entry_enum::line_to, abspoint);
+    } else {
+        _v.emplace_back(path_entry_enum::line_to, apoint);
+    }
+}
+
+template <typename UnitT>
+void path<UnitT>::curve_to (point_type const & c1
+        , point_type const & c2
+        , point_type const & ep
+        , bool is_relative)
+{
+    assert(!_v.empty());
+
+    if (is_relative) {
+        point_type sp{_v.back().p};
+        _v.emplace_back(path_entry_enum::curve_to, sp + c1);
+        _v.emplace_back(path_entry_enum::curve_to, sp + c2);
+        _v.emplace_back(path_entry_enum::curve_to, sp + ep);
+    } else {
+        _v.emplace_back(path_entry_enum::curve_to, c1);
+        _v.emplace_back(path_entry_enum::curve_to, c2);
+        _v.emplace_back(path_entry_enum::curve_to, ep);
+    }
+}
+
+template <typename UnitT>
+void path<UnitT>::curve_to (point_type const & ctl_point
             , point_type const & end_point
             , bool is_relative)
 {
     assert(!_v.empty());
-    point_type const & start_point = _v.back().p;
 
-    if (start_point == c && c == end_point)
+    point_type const & sp = _v.back().p; // start point
+    point_type cp{ctl_point};
+    point_type ep{end_point};
+
+    //
+    // Calculate the absolute coordinates
+    //
+    if (is_relative) {
+        cp += sp;
+        ep += sp;
+    }
+
+    if (sp == cp && cp == ep)
         return;
 
-    point_type c1{(start_point.get_x() + 2 * c.get_x()) / 3
-            , (start_point.get_y() + 2 * c.get_y()) / 3};
+    //
+    // [Bézier curve](https://en.wikipedia.org/wiki/Bézier_curve)
+    // Use "Degree Elevation" (conversion of a Bézier curve of degree 'n'
+    // into a Bézier curve of degree 'n + 1' with the same shape)
+    //
+    // So quadratic curve (P0,C,P1) converted into cubic curve (P0,C1,C2,P1)
+    // using formula:
+    //
+    // C1x = P0x + (2 * (Cx - P0x)) / 3
+    // C1y = P0y + (2 * (Cy - P0y)) / 3
+    // C2x = Cx  +      (P1x - Cx)  / 3
+    // C2y = Cy  +      (P1y - Cy)  / 3
+    //
+    // Note: Qt5 (may be Qt4 too) uses another formula
+    // (see QPainterPath::quadTo() implementation)
+    //
+    unit_type c1x = sp.get_x() + 2 * (cp.get_x() - sp.get_x()) / 3;
+    unit_type c1y = sp.get_y() + 2 * (cp.get_y() - sp.get_y()) / 3;
+    unit_type c2x = cp.get_x() +     (ep.get_x() - cp.get_x()) / 3;
+    unit_type c2y = cp.get_y() +     (ep.get_y() - cp.get_y()) / 3;
 
-    point_type c2{(end_point.get_x() + 2 * c.get_x()) / 3
-        , (end_point.get_y() + 2 * c.get_y()) / 3};
-
-    cubic_to(c1, c2, end_point, is_relative);
+    curve_to(point_type{c1x, c1y}, point_type{c2x, c2y}, ep, false);
 }
 
 /**

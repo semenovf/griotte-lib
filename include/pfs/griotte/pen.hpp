@@ -91,6 +91,11 @@ public:
         return _dasharray;
     }
 
+    inline void set_dasharray (std::initializer_list<unit_type> dashes) const
+    {
+        _dasharray = dashes;
+    }
+
     inline void add_dash (unit_type x)
     {
         _dasharray.push_back(x);

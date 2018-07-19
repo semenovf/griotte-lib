@@ -1,6 +1,7 @@
 #include <QPaintEvent>
 #include <pfs/griotte/painter.hpp>
 #include <pfs/griotte/stroker.hpp>
+#include <pfs/griotte/painter/qt.hpp>
 #include "Surface.hpp"
 
 using unit_t  = int;
@@ -9,10 +10,12 @@ using rect    = pfs::griotte::rect<unit_t>;
 using pen     = pfs::griotte::pen<unit_t>;
 using path    = pfs::griotte::path<unit_t>;
 using stroker = pfs::griotte::stroker<unit_t>;
+using painter_backend = pfs::griotte::qt::painter;
+using painter = pfs::griotte::painter<painter_backend>;
 
-void Surface::paintEvent (QPaintEvent * event)
+void Surface::paintEvent (QPaintEvent * /*event*/)
 {
-    pfs::griotte::painter p{this};
+    painter canvas = pfs::griotte::make_painter<painter_backend>(this);
     pfs::griotte::color black{0, 0, 0, 255};
     pfs::griotte::color red{255, 0, 0, 255};
     pfs::griotte::color green{0, 255, 0, 255};
@@ -76,33 +79,30 @@ void Surface::paintEvent (QPaintEvent * event)
         path path2;
         path path3;
         path path4;
-        bool relative = true;
 
         pen pen1{red, 10};
-        pen pen2{pen1};
+        pen pen2{red, 3};
         pen pen3{green, 3};
         pen pen4{blue, 5};
 
         path1.move_to(100, 350);
-        path1.line_to(150, -300, relative);
-        path1.line_to(50, 50, relative);
-        path1.vline_to(50, relative);
+        path1.rel_line_to(150, -300);
+        path1.rel_line_to(50, 50);
+        path1.rel_vline_to(50);
         path1.line_to(5, 5);
 
-//         path2.move_to(250, 50);
-//         path2.line_to(150, 300, relative);
-//
-//         path3.move_to(175, 200);
-//         path3.line_to(150, 0, relative);
-//
-//         path4.move_to(100, 350);
-//         //path4.quad_to(150, -300, 300, 0, relative);
-//         path4.cubic_to(175, 200, 325, 200, 400, 350);
-//         //path4.quad_to(250, 50, 400, 350);
+        path2.move_to(250, 50);
+        path2.rel_line_to(150, 300);
 
-        stroker{path1}.stroke(p, pen1);
-//         stroker{path2}.stroke(p, pen2);
-//         stroker{path3}.stroke(p, pen3);
-//         stroker{path4}.stroke(p, pen4);
+        path3.move_to(175, 200);
+        path3.rel_line_to(150, 0);
+
+        path4.move_to(100, 350);
+        path4.rel_curve_to(150, -300, 300, 0);
+
+        stroker{path1}.stroke(canvas, pen1);
+        stroker{path2}.stroke(canvas, pen2);
+        stroker{path3}.stroke(canvas, pen3);
+        stroker{path4}.stroke(canvas, pen4);
     }
 }

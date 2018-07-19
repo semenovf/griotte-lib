@@ -53,11 +53,6 @@ inline QPen lexical_cast (pfs::griotte::pen<UnitT> const & apen)
     return p;
 }
 
-
-// class brush;
-// class pen;
-// class painter;
-
 // No need to call this function anywhere. This assertions process at compile-time.
 // constexpr inline bool pen_line_style_asserter ()
 // {
@@ -134,25 +129,6 @@ inline QPen lexical_cast (pfs::griotte::pen<UnitT> const & apen)
 //     {}
 // };
 
-// class pen
-// {
-//     friend class painter;
-//
-//     QPen _p;
-//
-// public:
-//     pen () {}
-//     pen (brush const & abrush, double width
-//             , pen_line_style astyle = pen_line_style::solid
-//             , pen_cap_style cap = pen_cap_style::square
-//             , pen_join_style join = pen_join_style::bevel)
-//         : _p(abrush._b
-//                 , width
-//                 , static_cast<Qt::PenStyle>(astyle)
-//                 , static_cast<Qt::PenCapStyle>(cap)
-//                 , static_cast<Qt::PenJoinStyle>(join))
-//     {}
-// };
 
 class painter
 {
@@ -167,30 +143,10 @@ public:
         _p.setRenderHint(QPainter::SmoothPixmapTransform, true);
     }
 
-    /**
-     * @fn void painter::draw_line (point const & p1, point const & p2, pen const & apen)
-     * @brief Draws a line from point @a p1 to point @a p2 using pen @a apen.
-     * @param p1 The start point.
-     * @param p2 The end point.
-     */
     template <typename UnitT>
     inline void draw_line (point<UnitT> const & p1
             , point<UnitT> const & p2
             , pen<UnitT> const & apen);
-
-    /**
-     * @fn void painter::draw_line (line const & aline)
-     * @brief Draws a line defined by @ aline.
-     * @param aline The line to draw.
-     */
-    template <typename UnitT>
-    void draw_line (line<UnitT> const & aline
-            , pen<UnitT> const & apen)
-    {
-        draw_line(aline.get_start_point()
-                , aline.get_end_point()
-                , apen);
-    }
 
     template <typename UnitT>
     void draw_curve (point<UnitT> const & start_point
@@ -198,61 +154,6 @@ public:
             , point<UnitT> const & c2
             , point<UnitT> const & end_point
             , pen<UnitT> const & apen);
-
-//     /**
-//      * @fn void painter::set_pen (pen const & apen)
-//      * @brief Sets the pen to be the given @a apen.
-//      * @param apen The pen.
-//      */
-//     void set_pen (pen const & apen)
-//     {
-//         _p.setPen(apen._p);
-//     }
-
-//     /**
-//      * @fn void painter::set_brush (brush const & abrush)
-//      * @brief Sets the brush to the given @a abrush.
-//      * @param abrush The brush.
-//      */
-//     void set_brush (brush const & abrush)
-//     {
-//         _p.setBrush(abrush._b);
-//     }
-
-
-//     /**
-//      * @fn void painter::draw_arc (rect const & arect, int start_angle, int span_angle)
-//      * @brief Draws the arc.
-//      * @details Positive values for the angles mean counter-clockwise while
-//      *          negative values mean the clockwise direction. Zero degrees is
-//      *          at the 3 o'clock position.
-//      * @param rect Center position of the arc.
-//      * @param start_angle The start angle in radians.
-//      * @param span_angle The span angle in radians.
-//      */
-//     inline void draw_arc (point const & center
-//             , double radius
-//             , int start_angle
-//             , int span_angle)
-//     {
-//         int start_angle_degrees = 0;
-//         int span_angle_degrees  = 0;
-//
-//         _p.drawArc(arect.x(), arect.y()
-//                 , arect.width(), arect.height()
-//                 , start_angle_degrees, span_angle_degrees);
-//     }
-
-//     /**
-//      * @fn void painter::draw_rect (rect const & arect)
-//      * @brief Draws the rectangle @a rect with the current pen and brush.
-//      * @param arect Rectangle to draw.
-//      */
-//     template <typename UnitT>
-//     inline void draw_rect (rect<UnitT> const & arect)
-//     {
-//         _p.drawRect(arect.get_x(), arect.get_y(), arect.get_width(), arect.get_height());
-//     }
 };
 
 template <typename UnitT>
@@ -288,6 +189,5 @@ void painter::draw_curve (point<UnitT> const & start_point
         _p.drawPath(path);
     }
 }
-
 
 }}} // namespace pfs::griotte::qt
