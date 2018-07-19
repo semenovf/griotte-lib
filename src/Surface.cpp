@@ -78,29 +78,31 @@ void Surface::paintEvent (QPaintEvent * event)
         path path4;
         bool relative = true;
 
-        pen pen1{red, 3};
+        pen pen1{red, 10};
         pen pen2{pen1};
         pen pen3{green, 3};
         pen pen4{blue, 5};
 
         path1.move_to(100, 350);
         path1.line_to(150, -300, relative);
+        path1.line_to(50, 50, relative);
+        path1.vline_to(50, relative);
+        path1.line_to(5, 5);
 
-        path2.move_to(250, 50);
-        path2.line_to(150, 300, relative);
-
-        path3.move_to(175, 200);
-        path3.line_to(150, 0, relative);
-
-        path4.move_to(100, 350);
-        //path4.quad_to(150, -300, 300, 0, relative);
-        path4.cubic_to(175, 200, 325, 200, 400, 350);
-        //path4.quad_to(250, 50, 400, 350);
-
+//         path2.move_to(250, 50);
+//         path2.line_to(150, 300, relative);
+//
+//         path3.move_to(175, 200);
+//         path3.line_to(150, 0, relative);
+//
+//         path4.move_to(100, 350);
+//         //path4.quad_to(150, -300, 300, 0, relative);
+//         path4.cubic_to(175, 200, 325, 200, 400, 350);
+//         //path4.quad_to(250, 50, 400, 350);
 
         stroker{path1}.stroke(p, pen1);
-        stroker{path2}.stroke(p, pen2);
-        stroker{path3}.stroke(p, pen3);
-        stroker{path4}.stroke(p, pen4);
+//         stroker{path2}.stroke(p, pen2);
+//         stroker{path3}.stroke(p, pen3);
+//         stroker{path4}.stroke(p, pen4);
     }
 }

@@ -168,15 +168,16 @@ public:
      */
     path () noexcept
     {
-        move_to(point_type{0, 0});
+        _v.emplace_back(path_entry_enum::move_to, point_type{0, 0});
     }
 
     /**
      * @brief Constructs a path with start point at @a start.
+     * @note Considered that start point is in absolute coordinates.
      */
     path (point_type const & start) noexcept
     {
-        move_to(start);
+        _v.emplace_back(path_entry_enum::move_to, start);
     }
 
     ~path () = default;
@@ -227,6 +228,16 @@ public:
         move_to(point_type{x, y}, is_relative);
     }
 
+    inline void rel_move_to (point_type const & apoint)
+    {
+        move_to(apoint, true);
+    }
+
+    inline void rel_move_to (unit_type x, unit_type y)
+    {
+        move_to(point_type{x, y}, true);
+    }
+
     inline void line_to (point_type const & apoint, bool is_relative = false)
     {
         assert(!_v.empty());
@@ -240,12 +251,27 @@ public:
         line_to(point_type{x, y}, is_relative);
     }
 
+    inline void rel_line_to (point_type const & apoint)
+    {
+        line_to(apoint, true);
+    }
+
+    inline void rel_line_to (unit_type x, unit_type y)
+    {
+        line_to(point_type{x, y}, true);
+    }
+
     inline void hline_to (unit_type x, bool is_relative = false)
     {
         assert(!_v.empty());
         _v.emplace_back(is_relative
                 ? path_entry_enum::rel_hline_to
                 : path_entry_enum::hline_to, point_type(x, 0));
+    }
+
+    inline void rel_hline_to (unit_type x)
+    {
+        hline_to(x, true);
     }
 
     inline void vline_to (unit_type y, bool is_relative = false)
@@ -256,6 +282,11 @@ public:
                 : path_entry_enum::vline_to, point_type(0, y));
     }
 
+    inline void rel_vline_to (unit_type y)
+    {
+        vline_to(y, true);
+    }
+
     /**
      * @brief Adds a cubic Bezier curve between the current position and
      *        the given @a end_point using the control points specified
@@ -264,7 +295,7 @@ public:
      * @param c2 Second control point.
      * @param end_point End point.
      */
-    inline void cubic_to (point_type const & c1
+    inline void curve_to (point_type const & c1
             , point_type const & c2
             , point_type const & end_point
             , bool is_relative = false)
@@ -279,44 +310,25 @@ public:
         _v.emplace_back(pet, end_point);
     }
 
-    inline void cubic_to (unit_type cx1, unit_type cy1
-            , unit_type cx2, unit_type cy2
-            , unit_type ex, unit_type ey
-            , bool is_relative = false)
-    {
-        cubic_to(point_type{cx1, cy1}
-                , point_type{cx2, cy2}
-                , point_type{ex, ey}
-                , is_relative);
-    }
-
-    /**
-     * @brief Adds a cubic Bezier curve between the current position and
-     *        the given @a end_point using the control points specified
-     *        by @a c1 and @c c2.
-     * @param c1 First control point.
-     * @param c2 Second control point.
-     * @param end_point End point.
-     * @see cubic_to.
-     * @note This is a synonym to @c cubic_to() method.
-     */
-    inline void curve_to (point_type const & c1
-            , point_type const & c2
-            , point_type const & end_point
-            , bool is_relative = false)
-    {
-        cubic_to(c1, c2, end_point, is_relative);
-    }
-
     inline void curve_to (unit_type cx1, unit_type cy1
             , unit_type cx2, unit_type cy2
             , unit_type ex, unit_type ey
             , bool is_relative = false)
     {
-        cubic_to(point_type{cx1, cy1}
+        curve_to(point_type{cx1, cy1}
                 , point_type{cx2, cy2}
                 , point_type{ex, ey}
                 , is_relative);
+    }
+
+    inline void rel_curve_to (point_type const & c1
+            , point_type const & c2
+            , point_type const & end_point)
+    {
+        curve_to(point_type{cx1, cy1}
+                , point_type{cx2, cy2}
+                , point_type{ex, ey}
+                , true);
     }
 
     /**
@@ -325,17 +337,31 @@ public:
      * @param c Control point.
      * @param end_point End point.
      */
-    void quad_to (point_type const & c
+    void curve_to (point_type const & c
             , point_type const & end_point
             , bool is_relative = false);
 
-    inline void quad_to (unit_type cx, unit_type cy
+    inline void curve_to (unit_type cx, unit_type cy
             , unit_type ex, unit_type ey
             , bool is_relative = false)
     {
-        quad_to(point_type{cx, cy}
+        curve_to(point_type{cx, cy}
                 , point_type{ex, ey}
                 , is_relative);
+    }
+
+    inline void rel_curve_to (point_type const & c
+            , point_type const & end_point)
+    {
+        curve_to(c, end_point, true);
+    }
+
+    inline void rel_curve_to (unit_type cx, unit_type cy
+            , unit_type ex, unit_type ey)
+    {
+        curve_to(point_type{cx, cy}
+                , point_type{ex, ey}
+                , true);
     }
 
     void close_path ()
@@ -352,21 +378,22 @@ public:
         _v.insert(_v.begin(), apath._v.cbegin(), apath._v.cend());
     }
 
-    friend rect_type bounding_rect (path const & apath);
-    friend rect_type control_point_rect (path const & apath);
+    template <typename U>
+    friend rect_type bounding_rect (path<U> const & apath);
+
+    template <typename U>
+    friend rect_type control_point_rect (path<U> const & apath);
 };
 
 template <typename UnitT>
 void path<UnitT>::move_to (point_type const & apoint, bool is_relative)
 {
+    // Collection of entries is always non-empty (according to constructors).
+    assert(!_v.empty());
+
     path_entry_enum type = is_relative
                 ? path_entry_enum::rel_move_to
                 : path_entry_enum::move_to;
-
-    if (_v.empty()) {
-        _v.emplace_back(type, apoint);
-        return;
-    }
 
     reference back = _v.back();
 
@@ -396,7 +423,7 @@ void path<UnitT>::move_to (point_type const & apoint, bool is_relative)
 }
 
 template <typename UnitT>
-void path<UnitT>::quad_to (point_type const & c
+void path<UnitT>::curve_to (point_type const & c
             , point_type const & end_point
             , bool is_relative)
 {
@@ -448,6 +475,5 @@ rect<UnitT> control_point_rect (path<UnitT> const & apath)
 
     return r;
 }
-
 
 }} // namespace pfs::griotte

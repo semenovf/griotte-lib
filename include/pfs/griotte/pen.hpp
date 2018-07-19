@@ -15,6 +15,13 @@ enum class cap_style : int
     , round         ///!<A rounded line end.
 };
 
+enum class join_style : int
+{
+      miter  = 0x00 ///!<
+    , round         ///!<A square line end that covers the end point and extends beyond it by half the line width.
+    , bevel         ///!<A rounded line end.
+};
+
 template <typename UnitT>
 class pen
 {
@@ -26,6 +33,7 @@ private:
     color          _color;
     int            _width;
     cap_style      _cap;
+    join_style     _join;
     dasharray_type _dasharray; // empty means solid line
 
 public:
@@ -36,15 +44,20 @@ public:
         : _color{0, 0, 0, 0}
         , _width{0}
         , _cap{cap_style::butt}
+        , _join{join_style::miter}
     {}
 
     /**
      * @brief Constructs a path with start point at @a start.
      */
-    pen (color const & acolor, unit_type width = 1, cap_style acap = cap_style::butt) noexcept
+    pen (color const & acolor
+            , unit_type width = 1
+            , cap_style acap = cap_style::butt
+            , join_style ajoin = join_style::miter) noexcept
         : _color{acolor}
         , _width{width}
         , _cap{acap}
+        , _join{ajoin}
     {}
 
     ~pen () = default;
@@ -66,6 +79,11 @@ public:
     constexpr inline cap_style get_cap () const
     {
         return _cap;
+    }
+
+    constexpr inline join_style get_join () const
+    {
+        return _join;
     }
 
     constexpr inline dasharray_type const & get_dasharray () const

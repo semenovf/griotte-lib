@@ -23,6 +23,12 @@ inline Qt::PenCapStyle lexical_cast (pfs::griotte::cap_style cap)
     return qt_pen_cap_style[static_cast<int>(cap)];
 }
 
+inline Qt::PenJoinStyle lexical_cast (pfs::griotte::join_style join)
+{
+    static const Qt::PenJoinStyle qt_pen_join_style[] = { Qt::SvgMiterJoin, Qt::RoundJoin, Qt::BevelJoin };
+    return qt_pen_join_style[static_cast<int>(join)];
+}
+
 template <typename UnitT>
 inline QPen lexical_cast (pfs::griotte::pen<UnitT> const & apen)
 {
@@ -31,6 +37,7 @@ inline QPen lexical_cast (pfs::griotte::pen<UnitT> const & apen)
     p.setColor(lexical_cast(apen.get_color()));
     p.setWidth(width);
     p.setCapStyle(lexical_cast(apen.get_cap()));
+    p.setJoinStyle(lexical_cast(apen.get_join()));
 
     auto dasharray = apen.get_dasharray();
 
