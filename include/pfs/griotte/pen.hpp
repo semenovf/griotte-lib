@@ -9,17 +9,17 @@ namespace griotte {
 
 enum class cap_style : int
 {
-      butt   = 0x00 ///!<A square line end that does not cover the end point of the line.
-    , flat   = butt ///!<Synonym for butt.
-    , square        ///!<A square line end that covers the end point and extends beyond it by half the line width.
-    , round         ///!<A rounded line end.
+      butt   = 0x00 ///< A square line end that does not cover the end point of the line.
+    , flat   = butt ///< Synonym for butt.
+    , square        ///< A square line end that covers the end point and extends beyond it by half the line width.
+    , round         ///< A rounded line end.
 };
 
 enum class join_style : int
 {
-      miter  = 0x00 ///!<
-    , round         ///!<A square line end that covers the end point and extends beyond it by half the line width.
-    , bevel         ///!<A rounded line end.
+      miter  = 0x00 ///< The outer edges of the lines are extended to meet at an angle, and this area is filled.
+    , round         ///< A square line end that covers the end point and extends beyond it by half the line width.
+    , bevel         ///< A rounded line end.
 };
 
 template <typename UnitT>

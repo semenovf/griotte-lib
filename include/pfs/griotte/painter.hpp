@@ -1,7 +1,3 @@
-/**
- * @file
- */
-
 #pragma once
 #include <memory>
 #include <pfs/griotte/point.hpp>
@@ -10,18 +6,12 @@
 #include <pfs/griotte/pen.hpp>
 #include <pfs/griotte/error.hpp>
 
-/**
- * @namespace pfs
- */
 namespace pfs {
-
-/**
- * @namespace griotte
- */
 namespace griotte {
 
 /**
- * @class painter painter.hpp "pfs/griotte/painter.hpp"
+ * \class painter
+ * \brief The painter class performs low-level painting on paint devices.
  */
 template <typename Backend>
 class painter
@@ -66,6 +56,9 @@ public:
                 , apen);
     }
 
+    /**
+     *
+     */
     template <typename UnitT>
     void draw_curve (point<UnitT> const & start_point
             , point<UnitT> const & c1
