@@ -10,8 +10,8 @@ namespace pfs {
 namespace griotte {
 
 /**
- * \class painter
- * \brief The painter class performs low-level painting on paint devices.
+ * @class painter
+ * @brief The painter class performs low-level painting on paint devices.
  */
 template <typename Backend>
 class painter
