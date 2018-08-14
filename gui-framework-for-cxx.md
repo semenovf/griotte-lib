@@ -99,6 +99,7 @@
 * [Retained mode](https://en.wikipedia.org/wiki/Retained_mode)  
 * [Immediate mode (computer graphics)](https://en.wikipedia.org/wiki/Immediate_mode_(computer_graphics))
 * [Scene graph](https://en.wikipedia.org/wiki/Scene_graph)
+* [IO2D Technical Specification Draft Sources](https://github.com/cpp-io2d/io2dts)
 
 ## Articles (including critical)
 * [Why all GUI toolkits suck?](http://www.cplusplus.com/forum/lounge/140601/)
