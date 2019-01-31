@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <pfs/griotte/noncopyable.hpp>
 #include <pfs/griotte/point.hpp>
 #include <pfs/griotte/line.hpp>
 #include <pfs/griotte/path.hpp>
@@ -14,7 +15,7 @@ namespace griotte {
  * @brief The painter class performs low-level painting on paint devices.
  */
 template <typename Backend>
-class painter
+class painter : public noncopyable
 {
     std::unique_ptr<Backend> _d;
 
@@ -22,12 +23,6 @@ private:
     painter (Backend * backend) : _d(backend) {}
 
 public:
-    painter () = delete;
-    painter (painter const &) = delete;
-    painter & operator = (painter const &) = delete;
-    painter (painter && ) = default;
-    painter & operator = (painter && ) = default;
-
     /**
      * @fn void painter::draw_line (point const & p1, point const & p2, pen const & apen)
      * @brief Draws a line from point @a p1 to point @a p2 using pen @a apen.
@@ -39,7 +34,7 @@ public:
             , point<UnitT> const & p2
             , pen<UnitT> const & apen)
     {
-        _d->draw_line<UnitT>(p1, p2, apen);
+        _d->template draw_line<UnitT>(p1, p2, apen);
     }
 
     /**
@@ -69,11 +64,19 @@ public:
         _d->draw_curve(start_point, c1, c2, end_point, apen);
     }
 
+//     template <typename BackendU, typename ...Args>
+//     friend inline painter<BackendU> make_painter (Args &&... args)
+//     {
+//         return painter<BackendU>(new BackendU(std::forward<Args...>(args...)));
+//     }
     template <typename BackendU, typename ...Args>
-    friend inline painter<BackendU> make_painter (Args... args)
-    {
-        return painter<BackendU>(new BackendU(std::forward<Args...>(args...)));
-    }
+    friend painter<BackendU> make_painter (Args &&... args);
 };
+
+// template <typename Backend, typename ...Args>
+// inline painter<Backend> make_painter (Args &&... args)
+// {
+//     return painter(new Backend(std::forward<Args...>(args...)));
+// }
 
 }} // namespace pfs::griotte
