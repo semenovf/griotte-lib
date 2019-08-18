@@ -108,6 +108,7 @@
 * [Immediate mode (computer graphics)](https://en.wikipedia.org/wiki/Immediate_mode_(computer_graphics))
 * [Scene graph](https://en.wikipedia.org/wiki/Scene_graph)
 * [IO2D Technical Specification Draft Sources](https://github.com/cpp-io2d/io2dts)
+* [Memory Footprint of GUI Toolkits](https://szibele.com/memory-footprint-of-gui-toolkits/)
 
 ## Articles (including critical)
 * [Why all GUI toolkits suck?](http://www.cplusplus.com/forum/lounge/140601/)
