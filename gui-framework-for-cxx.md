@@ -1,4 +1,4 @@
-# GUI Frameworks/Libraries for C/C++.
+# GUI Frameworks / Libraries for C/C++.
 
 1. [Qt](gt.io)  
   Description: Cross-platform application framework  
@@ -110,13 +110,21 @@
   Official Git Repository: [https://github.com/liballeg/allegro5](https://github.com/liballeg/allegro5).  
   Initial Release: 199?.  
 
-## Extra links    
+# Extra links    
 * [Retained Mode Versus Immediate Mode](https://msdn.microsoft.com/library/windows/desktop/ff684178(v=vs.85).aspx)  
 * [Retained mode](https://en.wikipedia.org/wiki/Retained_mode)  
 * [Immediate mode (computer graphics)](https://en.wikipedia.org/wiki/Immediate_mode_(computer_graphics))
 * [Scene graph](https://en.wikipedia.org/wiki/Scene_graph)
 * [IO2D Technical Specification Draft Sources](https://github.com/cpp-io2d/io2dts)
 * [Memory Footprint of GUI Toolkits](https://szibele.com/memory-footprint-of-gui-toolkits/)
+* [RAMSES - distributed system for rendering 3D content with focus on bandwidth and resource efficiency](https://github.com/genivi/ramses)
 
-## Articles (including critical)
+## Colors and Tools
+* [color QML Basic Type](https://doc.qt.io/qt-5/qml-color.html)
+* [Colors galore - Bring your project to life with a full spectrum of beautiful colors for any color palette or color scheme](https://www.shutterstock.com/colors)
+* [HTML color codes and names](https://www.computerhope.com/htmcolor.htm)
+* [Color Names](https://www.color-hex.com/color-names.html)
+* [Name that Color](chir.ag/projects/name-that-color/)
+
+# Articles (including critical)
 * [Why all GUI toolkits suck?](http://www.cplusplus.com/forum/lounge/140601/)
