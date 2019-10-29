@@ -109,6 +109,19 @@
   Operation System: Cross-platform.  
   Official Git Repository: [https://github.com/liballeg/allegro5](https://github.com/liballeg/allegro5).  
   Initial Release: 199?.  
+1. [Fast UI Draw](https://github.com/intel/fastuidraw)  
+  Description: Fast UI Draw is a library that provides a higher performance Canvas interface.  
+  License: MPL-2.0.  
+  Operation System: Linux, MinGW.  
+  Official Git Repository: [https://github.com/intel/fastuidraw](https://github.com/intel/fastuidraw).  
+  Initial Release:  
+  References: [Kevin Rogovin - FastUIDraw: a high performance 2D renderer for GPU's (only)](https://www.x.org/wiki/Events/XDC2016/Program/rogovin_fast_ui_draw/)  
+1. [Skia Graphics Library](https://skia.org)  
+  Description: Open source 2D graphics library which provides common APIs that work across a variety of hardware and software platforms.  
+  License:  BSD Free Software License.  
+  Operation System: Cross-platform.  
+  Official Git Repository: [https://skia.googlesource.com/skia](https://skia.googlesource.com/skia).  
+  Initial Release: 2005.  
 
 # Extra links    
 * [Retained Mode Versus Immediate Mode](https://msdn.microsoft.com/library/windows/desktop/ff684178(v=vs.85).aspx)  
