@@ -124,7 +124,7 @@
   Initial Release: 2005.  
 1. [magnum engine](https://magnum.graphics)  
   Light weight and modular C++11/C++14 graphics middleware for games and data visualization.  
-  License: Custom.  
+  License: MIT.  
   Operation System: Cross-platform.  
   Official Git Repository: [https://github.com/mosra/magnum](https://github.com/mosra/magnum).  
   Initial Release: ?.  
