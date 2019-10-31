@@ -118,10 +118,16 @@
   References: [Kevin Rogovin - FastUIDraw: a high performance 2D renderer for GPU's (only)](https://www.x.org/wiki/Events/XDC2016/Program/rogovin_fast_ui_draw/)  
 1. [Skia Graphics Library](https://skia.org)  
   Description: Open source 2D graphics library which provides common APIs that work across a variety of hardware and software platforms.  
-  License:  BSD Free Software License.  
+  License: BSD Free Software License.  
   Operation System: Cross-platform.  
   Official Git Repository: [https://skia.googlesource.com/skia](https://skia.googlesource.com/skia).  
   Initial Release: 2005.  
+1. [magnum engine](https://magnum.graphics)  
+  Light weight and modular C++11/C++14 graphics middleware for games and data visualization.  
+  License: Custom.  
+  Operation System: Cross-platform.  
+  Official Git Repository: [https://github.com/mosra/magnum](https://github.com/mosra/magnum).  
+  Initial Release: ?.  
 
 # Extra links    
 * [Retained Mode Versus Immediate Mode](https://msdn.microsoft.com/library/windows/desktop/ff684178(v=vs.85).aspx)  
