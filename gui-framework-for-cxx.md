@@ -109,6 +109,14 @@
   Official Git Repository: [https://github.com/cycfi/elements](https://github.com/cycfi/elements)  
   Initial Release:  
 
+100. [neoGFX](https://neogfx.org)  
+  Description: Cross-platform GPU-oriented C++ application/game framework  
+  License: GPL-3.0  
+  Operation System: Cross-platform  
+  Mode:   
+  Official Git Repository: [https://github.com/i42output/neoGFX](https://github.com/i42output/neoGFX)  
+  Initial Release: 06.2015  
+
 # Graphics Engines for C/C++.
 
 1. [Allegro](https://liballeg.org)  
