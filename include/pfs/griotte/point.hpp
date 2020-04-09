@@ -1,5 +1,5 @@
 #pragma once
-#include <pfs/math/round.hpp>
+#include <cmath>
 
 namespace pfs {
 namespace griotte {
@@ -38,7 +38,7 @@ public:
     /**
      * @return The @c x coordinate of this point.
      */
-    constexpr inline unit_type get_x () const noexcept
+    constexpr inline unit_type x () const noexcept
     {
         return _x;
     }
@@ -46,7 +46,7 @@ public:
     /**
      * @return The @c y coordinate of this point.
      */
-    constexpr inline unit_type get_y () const noexcept
+    constexpr inline unit_type y () const noexcept
     {
         return _y;
     }
@@ -121,8 +121,8 @@ public:
      */
     inline point & operator *= (float factor) noexcept
     {
-        _x = static_cast<unit_type>(pfs::round(_x * factor));
-        _y = static_cast<unit_type>(pfs::round(_y * factor));
+        _x = static_cast<unit_type>(std::round(_x * factor));
+        _y = static_cast<unit_type>(std::round(_y * factor));
         return *this;
     }
 
@@ -132,8 +132,8 @@ public:
      */
     inline point & operator *= (double factor) noexcept
     {
-        _x = static_cast<unit_type>(pfs::round(_x * factor));
-        _y = static_cast<unit_type>(pfs::round(_y * factor));
+        _x = static_cast<unit_type>(std::round(_x * factor));
+        _y = static_cast<unit_type>(std::round(_y * factor));
         return *this;
     }
 
