@@ -1,4 +1,11 @@
-// #include "catch.hpp"
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2019 Vladislav Trifochkin
+//
+// This file is part of [pfs-griotte](https://github.com/semenovf/pfs-griotte) library.
+//
+// Changelog:
+//      2020.04.09 Initial version
+////////////////////////////////////////////////////////////////////////////////
 #include "doctest.h"
 #include <utility>
 #include "pfs/griotte/point.hpp"

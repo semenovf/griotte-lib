@@ -3,6 +3,8 @@ project(pfs-griotte CXX)
 
 option(pfs-griotte_BUILD_TESTS "Build tests" ON)
 
+# Prefer GLVND (new behaviour) over LEGACY
+cmake_policy(SET CMP0072 NEW)
 find_package(OpenGL REQUIRED)
 
 message(STATUS "OpenGL libraries   : ${OPENGL_LIBRARIES}")
@@ -15,7 +17,9 @@ message(STATUS "OpenGL XMESA found : ${OPENGL_XMESA_FOUND}")
 #enable_testing()
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/include
+    ${CMAKE_CURRENT_LIST_DIR}/pfs-common/include
     ${CMAKE_CURRENT_LIST_DIR}/3rdparty/glfw/include)
+
 
 add_subdirectory(3rdparty/glfw)
 #add_subdirectory(src)
