@@ -7,3 +7,6 @@
 [submodule "pfs-common"]
 	path = pfs-common
 	url = https://github.com/semenovf/pfs-common.git
+[submodule "3rdparty/freetype2"]
+	path = 3rdparty/freetype2
+	url = https://git.savannah.gnu.org/git/freetype/freetype2.git

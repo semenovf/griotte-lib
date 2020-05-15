@@ -1,11 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2019-2020 Vladislav Trifochkin
+// Copyright (c) 2020 Vladislav Trifochkin
 //
 // This file is part of [pfs-griotte](https://github.com/semenovf/pfs-griotte) library.
 //
 // Changelog:
-//      2020.04.09 Initial version
+//      2020.04.18 Initial version
 ////////////////////////////////////////////////////////////////////////////////
+#include "pfs/fmt.hpp"
+#include <GLFW/glfw3.h>
+#include <functional>
 
 // * Do not include the OpenGL header yourself, as GLFW does this for you in a
 //   platform-independent way
@@ -13,10 +16,6 @@
 //   on using those APIs yourself
 // * If you do need to include such headers, include them before the GLFW header
 //   and it will detect this
-
-#include "pfs/fmt.hpp"
-#include <GLFW/glfw3.h>
-#include <functional>
 
 //
 // Source: https://www.glfw.org/documentation.html
@@ -100,6 +99,23 @@ public:
         }
     }
 
+    template <typename FramebufferSizeHandler>
+    static void setFramebufferSizeHandler (GLFWwindow * window
+            , FramebufferSizeHandler && handler)
+    {
+        if (window) {
+            framebufferSizeHandler = std::forward<FramebufferSizeHandler>(handler);
+            glfwSetFramebufferSizeCallback(window, framebuffersize_callback);
+        }
+    }
+
+    template <typename MonitorHandler>
+    static void setMonitorHandler (MonitorHandler && handler)
+    {
+        monitorHandler = std::forward<MonitorHandler>(handler);
+        glfwSetMonitorCallback(monitor_callback);
+    }
+
 private:
     static std::function<void (int, char const *)> errorHandler;
     static std::function<void (GLFWwindow * /*window*/
@@ -107,10 +123,16 @@ private:
             , int /*scancode*/
             , int /*action*/
             , int /*modsint*/)> keyHandler;
+    static std::function<void (GLFWwindow * /*window*/
+            , int /*width*/
+            , int /*height*/)> framebufferSizeHandler;
+
+    static std::function<void (GLFWmonitor * /*monitor*/
+            , int /*event*/)> monitorHandler;
 
     static void error_callback (int error, char const * description)
     {
-        Application::errorHandler(error, description);
+        errorHandler(error, description);
     }
 
     static void key_callback (GLFWwindow * window
@@ -119,7 +141,19 @@ private:
             , int action
             , int mods)
     {
-        Application::keyHandler(window, key, scancode, action, mods);
+        keyHandler(window, key, scancode, action, mods);
+    }
+
+    static void framebuffersize_callback (GLFWwindow * window
+            , int width
+            , int height)
+    {
+        framebufferSizeHandler(window, width, height);
+    }
+
+    static void monitor_callback (GLFWmonitor * monitor, int event)
+    {
+        monitorHandler(monitor, event);
     }
 
 private:
@@ -128,58 +162,21 @@ private:
 
 std::function<void (int, char const *)> Application::errorHandler;
 std::function<void (GLFWwindow * /*window*/
-            , int /*key*/
-            , int /*scancode*/
-            , int /*action*/
-            , int /*modsint*/)> Application::keyHandler;
+        , int /*key*/
+        , int /*scancode*/
+        , int /*action*/
+        , int /*modsint*/)> Application::keyHandler;
 
-int main ()
-{
-    Application app;
+std::function<void (GLFWwindow * /*window*/
+        , int /*width*/
+        , int /*height*/)> Application::framebufferSizeHandler {[] (
+                  GLFWwindow * /*window*/
+                , int width
+                , int height) {
+                    // By defualt rearranges OpenGL viewport to the current
+                    // framebuffer size.
+                    glViewport(0, 0, width, height);
+                }};
 
-    return app.run( [] {
-        // Create a windowed mode window and its OpenGL context
-        GLFWwindow * window = glfwCreateWindow(1280, 960, "Lesson 01"
-                , nullptr, nullptr);
-
-        if (!window)
-            return -1;
-
-        Application::setKeyHandler(window, [] (GLFWwindow * window
-                , int key
-                , int /*scancode*/
-                , int action
-                , int /*mods*/) {
-
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-                glfwSetWindowShouldClose(window, GLFW_TRUE);
-        });
-
-        fmt::print("Press ESC to close window (and thus quit application) ...\n");
-
-        // Before you can use the OpenGL API, you must have a current OpenGL
-        // context. The context will remain current until you make another
-        // context current or until the window owning the current context is
-        // destroyed.
-        // Make the window's context current.
-        glfwMakeContextCurrent(window);
-
-        while (!glfwWindowShouldClose(window)) {
-            // Render here
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            // Swap front and back buffers
-            glfwSwapBuffers(window);
-
-            // Poll for and process events
-            glfwPollEvents();
-        }
-
-        if (window) {
-            glfwDestroyWindow(window);
-            window = nullptr;
-        }
-
-        return 0;
-    });
-}
+std::function<void (GLFWmonitor * /*monitor*/
+            , int /*event*/)> Application::monitorHandler;

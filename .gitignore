@@ -4,6 +4,7 @@
 .build*/
 .kdev4/
 .idea/
+.vscode/
 .project
 .cproject
 cmake-build-debug/

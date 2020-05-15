@@ -21,5 +21,6 @@ foreach(test ${test_targets})
         add_executable(${test} ${test}.cpp $<TARGET_OBJECTS:doctest_OBJLIB>)
     endif()
 
+    target_link_libraries(${test} pfs-griotte)
     add_test(NAME ${test} COMMAND ${test})
 endforeach()

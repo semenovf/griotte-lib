@@ -1,11 +1,19 @@
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+################################################################################
+# Copyright (c) 2019-2020 Vladislav Trifochkin
+#
+# This file is part of [pfs-griotte](https://github.com/semenovf/pfs-griotte) library.
+#
+# Changelog:
+#      2020.04.26 Initial version
+################################################################################
 
-set(SOURCES
-    main.cpp
-    MainWindow.cpp
-    Surface.cpp)
+add_library(pfs-griotte INTERFACE)
+target_link_libraries(pfs-griotte INTERFACE freetype glfw OpenGL::GLU OpenGL::GL)
+target_include_directories(pfs-griotte INTERFACE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/pfs-common/include
+    ${CMAKE_SOURCE_DIR}/3rdparty/freetype2/include
+    ${CMAKE_SOURCE_DIR}/3rdparty/glfw/include)
 
-add_executable(griotte ${SOURCES})
-target_link_libraries(griotte Qt5::Widgets)
+# Copy test files to build folder
+file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION ../bin)

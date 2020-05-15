@@ -16,13 +16,28 @@ message(STATUS "OpenGL XMESA found : ${OPENGL_XMESA_FOUND}")
 
 #enable_testing()
 
-include_directories(${CMAKE_CURRENT_LIST_DIR}/include
-    ${CMAKE_CURRENT_LIST_DIR}/pfs-common/include
-    ${CMAKE_CURRENT_LIST_DIR}/3rdparty/glfw/include)
+# include_directories(${CMAKE_CURRENT_LIST_DIR}/include
+#     ${CMAKE_CURRENT_LIST_DIR}/pfs-common/include
+#     ${CMAKE_CURRENT_LIST_DIR}/3rdparty/freetype2/include
+#     ${CMAKE_CURRENT_LIST_DIR}/3rdparty/glfw/include)
 
-
+################################################################################
+# GLFW build
+################################################################################
 add_subdirectory(3rdparty/glfw)
-#add_subdirectory(src)
+
+################################################################################
+# Freetype2 build
+################################################################################
+set(SKIP_INSTALL_ALL ON)
+set(CMAKE_DISABLE_FIND_PACKAGE_ZLIB TRUE)
+set(CMAKE_DISABLE_FIND_PACKAGE_BZip2 TRUE)
+set(CMAKE_DISABLE_FIND_PACKAGE_PNG TRUE)
+set(CMAKE_DISABLE_FIND_PACKAGE_HarfBuzz TRUE)
+set(CMAKE_DISABLE_FIND_PACKAGE_BrotliDec TRUE)
+add_subdirectory(3rdparty/freetype2)
+
+add_subdirectory(src)
 add_subdirectory(demo)
 
 set_target_properties(
