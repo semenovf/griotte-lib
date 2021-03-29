@@ -70,14 +70,14 @@
   Official Git Repository: not found
   Initial Release:
 
-100. [imgui](https://github.com/ocornut/imgui)
+11. [imgui](https://github.com/ocornut/imgui)
   Description: Bloat-free Immediate Mode Graphical User interface for C++ with minimal dependencies
   Operation System:
   Mode: Immediate
   Official Git Repository: [https://github.com/ocornut/imgui](https://github.com/ocornut/imgui)
   Initial Release:
 
-100. [nuklear](https://github.com/vurtun/nuklear)
+12. [nuklear](https://github.com/vurtun/nuklear)
   Description: Minimal state immediate mode graphical user interface toolkit written in ANSI C
   License: Public Domain
   Operation System:
@@ -85,7 +85,7 @@
   Official Git Repository: [https://github.com/vurtun/nuklear](https://github.com/vurtun/nuklear)
   Initial Release:
 
-100. [FlatUI](https://google.github.io/flatui/index.html)
+13. [FlatUI](https://google.github.io/flatui/index.html)
   Description: immediate mode C++ GUI library that aims to be a simple, efficient and easy...
   License: Apache license, v2
   Operation System: Cross-platform
@@ -93,7 +93,7 @@
   Official Git Repository: [https://github.com/google/flatui](https://github.com/google/flatui)
   Initial Release:
 
-100. [LCUI](https://lcui.org)
+14. [LCUI](https://lcui.org)
   Description: Simple GUI library, it is written in C, support XML and CSS
   License:
   Operation System:
@@ -101,7 +101,7 @@
   Official Git Repository: [https://github.com/lc-soft/LCUI](https://github.com/lc-soft/LCUI)
   Initial Release:
 
-100. [Elements](https://www.cycfi.com/2019/07/photon-micro-gui/)
+15. [Elements](https://www.cycfi.com/2019/07/photon-micro-gui/)
   Description: Elements C++ GUI library
   License: MIT
   Operation System: Cross-platform
@@ -109,7 +109,7 @@
   Official Git Repository: [https://github.com/cycfi/elements](https://github.com/cycfi/elements)
   Initial Release:
 
-100. [neoGFX](https://neogfx.org)
+16. [neoGFX](https://neogfx.org)
   Description: Cross-platform GPU-oriented C++ application/game framework
   License: GPL-3.0
   Operation System: Cross-platform
@@ -117,12 +117,20 @@
   Official Git Repository: [https://github.com/i42output/neoGFX](https://github.com/i42output/neoGFX)
   Initial Release: 06.2015
 
-100. [SkUI](https://github.com/skui-org/skui)
+17. [SkUI](https://github.com/skui-org/skui)
   Description: UI framework that uses [Skia](https://skia.org/) as a low-level drawing toolkit
   License: MIT License
   Operation System: Cross-platform
   Mode:
   Official Git Repository: [https://github.com/skui-org/skui](https://github.com/skui-org/skui)
+  Initial Release:
+
+18. [HastyBadger](https://github.com/tesch1/turbobadger)
+  Description: HastyBadger is a branch of the excellent widget and GUI library [Turbo Badger](https://github.com/fruxo/turbobadger)
+  License: permissive
+  Operation System: Cross-platform
+  Mode: Immediate
+  Official Git Repository: [https://github.com/tesch1/turbobadger](https://github.com/tesch1/turbobadger)
   Initial Release:
 
 # Graphics Engines for C/C++.
