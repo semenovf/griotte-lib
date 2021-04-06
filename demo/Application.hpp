@@ -51,7 +51,7 @@ public:
                 minOpenGlMinorVersion = 0;
             }
 
-            // By default, the OpenGL context GLFW creates may have any version.
+            // By default, the OpenGL context GLFW may have any version.
             // You can require a minimum OpenGL version by setting the
             // GLFW_CONTEXT_VERSION_MAJOR and GLFW_CONTEXT_VERSION_MINOR hints
             // before creation

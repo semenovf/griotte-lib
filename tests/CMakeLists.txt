@@ -13,7 +13,7 @@ list(APPEND test_targets point)
 #list(APPEND MY_TEST_TARGETS indents)
 #list(APPEND MY_TEST_TARGETS path)
 
-# Porcess all unit test targets
+# Process all unit test targets
 foreach(test ${test_targets})
     if(${test}_SOURCES)
         add_executable(${test} ${${test}_SOURCES} $<TARGET_OBJECTS:doctest_OBJLIB>)

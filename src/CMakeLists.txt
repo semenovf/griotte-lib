@@ -14,6 +14,3 @@ target_include_directories(pfs-griotte INTERFACE
     ${CMAKE_SOURCE_DIR}/pfs-common/include
     ${CMAKE_SOURCE_DIR}/3rdparty/freetype2/include
     ${CMAKE_SOURCE_DIR}/3rdparty/glfw/include)
-
-# Copy test files to build folder
-file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION ../bin)

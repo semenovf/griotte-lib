@@ -1,11 +1,24 @@
-cmake_minimum_required (VERSION 3.1)
+################################################################################
+# Copyright (c) 2021 Vladislav Trifochkin
+#
+# This file is part of [pfs-griotte](https://github.com/semenovf/pfs-griotte) library.
+################################################################################
+cmake_minimum_required (VERSION 3.5)
 project(pfs-griotte CXX)
 
-option(${PROJECT_NAME}_BUILD_TESTS "Build tests" ON)
+string(REPLACE "-" "::" _project_alias ${PROJECT_NAME})
+set(_project_basename ${PROJECT_NAME})
+
+option(${PROJECT_NAME}_BUILD_TESTS "Build tests" OFF)
+option(${PROJECT_NAME}_BUILD_DEMO "Build demo" OFF)
 
 # Prefer GLVND (new behaviour) over LEGACY
 cmake_policy(SET CMP0072 NEW)
 find_package(OpenGL REQUIRED)
+
+message(STATUS "C++ compiler: ${CMAKE_CXX_COMPILER}")
+message(STATUS "C++ compiler version: ${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS "Project alias: ${_project_alias}")
 
 message(STATUS "OpenGL libraries   : ${OPENGL_LIBRARIES}")
 message(STATUS "OpenGL include dirs: ${OPENGL_INCLUDE_DIR}")
@@ -14,14 +27,17 @@ message(STATUS "OpenGL GLX found   : ${OpenGL_GLX_FOUND}")
 message(STATUS "OpenGL EGL found   : ${OpenGL_EGL_FOUND}")
 message(STATUS "OpenGL XMESA found : ${OPENGL_XMESA_FOUND}")
 
-# include_directories(${CMAKE_CURRENT_LIST_DIR}/include
-#     ${CMAKE_CURRENT_LIST_DIR}/pfs-common/include
-#     ${CMAKE_CURRENT_LIST_DIR}/3rdparty/freetype2/include
-#     ${CMAKE_CURRENT_LIST_DIR}/3rdparty/glfw/include)
+set(CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF) # use -std=c++XX rather than -std=gnu++XX
 
 ################################################################################
 # GLFW build
 ################################################################################
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "Build the GLFW example programs")
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "Build the GLFW test programs")
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "Build the GLFW documentation")
+set(GLFW_INSTALL OFF CACHE BOOL "Generate installation target")
+set(GLFW_VULKAN_STATIC OFF CACHE BOOL "Assume the Vulkan loader is linked with the application")
 add_subdirectory(3rdparty/glfw)
 
 ################################################################################
@@ -36,17 +52,12 @@ set(CMAKE_DISABLE_FIND_PACKAGE_BrotliDec TRUE)
 add_subdirectory(3rdparty/freetype2)
 
 add_subdirectory(src)
-add_subdirectory(demo)
-
-set_target_properties(
-    glfw
-    PROPERTIES
-        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-
 
 if (${PROJECT_NAME}_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
+endif()
+
+if (${PROJECT_NAME}_BUILD_DEMO)
+    add_subdirectory(demo)
 endif()
