@@ -28,17 +28,19 @@ template <typename dummy>
 struct context_static_members
 {
     static std::function<void (int, char const *)> error_handler;
+
     static std::function<void (GLFWwindow * /*window*/
-            , int /*key*/
-            , int /*scancode*/
-            , int /*action*/
-            , int /*modsint*/)> key_handler;
+        , int /*key*/
+        , int /*scancode*/
+        , int /*action*/
+        , int /*modsint*/)> key_handler;
+
     static std::function<void (GLFWwindow * /*window*/
-            , int /*width*/
-            , int /*height*/)> framebuffer_size_handler;
+        , int /*width*/
+        , int /*height*/)> framebuffer_size_handler;
 
     static std::function<void (GLFWmonitor * /*monitor*/
-            , int /*event*/)> monitor_handler;
+        , int /*event*/)> monitor_handler;
 };
 
 class context : public context_static_members<int>
@@ -193,7 +195,7 @@ public:
 
     template <typename FramebufferSizeHandler>
     static void set_framebuffer_size_handler (GLFWwindow * window
-            , FramebufferSizeHandler && handler)
+        , FramebufferSizeHandler && handler)
     {
         if (window) {
             framebuffer_size_handler = std::forward<FramebufferSizeHandler>(handler);
@@ -246,25 +248,25 @@ std::function<void (int, char const *)> context_static_members<dummy>::error_han
 
 template <typename dummy>
 std::function<void (GLFWwindow * /*window*/
-        , int /*key*/
-        , int /*scancode*/
-        , int /*action*/
-        , int /*modsint*/)> context_static_members<dummy>::key_handler;
+    , int /*key*/
+    , int /*scancode*/
+    , int /*action*/
+    , int /*modsint*/)> context_static_members<dummy>::key_handler;
 
 template <typename dummy>
 std::function<void (GLFWwindow * /*window*/
-        , int /*width*/
-        , int /*height*/)> context_static_members<dummy>::framebuffer_size_handler {[] (
-                  GLFWwindow * /*window*/
-                , int width
-                , int height) {
-                    // By defualt rearranges OpenGL viewport to the current
-                    // framebuffer size.
-                    glViewport(0, 0, width, height);
-                }};
+    , int /*width*/
+    , int /*height*/)> context_static_members<dummy>::framebuffer_size_handler {[] (
+          GLFWwindow * /*window*/
+        , int width
+        , int height) {
+            // By defualt rearranges OpenGL viewport to the current
+            // framebuffer size.
+            glViewport(0, 0, width, height);
+    }};
 
 template <typename dummy>
 std::function<void (GLFWmonitor * /*monitor*/
-        , int /*event*/)> context_static_members<dummy>::monitor_handler;
+    , int /*event*/)> context_static_members<dummy>::monitor_handler;
 
 }} // namespace pfs::griotte

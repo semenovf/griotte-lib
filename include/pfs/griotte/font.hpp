@@ -6,6 +6,7 @@
 // Changelog:
 //      2020.04.26 Initial version
 ////////////////////////////////////////////////////////////////////////////////
+#pragma once
 #include "glyph.hpp"
 #include "ft2build.h"
 #include FT_FREETYPE_H
@@ -188,15 +189,15 @@ public:
         unsigned int texture_id;
         glGenTextures(1, & texture_id);
         glBindTexture(GL_TEXTURE_2D, texture_id);
-        glTexImage2D(GL_TEXTURE_2D                // target
-                , 0                               // level
-                , GL_RED                          // internalFormat
-                , _face->glyph->bitmap.width      // width
-                , _face->glyph->bitmap.rows       // height
-                , 0                               // border
-                , GL_RED                          // format
-                , GL_UNSIGNED_BYTE                // type
-                , _face->glyph->bitmap.buffer);   // pixels
+        glTexImage2D(GL_TEXTURE_2D            // target
+            , 0                               // level
+            , GL_RED                          // internalFormat
+            , _face->glyph->bitmap.width      // width
+            , _face->glyph->bitmap.rows       // height
+            , 0                               // border
+            , GL_RED                          // format
+            , GL_UNSIGNED_BYTE                // type
+            , _face->glyph->bitmap.buffer);   // pixels
 
         // Set texture options
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

@@ -36,6 +36,7 @@
 8.  [Добавление поддержки двунаправленного текста в собственный TextBox](https://habr.com/ru/post/262987/)
 9.  [Рендеринг двунаправленного текста с поддержкой диакритиков](https://habr.com/ru/post/277525/)
 10. [HarfBuzz text shaping engine](https://github.com/harfbuzz/harfbuzz)
+11. [Text-rendering library written in C++ for OpenGL 3.3, using FreeType 2](https://github.com/jtberglund/GLFont)
 
 ### Shaders
 1. [A Beginner's Guide to Coding Graphics Shaders](https://gamedevelopment.tutsplus.com/series/a-beginners-guide-to-coding-graphics-shaders--cms-834) ([Перевод](https://habr.com/ru/post/333002/))

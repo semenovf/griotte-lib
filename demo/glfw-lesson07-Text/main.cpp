@@ -103,44 +103,44 @@ int main ()
     auto font_path = font_dir + font_filenames[Roboto_BoldItalic];
     auto font = app.load_font(font_path, 0);
 
-    if (font) {
-        bool ok = true;
+    if (!font) {
+        fmt::print("ERROR: loading font failure");
+        return -1;
+    }
 
-        if (ok)
-            font.set_pixel_size(48, & ok);
+    bool ok = true;
+    uint32_t uc = 'X';
+    int pixel_size = 48;
+    auto glyph = font.load_glyph(uc, pixel_size, ok);
 
-        if (ok)
-            font.load_char('X', & ok);
-
-        if (!ok) {
-            fmt::print("ERROR: font operations failed");
-            return -1;
-        }
+    if (!ok) {
+        fmt::print("ERROR: loading glyph failure");
+        return -1;
     }
 
     // Load font textures
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
-
-    // Generate font texture
-    unsigned int texture;
-    glGenTextures(1, & texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexImage2D(GL_TEXTURE_2D
-            , 0
-            , GL_RED
-            , face->glyph->bitmap.width
-            , face->glyph->bitmap.rows
-            , 0
-            , GL_RED
-            , GL_UNSIGNED_BYTE
-            , face->glyph->bitmap.buffer);
-
-    // Set texture options
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
+//
+//     // Generate font texture
+//     unsigned int texture;
+//     glGenTextures(1, & texture);
+//     glBindTexture(GL_TEXTURE_2D, texture);
+//
+//     glTexImage2D(GL_TEXTURE_2D
+//         , 0
+//         , GL_RED
+//         , glyph.width()
+//         , glyph.height()
+//         , 0
+//         , GL_RED
+//         , GL_UNSIGNED_BYTE
+//         , glyph->bitmap.buffer);
+//
+//     // Set texture options
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     return app.run( [] {
         // Create a windowed mode window and its OpenGL context

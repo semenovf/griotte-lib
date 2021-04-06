@@ -17,9 +17,9 @@ class glyph
     unsigned int _texture_id {0}; // ID handle of the glyph texture
     unsigned int _width {0};      // width as size component of glyph
     unsigned int _height {0};     // height as size component of glyph
-    int _bearing_x {0};            // Offset from baseline to left/top of glyph
-    int _bearing_y {0};            // Offset from baseline to left/top of glyph
-    unsigned int _advance {0};     // Offset to advance to next glyph
+    int _bearing_x {0};           // Offset from baseline to left/top of glyph
+    int _bearing_y {0};           // Offset from baseline to left/top of glyph
+    unsigned int _advance {0};    // Offset to advance to next glyph
 
 public:
     glyph () {}
@@ -43,6 +43,16 @@ public:
     {
         _width = width;
         _height = height;
+    }
+
+    unsigned int width () const noexcept
+    {
+        return _width;
+    }
+
+    unsigned int height () const noexcept
+    {
+        return _height;
     }
 
     void set_advance (unsigned int advance)
