@@ -155,7 +155,9 @@
   Operation System: Cross-platform
   Mode: ?
   Official Git Repository: [https://github.com/zenkovich/o2](https://github.com/zenkovich/o2)
-  Initial Release:
+  Initial Release:  
+  Publications:  
+  * [Qt? ImGUI? wxWidgets? Пишем свое](https://habr.com/ru/post/521306/)
 
 # Graphics Engines for C/C++.
 
