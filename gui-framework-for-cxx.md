@@ -140,6 +140,22 @@
   Mode: Immediate?
   Official Git Repository: [https://github.com/mikke89/RmlUi](https://github.com/mikke89/RmlUi)
   Initial Release:
+  
+20. [ugui](https://github.com/styluslabs/ugui)
+  Description: Cross-platform C++ SVG-based GUI library
+  License: ?
+  Operation System: Cross-platform
+  Mode: ?
+  Official Git Repository: [https://github.com/styluslabs/ugui](https://github.com/styluslabs/ugui)
+  Initial Release:
+
+21. [o2](https://github.com/zenkovich/o2)
+  Description: An open-source technology for easy making 2D games and applications
+  License: MIT License
+  Operation System: Cross-platform
+  Mode: ?
+  Official Git Repository: [https://github.com/zenkovich/o2](https://github.com/zenkovich/o2)
+  Initial Release:
 
 # Graphics Engines for C/C++.
 
