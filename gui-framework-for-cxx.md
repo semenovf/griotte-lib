@@ -149,15 +149,15 @@
   Official Git Repository: [https://github.com/styluslabs/ugui](https://github.com/styluslabs/ugui)
   Initial Release:
 
-21. [o2](https://github.com/zenkovich/o2)
-  Description: An open-source technology for easy making 2D games and applications
-  License: MIT License
-  Operation System: Cross-platform
-  Mode: ?
-  Official Git Repository: [https://github.com/zenkovich/o2](https://github.com/zenkovich/o2)
+21. [o2](https://github.com/zenkovich/o2)  
+  Description: An open-source technology for easy making 2D games and applications  
+  License: MIT License  
+  Operation System: Cross-platform  
+  Mode: ?  
+  Official Git Repository: [https://github.com/zenkovich/o2](https://github.com/zenkovich/o2)  
   Initial Release:  
   Publications:  
-  * [Qt? ImGUI? wxWidgets? Пишем свое](https://habr.com/ru/post/521306/)
+  * [Qt? ImGUI? wxWidgets? Пишем свое](https://habr.com/ru/post/521306/)  
 
 # Graphics Engines for C/C++.
 
