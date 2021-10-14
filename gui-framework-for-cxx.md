@@ -159,6 +159,14 @@
   Publications:  
   * [Qt? ImGUI? wxWidgets? Пишем свое](https://habr.com/ru/post/521306/)  
 
+22. [SixtyFPS](https://sixtyfps.io)  
+  Description: Toolkit to efficiently develop fluid graphical user interfaces for any display  
+  License: GNU GPLv3 or Commercial SixtyFPS license  
+  Operation System: Cross-platform  
+  Mode: ?  
+  Official Git Repository: [https://github.com/sixtyfpsui/sixtyfps](https://github.com/sixtyfpsui/sixtyfps)  
+  Initial Release:  
+
 # Graphics Engines for C/C++.
 
 1. [Allegro](https://liballeg.org)  
