@@ -166,6 +166,14 @@
   Mode: ?  
   Official Git Repository: [https://github.com/sixtyfpsui/sixtyfps](https://github.com/sixtyfpsui/sixtyfps)  
   Initial Release:  
+  
+23. [WUHOO](https://github.com/ViNeek/wuhoo)  
+  Description: Single-header library for graphics related window management, compatible with both C and C++  
+  License: MIT License  
+  Operation System: Cross-platform  
+  Mode: ?  
+  Official Git Repository: [https://github.com/ViNeek/wuhoo](https://github.com/ViNeek/wuhoo)  
+  Initial Release:  
 
 # Graphics Engines for C/C++.
 
