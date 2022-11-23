@@ -202,7 +202,25 @@
   Operation System: Cross-platform.  
   Official Git Repository: [https://github.com/mosra/magnum](https://github.com/mosra/magnum).  
   Initial Release: ?.  
-
+1. [NanoVG](https://github.com/memononen/nanovg)  
+  Description: Antialiased 2D vector drawing library on top of OpenGL for UI and visualizations.  
+  License: Zlib.  
+  Operation System: OpenGL support platform.  
+  Official Git Repository: [https://github.com/memononen/nanovg](https://github.com/memononen/nanovg).  
+  Initial Release: ?.  
+1. [Blend2D](https://blend2d.com)  
+  Description: 2D Vector Graphics Engine Powered by a JIT Compiler.  
+  License: Zlib.  
+  Operation System: ?.  
+  Official Git Repository: [https://github.com/blend2d/blend2d](https://github.com/blend2d/blend2d).  
+  Initial Release: ?.  
+1. [AGG - Anti-Grain Geometry Library](https://agg.sourceforge.net/antigrain.com/index.html)  
+  Description: 2D vector graphics library, produces pixel images in memory from vectorial data.  
+  License: MIT.  
+  Operation System: ?.  
+  Official Git Repository: No ([SVN](https://sourceforge.net/projects/agg) only). There are many forks on GitHub. See [Wikipedia](https://en.wikipedia.org/wiki/Anti-Grain_Geometry) also.  
+  Initial Release: ?.  
+  
 # Game Engines for C/C++ and Open Games.
 
 1. [FreeOrion](https://freeorion.org/)  
