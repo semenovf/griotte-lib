@@ -1,1 +1,1 @@
-# pfs-griotte
+# griotte-lib
