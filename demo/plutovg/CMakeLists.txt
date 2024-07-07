@@ -6,6 +6,6 @@
 # Changelog:
 #      2024.07.03 Initial version.
 ################################################################################
-#add_subdirectory(glfw)
-#add_subdirectory(plutovg)
-add_subdirectory(sdl2)
+project(smiley C)
+add_executable(${PROJECT_NAME} smiley.c)
+target_link_libraries(${PROJECT_NAME} plutovg)

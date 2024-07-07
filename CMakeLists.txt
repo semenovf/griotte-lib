@@ -1,63 +1,48 @@
 ################################################################################
-# Copyright (c) 2021 Vladislav Trifochkin
+# Copyright (c) 2021-2024 Vladislav Trifochkin
 #
-# This file is part of [pfs-griotte](https://github.com/semenovf/pfs-griotte) library.
+# This file is part of `griotte-lib`.
 ################################################################################
-cmake_minimum_required (VERSION 3.5)
-project(pfs-griotte CXX)
+cmake_minimum_required (VERSION 3.11)
+project(griotte-ALL CXX C)
 
-string(REPLACE "-" "::" _project_alias ${PROJECT_NAME})
-set(_project_basename ${PROJECT_NAME})
+set(PFS__LOG_LEVEL 3 CACHE INTERNAL "Output trace log")
+option(GRIOTTE__BUILD_STRICT "Build with strict policies: C++ standard required, C++ extension is OFF etc" ON)
+option(GRIOTTE__BUILD_TESTS "Build tests" OFF)
+option(GRIOTTE__BUILD_DEMO "Build demo" OFF)
+option(GRIOTTE__ENABLE_COVERAGE "Build tests with coverage support" OFF)
 
-option(${PROJECT_NAME}_BUILD_TESTS "Build tests" OFF)
-option(${PROJECT_NAME}_BUILD_DEMO "Build demo" OFF)
-
-# Prefer GLVND (new behaviour) over LEGACY
-cmake_policy(SET CMP0072 NEW)
-find_package(OpenGL REQUIRED)
+if (NOT PORTABLE_TARGET__ENABLED)
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/2ndparty/portable-target/cmake/v2)
+    include(PortableTarget)
+    portable_target(SET ENABLE_TRACE ON)
+endif()
 
 message(STATUS "C++ compiler: ${CMAKE_CXX_COMPILER}")
 message(STATUS "C++ compiler version: ${CMAKE_CXX_COMPILER_VERSION}")
-message(STATUS "Project alias: ${_project_alias}")
 
-message(STATUS "OpenGL libraries   : ${OPENGL_LIBRARIES}")
-message(STATUS "OpenGL include dirs: ${OPENGL_INCLUDE_DIR}")
-message(STATUS "OpenGL GLU found   : ${OPENGL_GLU_FOUND}")
-message(STATUS "OpenGL GLX found   : ${OpenGL_GLX_FOUND}")
-message(STATUS "OpenGL EGL found   : ${OpenGL_EGL_FOUND}")
-message(STATUS "OpenGL XMESA found : ${OPENGL_XMESA_FOUND}")
+if (GRIOTTE__BUILD_STRICT)
+    if (NOT CMAKE_CXX_STANDARD)
+        set(CMAKE_CXX_STANDARD 11)
+    endif()
 
-set(CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF) # use -std=c++XX rather than -std=gnu++XX
+    set(CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_CXX_EXTENSIONS OFF) # use -std=c++XX rather than -std=gnu++XX
+endif()
 
-################################################################################
-# GLFW build
-################################################################################
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "Build the GLFW example programs")
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "Build the GLFW test programs")
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "Build the GLFW documentation")
-set(GLFW_INSTALL OFF CACHE BOOL "Generate installation target")
-set(GLFW_VULKAN_STATIC OFF CACHE BOOL "Assume the Vulkan loader is linked with the application")
-add_subdirectory(3rdparty/glfw)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
-################################################################################
-# Freetype2 build
-################################################################################
-set(SKIP_INSTALL_ALL ON)
-set(CMAKE_DISABLE_FIND_PACKAGE_ZLIB TRUE)
-set(CMAKE_DISABLE_FIND_PACKAGE_BZip2 TRUE)
-set(CMAKE_DISABLE_FIND_PACKAGE_PNG TRUE)
-set(CMAKE_DISABLE_FIND_PACKAGE_HarfBuzz TRUE)
-set(CMAKE_DISABLE_FIND_PACKAGE_BrotliDec TRUE)
-add_subdirectory(3rdparty/freetype2)
+add_subdirectory(3rdparty)
+include(${CMAKE_CURRENT_LIST_DIR}/library.cmake)
 
-add_subdirectory(src)
-
-if (${PROJECT_NAME}_BUILD_TESTS)
+if (GRIOTTE__BUILD_TESTS AND EXISTS ${CMAKE_CURRENT_LIST_DIR}/tests)
     enable_testing()
     add_subdirectory(tests)
 endif()
 
-if (${PROJECT_NAME}_BUILD_DEMO)
+if (GRIOTTE__BUILD_DEMO AND EXISTS ${CMAKE_CURRENT_LIST_DIR}/demo)
     add_subdirectory(demo)
 endif()
+

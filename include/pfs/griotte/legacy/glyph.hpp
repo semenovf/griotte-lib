@@ -1,13 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2020 Vladislav Trifochkin
 //
-// This file is part of [pfs-griotte](https://github.com/semenovf/pfs-griotte) library.
+// This file is part of `griotte-lib`.
 //
 // Changelog:
 //      2020.05.10 Initial version
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include "GLFW/glfw3.h"
 
 namespace pfs {
 namespace griotte {

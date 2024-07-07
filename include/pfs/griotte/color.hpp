@@ -1,14 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2024 Vladislav Trifochkin
+//
+// This file is part of `griotte-lib`.
+//
+// Changelog:
+//      2024.07.07 Initial version.
+////////////////////////////////////////////////////////////////////////////////
 #pragma once
+#include <pfs/numeric_cast.hpp>
+#include <cstdint>
 
-namespace pfs {
 namespace griotte {
 
 class rgba_color
 {
-    uint8_t _alpha;
-    uint8_t _red;
-    uint8_t _green;
-    uint8_t _blue;
+    std::uint8_t _alpha;
+    std::uint8_t _red;
+    std::uint8_t _green;
+    std::uint8_t _blue;
 
 public:
     constexpr rgba_color () noexcept
@@ -19,22 +28,21 @@ public:
     {}
 
     constexpr rgba_color (int red, int green, int blue, int alpha = 255) noexcept
-        : _alpha(static_cast<uint8_t>(alpha))
-        , _red(static_cast<uint8_t>(red))
-        , _green(static_cast<uint8_t>(green))
-        , _blue(static_cast<uint8_t>(blue))
+        : _alpha(pfs::numeric_cast<std::uint8_t>(alpha))
+        , _red(pfs::numeric_cast<std::uint8_t>(red))
+        , _green(pfs::numeric_cast<std::uint8_t>(green))
+        , _blue(pfs::numeric_cast<std::uint8_t>(blue))
     {}
 
     rgba_color (rgba_color const & rhs) = default;
     rgba_color & operator = (rgba_color const & rhs) = default;
 
-    constexpr int get_alpha () const noexcept { return _alpha; }
-    constexpr int get_red ()   const noexcept { return _red; }
-    constexpr int get_green () const noexcept { return _green; }
-    constexpr int get_blue ()  const noexcept { return _blue; }
+    constexpr int alpha () const noexcept { return _alpha; }
+    constexpr int red ()   const noexcept { return _red; }
+    constexpr int green () const noexcept { return _green; }
+    constexpr int blue ()  const noexcept { return _blue; }
 };
 
-using color = rgba_color;
+using color_t = rgba_color;
 
-}} // namespace pfs::griotte
-
+} // namespace griotte
