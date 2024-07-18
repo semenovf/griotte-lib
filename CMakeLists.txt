@@ -18,17 +18,17 @@ if (NOT PORTABLE_TARGET__ENABLED)
     portable_target(SET ENABLE_TRACE ON)
 endif()
 
-message(STATUS "C++ compiler: ${CMAKE_CXX_COMPILER}")
-message(STATUS "C++ compiler version: ${CMAKE_CXX_COMPILER_VERSION}")
-
 if (GRIOTTE__BUILD_STRICT)
     if (NOT CMAKE_CXX_STANDARD)
-        set(CMAKE_CXX_STANDARD 11)
+        set(CMAKE_CXX_STANDARD 17)
     endif()
 
     set(CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_EXTENSIONS OFF) # use -std=c++XX rather than -std=gnu++XX
 endif()
+
+message(STATUS "C++ compiler: ${CMAKE_CXX_COMPILER}")
+message(STATUS "C++ compiler version: ${CMAKE_CXX_COMPILER_VERSION}")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

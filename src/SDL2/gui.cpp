@@ -198,7 +198,6 @@ void gui::run ()
             }
         }
     }
-
 }
 
 }} // namespace griotte::SDL2

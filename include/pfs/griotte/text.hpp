@@ -4,35 +4,29 @@
 // This file is part of `griotte-lib`.
 //
 // Changelog:
-//      2024.07.07 Initial version.
+//      2024.07.18 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "color.hpp"
 #include "item.hpp"
-#include "outlined.hpp"
-#include <deque>
+#include <string>
 
 namespace griotte {
 
-class rectangle: public item, public outlined
+class text: public item
 {
 protected:
-    unit_t _radius {0};
+    std::string _value;
     color_t _color;
 
 public:
-    rectangle (): item () {}
-    ~rectangle () = default;
+    text (): item () {}
+    text (std::string value)
+        : item ()
+        , _value(std::move(value))
+    {}
 
-    constexpr unit_t radius () const noexcept
-    {
-        return _radius;
-    }
-
-    void set_radius (unit_t value)
-    {
-        _radius = value;
-    }
+    ~text () = default;
 
     color_t color () const noexcept
     {
@@ -44,7 +38,16 @@ public:
         _color = value;
     }
 
-    void render (renderer_ptr_t r) override;
+    std::string const & value () const noexcept
+    {
+        return _value;
+    }
+
+    void set_text (std::string value)
+    {
+        _value = std::move(value);
+    }
 };
 
 } // namespace griotte
+

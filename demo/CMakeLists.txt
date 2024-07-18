@@ -8,4 +8,5 @@
 ################################################################################
 #add_subdirectory(glfw)
 #add_subdirectory(plutovg)
-add_subdirectory(sdl2)
+#add_subdirectory(sdl2)
+add_subdirectory(sfml)

@@ -1,27 +1,58 @@
-# This is the "object library" target: compiles the sources only once
-#add_library(CATCH2_OBJLIB OBJECT catch2-main.cpp)
-#add_library(doctest_OBJLIB OBJECT doctest-main.cpp)
+################################################################################
+# Copyright (c) 2019,2020 Vladislav Trifochkin
+#
+# This file is part of `griotte-lib`.
+#
+# Changelog:
+#      2024.07.15 Initial version.
+################################################################################
+project(griotte-TESTS CXX C)
 
-# Optional: shared libraries need PIC
-#set_property(TARGET CATCH2_OBJLIB PROPERTY POSITION_INDEPENDENT_CODE 1)
-#set_property(TARGET doctest_OBJLIB PROPERTY POSITION_INDEPENDENT_CODE 1)
-
-# Add unit test targets
-#list(APPEND test_targets point)
-
-#list(APPEND MY_TEST_TARGETS line)
-#list(APPEND MY_TEST_TARGETS rect)
-#list(APPEND MY_TEST_TARGETS indents)
-#list(APPEND MY_TEST_TARGETS path)
-
-# Process all unit test targets
-foreach(test ${test_targets})
-    if(${test}_SOURCES)
-        add_executable(${test} ${${test}_SOURCES} $<TARGET_OBJECTS:doctest_OBJLIB>)
-    else()
-        add_executable(${test} ${test}.cpp $<TARGET_OBJECTS:doctest_OBJLIB>)
+if (PFS__ENABLE_COVERAGE)
+    message(STATUS "Coverage feature enabled")
+    if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        message(FATAL_ERROR "Coverage feature requires GCC")
     endif()
 
-    target_link_libraries(${test} pfs::griotte)
-    add_test(NAME ${test} COMMAND ${test})
+    set(CMAKE_CXX_FLAGS "-g -O0 --coverage")
+    set(CMAKE_C_FLAGS "-g -O0 --coverage")
+endif()
+
+if (TARGET pfs::griotte)
+    set(_griotte_lib pfs::griotte)
+elseif (TARGET pfs::griotte::static)
+    set(_griotte_lib pfs::griotte::static)
+else()
+    message(FATAL_ERROR "No any griotte TARGET found")
+endif()
+
+set(TEST_NAMES
+    layout)
+
+foreach (name ${TEST_NAMES})
+    if (${name}_SOURCES)
+        add_executable(${name} ${${name}_SOURCES} ${name}.cpp)
+    else ()
+        add_executable(${name} ${name}.cpp)
+    endif()
+
+    # https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html#Instrumentation-Options
+    #
+    # --coverage
+    #       This option is used to compile and link code instrumented for
+    #       coverage analysis. The option is a synonym for -fprofile-arcs
+    #       -ftest-coverage (when compiling) and -lgcov (when linking).
+    if (PFS__ENABLE_COVERAGE)
+        target_compile_options(${name} PRIVATE -g -O0 --coverage)
+        target_link_libraries(${name} PRIVATE -g -O0 --coverage)
+    endif()
+
+    target_link_libraries(${name} PRIVATE ${_griotte_lib})
+    add_test(NAME ${name} COMMAND ${name})
 endforeach()
+
+if (PFS__ENABLE_COVERAGE)
+    include(${CMAKE_SOURCE_DIR}/cmake/Coverage.cmake)
+    coverage_target("'/usr/*';'*/doctest.h'")
+endif()
+

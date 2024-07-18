@@ -37,10 +37,10 @@ public:
     rgba_color (rgba_color const & rhs) = default;
     rgba_color & operator = (rgba_color const & rhs) = default;
 
-    constexpr int alpha () const noexcept { return _alpha; }
-    constexpr int red ()   const noexcept { return _red; }
-    constexpr int green () const noexcept { return _green; }
-    constexpr int blue ()  const noexcept { return _blue; }
+    constexpr std::uint8_t alpha () const noexcept { return _alpha; }
+    constexpr std::uint8_t red ()   const noexcept { return _red; }
+    constexpr std::uint8_t green () const noexcept { return _green; }
+    constexpr std::uint8_t blue ()  const noexcept { return _blue; }
 };
 
 using color_t = rgba_color;

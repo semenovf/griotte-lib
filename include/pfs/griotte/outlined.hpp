@@ -8,43 +8,36 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "color.hpp"
-#include "item.hpp"
-#include "outlined.hpp"
-#include <deque>
+#include "unit.hpp"
 
 namespace griotte {
 
-class rectangle: public item, public outlined
+class outlined
 {
-protected:
-    unit_t _radius {0};
+private:
+    unit_t _thickness {0};
     color_t _color;
 
 public:
-    rectangle (): item () {}
-    ~rectangle () = default;
-
-    constexpr unit_t radius () const noexcept
+    unit_t thickness () const noexcept
     {
-        return _radius;
+        return _thickness;
     }
 
-    void set_radius (unit_t value)
-    {
-        _radius = value;
-    }
-
-    color_t color () const noexcept
+    color_t outline_color () const noexcept
     {
         return _color;
     }
 
-    void set_color (color_t value)
+    void set_thickness (unit_t value)
+    {
+        _thickness = value;
+    }
+
+    void set_outline_color (color_t value)
     {
         _color = value;
     }
-
-    void render (renderer_ptr_t r) override;
 };
 
 } // namespace griotte

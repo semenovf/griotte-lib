@@ -6,11 +6,13 @@ GIT_DOWNLOADER="git clone"
 GLFW_RELEASE=3.4
 PLUTOVG_RELEASE=main
 SDL2_RELEASE=release-2.30.5
+SFML_RELEASE=2.6.1
 
 # HTTPS
 HTTPS_SOURCES="--depth 1 -b ${GLFW_RELEASE} --single-branch https://github.com/glfw/glfw.git glfw
 --depth 1 -b ${PLUTOVG_RELEASE} --single-branch https://github.com/sammycage/plutovg.git plutovg
---depth 1 -b ${SDL2_RELEASE} --single-branch https://github.com/libsdl-org/SDL.git SDL2"
+--depth 1 -b ${SDL2_RELEASE} --single-branch https://github.com/libsdl-org/SDL.git SDL2
+--depth 1 -b ${SFML_RELEASE} --single-branch https://github.com/SFML/SFML.git SFML"
 
 DEFAULT_SOURCES=${HTTPS_SOURCES}
 DEFAULT_DOWNLOADER=${GIT_DOWNLOADER}
