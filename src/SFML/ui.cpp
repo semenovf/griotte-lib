@@ -7,18 +7,12 @@
 //      2024.07.13 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #include "casting.hpp"
-#include "log_guard.hpp"
 #include "griotte/SFML/ui.hpp"
 #include "griotte/fixed_layout.hpp"
-#include "griotte/logger.hpp"
-#include <pfs/i18n.hpp>
-#include <pfs/log.hpp>
 #include <pfs/memory.hpp>
 #include <pfs/stopwatch.hpp>
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <sstream>
 #include <thread>
 
 namespace griotte {
@@ -147,26 +141,6 @@ void ui::run ()
         if (remain_millis > 0)
             std::this_thread::sleep_for(std::chrono::milliseconds{remain_millis});
     }
-}
-
-bool ui::load_font (std::string const & font_alias, pfs::filesystem::path const & path)
-{
-    auto font = pfs::make_unique<sf::Font>();
-    log_guard lg;
-
-    if (!font->loadFromFile(pfs::filesystem::utf8_encode(path))) {
-        return false;
-    }
-
-    if (_fonts.find(font_alias) != _fonts.end()) {
-        logger::e(tr::f_("font alias already occupied by font: {}, change font alias for file: {}"
-            , font_alias, path));
-        return false;
-    }
-
-    _fonts[font_alias] = std::move(font);
-
-    return true;
 }
 
 }} // namespace griotte::SFML

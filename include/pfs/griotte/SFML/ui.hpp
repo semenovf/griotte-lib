@@ -9,14 +9,12 @@
 #pragma once
 #include <griotte/color.hpp>
 #include <griotte/layout.hpp>
-#include <pfs/filesystem.hpp>
 #include <memory>
 #include <string>
 #include <unordered_map>
 
 namespace sf {
 class Event;
-class Font;
 class RenderWindow;
 }
 
@@ -46,8 +44,6 @@ private:
     color_t _color {255, 255, 255, 255}; // background color
     std::unique_ptr<layout> _root_layout;
 
-    std::unordered_map<std::string, std::unique_ptr<sf::Font>> _fonts;
-
 private:
     void step (sf::Event * ev);
 
@@ -67,8 +63,6 @@ public:
 
     void step ();
     void run ();
-
-    bool load_font (std::string const & font_alias, pfs::filesystem::path const & path);
 };
 
 }} // namespace griotte::SFML

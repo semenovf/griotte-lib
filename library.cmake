@@ -47,7 +47,9 @@ endif()
 if (GRIOTTE__SFML_BACKEND)
     list(APPEND _griotte__sources
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/ui.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/SFML/font.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/rectangle.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/SFML/text.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/RoundedRectangleShape.cpp)
 endif()
 

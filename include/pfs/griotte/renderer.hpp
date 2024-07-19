@@ -4,7 +4,7 @@
 // This file is part of `griotte-lib`.
 //
 // Changelog:
-//      2024.07.16 Initial version.
+//      2024.07.19 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 

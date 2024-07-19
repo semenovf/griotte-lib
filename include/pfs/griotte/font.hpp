@@ -4,7 +4,13 @@
 // This file is part of `griotte-lib`.
 //
 // Changelog:
-//      2024.07.16 Initial version.
+//      2024.07.19 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include <pfs/griotte/SFML/config.hpp>
+#include "SFML/font.hpp"
+
+namespace griotte {
+
+using font_t = SFML::font;
+
+} // namespace griotte

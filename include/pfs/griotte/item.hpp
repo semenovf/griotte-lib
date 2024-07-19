@@ -7,7 +7,7 @@
 //      2024.07.07 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include "config.hpp"
+#include "renderer.hpp"
 #include "node.hpp"
 #include "unit.hpp"
 #include <cstdint>
