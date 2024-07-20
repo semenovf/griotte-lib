@@ -35,6 +35,18 @@ static std::array<std::pair<std::string, fs::path>, 2> const fonts = {
 
 } // namespace constants
 
+static void dump_embedded_fonts ()
+{
+    auto emfonts = griotte::SFML::font::embeded_fonts();
+
+    fmt::println("Embedded fonts:");
+    int counter = 0;
+
+    for (auto const & alias: emfonts) {
+        fmt::println("    {}. {}", ++counter, alias);
+    }
+}
+
 int main ([[maybe_unused]] int argc, [[maybe_unused]] char * argv[])
 {
     griotte::SFML::ui::options opts;
@@ -43,6 +55,8 @@ int main ([[maybe_unused]] int argc, [[maybe_unused]] char * argv[])
     opts.w = SCREEN_WIDTH;
     opts.h = SCREEN_HEIGHT;
     opts.title = "SFML Demo";
+
+    dump_embedded_fonts();
 
     griotte::SFML::ui ui {std::move(opts)};
 
@@ -166,7 +180,8 @@ int main ([[maybe_unused]] int argc, [[maybe_unused]] char * argv[])
     t1.set_pixel_size(24);
     t1.set_color(griotte::color_t {0xFF, 0x00, 0x00}); // Red
 
-    auto font2 = griotte::font_t::get_font(constants::fonts[1].first);
+    // Get default (fallback) font
+    auto font2 = griotte::font_t::get_font();
 
     auto & t2 = l.create<griotte::text>("Hello another world");
     t2.set_x(10);

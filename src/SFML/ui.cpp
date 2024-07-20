@@ -7,12 +7,15 @@
 //      2024.07.13 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #include "casting.hpp"
-#include "griotte/SFML/ui.hpp"
 #include "griotte/fixed_layout.hpp"
+#include "griotte/font.hpp"
+#include "griotte/SFML/ui.hpp"
+#include <pfs/i18n.hpp>
 #include <pfs/memory.hpp>
 #include <pfs/stopwatch.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <stdexcept>
 #include <thread>
 
 namespace griotte {
@@ -48,6 +51,11 @@ ui::ui (options && opts)
     _win_h = size.y;
 
     _root_layout = pfs::make_unique<fixed_layout>();
+
+    // Load default (fallback font)
+    if (!font::load_font()) {
+        throw std::runtime_error(tr::_("loading default font failure"));
+    }
 }
 
 ui::~ui ()

@@ -13,8 +13,6 @@
 #include <pfs/i18n.hpp>
 #include <pfs/memory.hpp>
 #include <SFML/Graphics/Font.hpp>
-// #include <sstream>
-// #include <thread>
 
 namespace griotte {
 namespace SFML {
@@ -23,27 +21,31 @@ std::unordered_map<std::string, std::unique_ptr<sf::Font>> font::static_fonts;
 font font::static_fallback_font;
 
 // [static]
+bool font::add_font (std::string const & alias, std::unique_ptr<sf::Font> && f, bool is_fallback)
+{
+    if (static_fonts.find(alias) != static_fonts.end()) {
+        logger::e(tr::f_("font alias already occupied by font: {}", alias));
+        return false;
+    }
+
+    static_fonts[alias] = std::move(f);
+
+    if (is_fallback)
+        static_fallback_font = font {& *static_fonts[alias]};
+
+    return true;
+}
+
+// [static]
 bool font::load_font (std::string const & font_alias, pfs::filesystem::path const & path, bool is_fallback)
 {
     auto f = pfs::make_unique<sf::Font>();
     log_guard lg;
 
-    if (!f->loadFromFile(pfs::filesystem::utf8_encode(path))) {
+    if (!f->loadFromFile(pfs::filesystem::utf8_encode(path)))
         return false;
-    }
 
-    if (static_fonts.find(font_alias) != static_fonts.end()) {
-        logger::e(tr::f_("font alias already occupied by font: {}, change font alias for file: {}"
-            , font_alias, path));
-        return false;
-    }
-
-    static_fonts[font_alias] = std::move(f);
-
-    if (is_fallback)
-        static_fallback_font = font {& *static_fonts[font_alias]};
-
-    return true;
+    return add_font(font_alias, std::move(f), is_fallback);
 }
 
 // [static]

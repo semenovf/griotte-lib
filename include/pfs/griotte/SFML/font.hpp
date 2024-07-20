@@ -45,9 +45,39 @@ public:
         return _f;
     }
 
+private: // static
+    static bool add_font (std::string const & alias, std::unique_ptr<sf::Font> && f, bool is_fallback);
+
 public: // static
+    static std::vector<std::string> embeded_fonts ();
+
+    /**
+     * Load font from file
+     */
     static bool load_font (std::string const & font_alias, pfs::filesystem::path const & path, bool is_fallback = false);
+
+    /**
+     * Load font from memory
+     */
+    static bool load_font (std::string const & font_alias, bool is_fallback = false);
+
+    /**
+     * Load fallback font from memory
+     */
+    static bool load_font ();
+
+    /**
+     * Get font by alias
+     */
     static font get_font (std::string const & font_alias, font fallback_font = static_fallback_font);
+
+    /**
+     * Get default (fallback) font
+     */
+    static font get_font ()
+    {
+        return static_fallback_font;
+    }
 };
 
 }} // namespace griotte::SFML
