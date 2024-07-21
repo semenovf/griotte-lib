@@ -16,5 +16,17 @@ else()
     message(FATAL_ERROR "No any griotte TARGET found")
 endif()
 
+cmrc_add_resource_library(griotte-rc-icons
+    ALIAS rc::icons
+    NAMESPACE griotte
+    TYPE STATIC
+    WHENCE ${CMAKE_SOURCE_DIR}/../resources/icons
+    PREFIX icons
+    ${CMAKE_SOURCE_DIR}/../resources/icons/griotte-cherry-24.png
+    ${CMAKE_SOURCE_DIR}/../resources/icons/griotte-cherry-48.png
+    ${CMAKE_SOURCE_DIR}/../resources/icons/griotte-cherry-96.png
+    ${CMAKE_SOURCE_DIR}/../resources/icons/griotte-cherry-v1.png
+    ${CMAKE_SOURCE_DIR}/../resources/icons/griotte-cherry-v2.png)
+
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${_griotte_lib})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${_griotte_lib} rc::icons)

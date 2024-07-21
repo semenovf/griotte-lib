@@ -9,6 +9,7 @@
 #include <griotte/circle.hpp>
 #include <griotte/fixed_layout.hpp>
 #include <griotte/fontstyle.hpp>
+#include <griotte/image.hpp>
 #include <griotte/logger.hpp>
 #include <griotte/math.hpp>
 #include <griotte/rectangle.hpp>
@@ -17,9 +18,12 @@
 #include <griotte/SFML/ui.hpp>
 #include <pfs/filesystem.hpp>
 #include <pfs/i18n.hpp>
+#include <cmrc/cmrc.hpp>
 #include <array>
 #include <cstdlib>
 #include <utility>
+
+CMRC_DECLARE(rc::icons);
 
 static constexpr int SCREEN_WIDTH = 640;
 static constexpr int SCREEN_HEIGHT = 480;
@@ -38,7 +42,7 @@ static std::array<std::pair<std::string, fs::path>, 2> const fonts = {
 
 static void dump_embedded_fonts ()
 {
-    auto emfonts = griotte::SFML::font::embeded_fonts();
+    auto emfonts = griotte::SFML::font::embedded_fonts();
 
     fmt::println("Embedded fonts:");
     int counter = 0;
@@ -62,7 +66,7 @@ int main ([[maybe_unused]] int argc, [[maybe_unused]] char * argv[])
     griotte::SFML::ui ui {std::move(opts)};
 
     for (auto const & f: constants::fonts) {
-        if (griotte::SFML::font::load_font(f.first, f.second)) {
+        if (griotte::SFML::font::load(f.first, f.second)) {
             logger::d(tr::f_("Font loaded: {} => {}", f.first, f.second));
         } else {
             return EXIT_FAILURE;
@@ -173,7 +177,7 @@ int main ([[maybe_unused]] int argc, [[maybe_unused]] char * argv[])
     griotte::fontstyle font_style1;
     font_style1.add_bold();
 
-    auto font1 = griotte::font_t::get_font(constants::fonts[0].first);
+    auto font1 = griotte::font_t::get(constants::fonts[0].first);
 
     auto & t1 = l.create<griotte::text>("Hello world");
     t1.set_font(font1);
@@ -182,7 +186,7 @@ int main ([[maybe_unused]] int argc, [[maybe_unused]] char * argv[])
     t1.set_color(griotte::color_t {0xFF, 0x00, 0x00}); // Red
 
     // Get default (fallback) font
-    auto font2 = griotte::font_t::get_font();
+    auto font2 = griotte::font_t::get();
 
     auto & t2 = l.create<griotte::text>("Hello another world");
     t2.set_x(10);
@@ -192,11 +196,23 @@ int main ([[maybe_unused]] int argc, [[maybe_unused]] char * argv[])
     t2.set_color(griotte::color_t {0x26, 0x46, 0x53});
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
+    // Circle
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     auto & c1 = l.create<griotte::circle>();
-    c1.set_radius(griotte::unit_t{400});
+    c1.set_radius(griotte::unit_t{100});
     c1.set_color(griotte::color_t {0xFF, 0x00, 0xFF}); // Magenta
     c1.set_origin(SCREEN_WIDTH - c1.radius(), SCREEN_HEIGHT - c1.radius());
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Image
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    auto & im1 = l.create<griotte::image>();
+
+    if (!im1.load(PFS__LITERAL_PATH("griotte-cherry-v2.png")))
+        return EXIT_FAILURE;
+
+    im1.set_x(100);
+    im1.set_y(100);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 

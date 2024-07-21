@@ -4,10 +4,6 @@
 # This file is part of `griotte`.
 #
 # Changelog:
-#      2024.07.02 Initial version.
+#      2024.07.21 Initial version.
 ####################################################################################################
-include(${CMAKE_CURRENT_LIST_DIR}/cmrc.cmake)
-# include(${CMAKE_CURRENT_LIST_DIR}/glfw.cmake)
-# include(${CMAKE_CURRENT_LIST_DIR}/plutovg.cmake)
-# include(${CMAKE_CURRENT_LIST_DIR}/SDL2.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/SFML.cmake)
+include(cmrc/CMakeRC.cmake)

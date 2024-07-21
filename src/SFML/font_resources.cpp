@@ -33,7 +33,7 @@ static std::array<font_resource, 1> const static_font_resources {
 };
 
 // [static]
-std::vector<std::string> font::embeded_fonts ()
+std::vector<std::string> font::embedded_fonts ()
 {
     std::vector<std::string> result;
     result.reserve(static_font_resources.size());
@@ -46,13 +46,13 @@ std::vector<std::string> font::embeded_fonts ()
 }
 
 // [static]
-bool font::load_font ()
+bool font::load ()
 {
-    return load_font(static_font_resources[0].alias, true);
+    return load(static_font_resources[0].alias, true);
 }
 
 // [static]
-bool font::load_font (std::string const & font_alias, bool is_fallback)
+bool font::load (std::string const & font_alias, bool is_fallback)
 {
     for (auto const & item: static_font_resources) {
         if (item.alias == font_alias) {
@@ -62,7 +62,7 @@ bool font::load_font (std::string const & font_alias, bool is_fallback)
             auto success = f->loadFromMemory(item.data, item.len);
 
             if (success)
-                return add_font(font_alias, std::move(f), is_fallback);
+                return add(font_alias, std::move(f), is_fallback);
 
             return false;
         }

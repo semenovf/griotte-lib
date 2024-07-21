@@ -53,7 +53,7 @@ ui::ui (options && opts)
     _root_layout = pfs::make_unique<fixed_layout>();
 
     // Load default (fallback font)
-    if (!font::load_font()) {
+    if (!font::load()) {
         throw std::runtime_error(tr::_("loading default font failure"));
     }
 }

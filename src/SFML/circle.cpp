@@ -16,24 +16,22 @@ namespace griotte {
 template <>
 void render<circle, sf::RenderTarget> (circle & item, sf::RenderTarget & r)
 {
-    sf::CircleShape c;
-    c.setPosition(item.x(), item.y());
-    c.setRadius(item.radius());
-    c.setOutlineThickness(item.thickness());
-    c.setFillColor(SFML::cast(item.color()));
-    c.setOutlineColor(SFML::cast(item.outline_color()));
-
-    // Make the circle smoother
-    c.setPointCount(static_cast<std::size_t>(item.radius()) / 2);
-
-    r.draw(c);
+    item.render(& r);
 }
 
 void circle::render (sf::RenderTarget * r)
 {
-    griotte::render(*this, *r);
+    sf::CircleShape c;
+    c.setPosition(x(), y());
+    c.setRadius(radius());
+    c.setOutlineThickness(thickness());
+    c.setFillColor(SFML::cast(color()));
+    c.setOutlineColor(SFML::cast(outline_color()));
+
+    // Make the circle smoother
+    c.setPointCount(static_cast<std::size_t>(radius()) / 2);
+
+    r->draw(c);
 }
 
 } // namespace griotte
-
-

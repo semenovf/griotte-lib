@@ -46,35 +46,35 @@ public:
     }
 
 private: // static
-    static bool add_font (std::string const & alias, std::unique_ptr<sf::Font> && f, bool is_fallback);
+    static bool add (std::string const & alias, std::unique_ptr<sf::Font> && f, bool is_fallback);
 
 public: // static
-    static std::vector<std::string> embeded_fonts ();
+    static std::vector<std::string> embedded_fonts ();
 
     /**
      * Load font from file
      */
-    static bool load_font (std::string const & font_alias, pfs::filesystem::path const & path, bool is_fallback = false);
+    static bool load (std::string const & font_alias, pfs::filesystem::path const & path, bool is_fallback = false);
 
     /**
      * Load font from memory
      */
-    static bool load_font (std::string const & font_alias, bool is_fallback = false);
+    static bool load (std::string const & font_alias, bool is_fallback = false);
 
     /**
      * Load fallback font from memory
      */
-    static bool load_font ();
+    static bool load ();
 
     /**
      * Get font by alias
      */
-    static font get_font (std::string const & font_alias, font fallback_font = static_fallback_font);
+    static font get (std::string const & font_alias, font fallback_font = static_fallback_font);
 
     /**
      * Get default (fallback) font
      */
-    static font get_font ()
+    static font get ()
     {
         return static_fallback_font;
     }

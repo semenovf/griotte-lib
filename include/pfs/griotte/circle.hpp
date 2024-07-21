@@ -16,7 +16,6 @@ namespace griotte {
 class circle: public item, public outlined
 {
 protected:
-    // unit_t _radius {0};
     color_t _color;
 
 public:

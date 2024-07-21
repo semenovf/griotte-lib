@@ -21,7 +21,7 @@ std::unordered_map<std::string, std::unique_ptr<sf::Font>> font::static_fonts;
 font font::static_fallback_font;
 
 // [static]
-bool font::add_font (std::string const & alias, std::unique_ptr<sf::Font> && f, bool is_fallback)
+bool font::add (std::string const & alias, std::unique_ptr<sf::Font> && f, bool is_fallback)
 {
     if (static_fonts.find(alias) != static_fonts.end()) {
         logger::e(tr::f_("font alias already occupied by font: {}", alias));
@@ -37,7 +37,7 @@ bool font::add_font (std::string const & alias, std::unique_ptr<sf::Font> && f, 
 }
 
 // [static]
-bool font::load_font (std::string const & font_alias, pfs::filesystem::path const & path, bool is_fallback)
+bool font::load (std::string const & font_alias, pfs::filesystem::path const & path, bool is_fallback)
 {
     auto f = pfs::make_unique<sf::Font>();
     log_guard lg;
@@ -45,11 +45,11 @@ bool font::load_font (std::string const & font_alias, pfs::filesystem::path cons
     if (!f->loadFromFile(pfs::filesystem::utf8_encode(path)))
         return false;
 
-    return add_font(font_alias, std::move(f), is_fallback);
+    return add(font_alias, std::move(f), is_fallback);
 }
 
 // [static]
-font font::get_font (std::string const & font_alias, font fallback_font)
+font font::get (std::string const & font_alias, font fallback_font)
 {
     auto pos = static_fonts.find(font_alias);
 
