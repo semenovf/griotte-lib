@@ -10,7 +10,6 @@
 #include "color.hpp"
 #include "item.hpp"
 #include "outlined.hpp"
-#include <deque>
 
 namespace griotte {
 

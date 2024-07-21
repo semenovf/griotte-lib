@@ -6,6 +6,7 @@
 // Changelog:
 //      2024.07.12 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
+#include <griotte/circle.hpp>
 #include <griotte/fixed_layout.hpp>
 #include <griotte/fontstyle.hpp>
 #include <griotte/logger.hpp>
@@ -189,6 +190,13 @@ int main ([[maybe_unused]] int argc, [[maybe_unused]] char * argv[])
     t2.set_font(font2);
     t2.set_pixel_size(24);
     t2.set_color(griotte::color_t {0x26, 0x46, 0x53});
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    auto & c1 = l.create<griotte::circle>();
+    c1.set_radius(griotte::unit_t{400});
+    c1.set_color(griotte::color_t {0xFF, 0x00, 0xFF}); // Magenta
+    c1.set_origin(SCREEN_WIDTH - c1.radius(), SCREEN_HEIGHT - c1.radius());
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
