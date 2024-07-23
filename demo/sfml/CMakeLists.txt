@@ -28,5 +28,8 @@ cmrc_add_resource_library(griotte-rc-icons
     ${CMAKE_SOURCE_DIR}/../resources/icons/griotte-cherry-v1.png
     ${CMAKE_SOURCE_DIR}/../resources/icons/griotte-cherry-v2.png)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME}
+    main.cpp
+    fixed_layout.cpp
+    scale.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${_griotte_lib} rc::icons)

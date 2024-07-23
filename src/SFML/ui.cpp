@@ -65,6 +65,17 @@ ui::~ui ()
         _win.reset();
 }
 
+
+unsigned int ui::width () const noexcept
+{
+    return _win_w;
+}
+
+unsigned int ui::height () const noexcept
+{
+    return _win_h;
+}
+
 void ui::set_color (color_t value)
 {
     _color = value;

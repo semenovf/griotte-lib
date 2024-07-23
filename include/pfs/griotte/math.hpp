@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "unit.hpp"
+#include "transform.hpp"
 
 namespace griotte {
 
@@ -28,6 +29,14 @@ inline geom2d center_in (geom2d const & r, dim2d const & d)
     result.a.y = r.a.y + (r.b.h - d.h) / 2;
     result.b.w = d.w;
     result.b.h = d.h;
+    return result;
+}
+
+template <typename Float>
+inline geom2d apply (transform<Float> & t, geom2d const & g)
+{
+    geom2d result;
+    t.map(g.a.x, g.a.y, g.b.w, g.b.h, & result.a.x, & result.a.y, & result.b.w, & result.b.h);
     return result;
 }
 

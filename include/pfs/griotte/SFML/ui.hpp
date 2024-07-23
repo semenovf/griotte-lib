@@ -61,6 +61,19 @@ public:
         return *ptr;
     }
 
+    unsigned int width () const noexcept;
+    unsigned int height () const noexcept;
+
+    unit_t width_units () const noexcept
+    {
+        return static_cast<unit_t>(width());
+    }
+
+    unit_t height_units () const noexcept
+    {
+        return static_cast<unit_t>(height());
+    }
+
     void step ();
     void run ();
 };

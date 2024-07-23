@@ -10,6 +10,7 @@
 #include "renderer.hpp"
 #include "node.hpp"
 #include "unit.hpp"
+#include <pfs/optional.hpp>
 #include <cstdint>
 
 namespace griotte {
@@ -28,6 +29,10 @@ protected:
 
     /// The item receives mouse and keyboard events if @c true.
     bool _enabled {true};
+
+    float _scale_factor_x {1.0f};
+    float _scale_factor_y {1.0f};
+    float _rotation {0.0f};
 
 public:
     item () = default;
@@ -65,6 +70,17 @@ public:
     dim_t dimension () const noexcept
     {
         return dim_t{_w, _h};
+    }
+
+    void set_scale (float factor_x, float factor_y)
+    {
+        _scale_factor_x = factor_x;
+        _scale_factor_y = factor_y;
+    }
+
+    void set_scale (float factor)
+    {
+        set_scale(factor, factor);
     }
 
     virtual void render (renderer_ptr_t r) = 0;
