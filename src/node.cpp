@@ -6,21 +6,23 @@
 // Changelog:
 //      2024.07.15 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
-#include "griotte/node.hpp"
+#include "node.hpp"
 #include <pfs/assert.hpp>
 
 namespace griotte {
 
-void node::insert_before (node * n)
+void node::insert_before (node * n, void * pdata)
 {
+    n->_pdata = pdata;
     n->_parent = _parent;
     n->_prev = _prev;
     n->_next = this;
     _prev = n;
 }
 
-void node::insert_after (node * n)
+void node::insert_after (node * n, void * pdata)
 {
+    n->_pdata = pdata;
     n->_parent = _parent;
     n->_prev = this;
     n->_next = _next;
@@ -36,8 +38,10 @@ void node::remove ()
         _prev->_next = _next;
 }
 
-void node::add_child (node * n)
+void node::add_child (node * n, void * pdata)
 {
+    n->_pdata = pdata;
+
     n->_parent = this;
     n->_prev = nullptr;
     n->_next = nullptr;

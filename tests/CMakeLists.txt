@@ -48,6 +48,12 @@ foreach (name ${TEST_NAMES})
     endif()
 
     target_link_libraries(${name} PRIVATE ${_griotte_lib})
+
+    set_target_properties(${name}
+        PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
     add_test(NAME ${name} COMMAND ${name})
 endforeach()
 

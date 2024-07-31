@@ -7,8 +7,8 @@
 //      2024.07.13 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include <griotte/color.hpp>
-#include <griotte/layout.hpp>
+#include <pfs/griotte/color.hpp>
+#include <pfs/griotte/layout.hpp>
 #include <memory>
 #include <string>
 #include <unordered_map>

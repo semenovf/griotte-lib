@@ -7,7 +7,7 @@
 //      2024.07.18 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include "griotte/logger.hpp"
+#include "logger.hpp"
 #include <SFML/System/Err.hpp>
 #include <sstream>
 

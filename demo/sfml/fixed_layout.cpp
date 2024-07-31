@@ -6,15 +6,16 @@
 // Changelog:
 //      2024.07.23 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
-#include <griotte/circle.hpp>
-#include <griotte/fixed_layout.hpp>
-#include <griotte/fontstyle.hpp>
-#include <griotte/image.hpp>
-#include <griotte/math.hpp>
-#include <griotte/rectangle.hpp>
-#include <griotte/text.hpp>
-#include <griotte/SFML/font.hpp>
-#include <griotte/SFML/ui.hpp>
+#include <pfs/griotte/circle.hpp>
+#include <pfs/griotte/fixed_layout.hpp>
+#include <pfs/griotte/fontstyle.hpp>
+#include <pfs/griotte/image.hpp>
+#include <pfs/griotte/math.hpp>
+#include <pfs/griotte/rectangle.hpp>
+#include <pfs/griotte/SFML/text.hpp>
+#include <pfs/griotte/SFML/font.hpp>
+#include <pfs/griotte/SFML/ui.hpp>
+#include <pfs/log.hpp>
 
 void fixed_layout (griotte::SFML::ui & ui)
 {
@@ -116,27 +117,38 @@ void fixed_layout (griotte::SFML::ui & ui)
     s5.set_x(r5.x() + margin);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
+        griotte::fontstyle font_style1;
+        font_style1.add_bold();
 
-    griotte::fontstyle font_style1;
-    font_style1.add_bold();
+        auto font1 = griotte::font_t::get("Inter");
 
-    auto font1 = griotte::font_t::get("Inter");
+        auto & t1 = l.create<griotte::text_t>("Primary");
+        t1.set_font(font1);
+        t1.set_font_style(font_style1);
+        t1.set_pixel_size(16);
+        t1.set_color(griotte::color_t {0x34, 0x3A, 0x40});
+        //t1.set_bgcolor(griotte::color_t {0x00, 0xFF, 0xFF}); // Cyan
+        auto bg = t1.bounding_geom();
+        auto g = griotte::center_in(r1.geometry(), griotte::dim_t{bg.w, bg.h});
+        t1.set_position(s1.x() + s1.width() + margin, g.y);
+        //t1.set_position(s1.x() + s1.width() + margin, 0/*r1.y()*/);
+        // t1.set_position(0, 0);
+    }
 
-    auto & t1 = l.create<griotte::text>("Hello world");
-    t1.set_font(font1);
-    t1.set_font_style(font_style1);
-    t1.set_pixel_size(24);
-    t1.set_color(griotte::color_t {0xFF, 0x00, 0x00}); // Red
+#if __COMMENT__
+    {
+        // Get default (fallback) font
+        auto font2 = griotte::font_t::get();
 
-    // Get default (fallback) font
-    auto font2 = griotte::font_t::get();
-
-    auto & t2 = l.create<griotte::text>("Hello another world");
-    t2.set_x(10);
-    t2.set_y(100);
-    t2.set_font(font2);
-    t2.set_pixel_size(24);
-    t2.set_color(griotte::color_t {0x26, 0x46, 0x53});
+        auto & t2 = l.create<griotte::text_t>("Hello another world");
+        t2.set_x(0);
+        t2.set_y(0);
+        t2.set_font(font2);
+        t2.set_pixel_size(24);
+        t2.set_color(griotte::color_t {0x26, 0x46, 0x53});
+    }
+#endif
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Circle

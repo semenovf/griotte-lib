@@ -7,9 +7,9 @@
 //      2024.07.13 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #include "casting.hpp"
-#include "griotte/fixed_layout.hpp"
-#include "griotte/font.hpp"
-#include "griotte/SFML/ui.hpp"
+#include "fixed_layout.hpp"
+#include "font.hpp"
+#include "SFML/ui.hpp"
 #include <pfs/i18n.hpp>
 #include <pfs/memory.hpp>
 #include <pfs/stopwatch.hpp>

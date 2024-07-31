@@ -11,80 +11,69 @@
 #include "font.hpp"
 #include "fontstyle.hpp"
 #include "item.hpp"
+#include <pfs/optional.hpp>
 #include <string>
 
 namespace griotte {
 
+template <typename Rep>
 class text: public item
 {
 protected:
-    std::string  _value;
-    unsigned int _pixel_size {0};
-    color_t      _color;
-    font_t       _font;
-    fontstyle    _font_style;
+    Rep _rep;
+    font_t _font;
+    fontstyle _font_style;
+    pfs::optional<color_t> _bgcolor;
 
 public:
-    text (): item () {}
-    text (std::string value)
-        : item ()
-        , _value(std::move(value))
-    {}
+    text ();
+    text (std::string const & value);
+    ~text ();
 
-    ~text () = default;
+    unsigned int pixel_size () const noexcept;
+    void set_pixel_size (unsigned int value);
 
-    unsigned int pixel_size () const noexcept
-    {
-        return _pixel_size;
-    }
+    color_t color () const noexcept;
+    void set_color (color_t value);
 
-    void set_pixel_size (unsigned int value)
-    {
-        _pixel_size = value;
-    }
-
-    color_t color () const noexcept
-    {
-        return _color;
-    }
-
-    void set_color (color_t value)
-    {
-        _color = value;
-    }
-
-    std::string const & value () const noexcept
-    {
-        return _value;
-    }
-
-    void set_value (std::string value)
-    {
-        _value = std::move(value);
-    }
+    std::string string () const noexcept;
+    void set_string (std::string const & string);
 
     font_t font () const noexcept
     {
         return _font;
     }
 
-    void set_font (font_t value)
-    {
-        _font = value;
-    }
+    void set_font (font_t f);
 
     fontstyle font_style () const noexcept
     {
         return _font_style;
     }
 
-    void set_font_style (fontstyle value)
+    void set_font_style (fontstyle value);
+
+    void set_bgcolor (color_t value)
     {
-        _font_style = value;
+        _bgcolor = value;
     }
+
+    void clear_bgcolor ()
+    {
+        _bgcolor = pfs::nullopt;
+    }
+
+    pfs::optional<color_t> bgcolor () const noexcept
+    {
+        return _bgcolor;
+    }
+
+    geom2d bounding_geom () const;
+    rect2d bounding_rect () const;
+
+    void set_position (unit_t x, unit_t y) override;
 
     void render (renderer_ptr_t r) override;
 };
 
 } // namespace griotte
-

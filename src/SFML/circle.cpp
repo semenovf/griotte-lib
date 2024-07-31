@@ -7,17 +7,17 @@
 //      2024.07.21 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #include "casting.hpp"
-#include "griotte/circle.hpp"
+#include "circle.hpp"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace griotte {
 
-template <>
-void render<circle, sf::RenderTarget> (circle & item, sf::RenderTarget & r)
-{
-    item.render(& r);
-}
+// template <>
+// void render<circle, sf::RenderTarget> (circle & item, sf::RenderTarget & r)
+// {
+//     item.render(& r);
+// }
 
 void circle::render (sf::RenderTarget * r)
 {

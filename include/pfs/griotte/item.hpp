@@ -46,8 +46,22 @@ public:
     constexpr bool visible () const noexcept { return _visible; }
     constexpr bool enabled () const noexcept { return _enabled; }
 
-    void set_x (unit_t value) { _x = value; }
-    void set_y (unit_t value) { _y = value; }
+    virtual void set_position (unit_t x, unit_t y)
+    {
+        _x = x;
+        _y = y;
+    }
+
+    void set_x (unit_t value)
+    {
+        set_position(value, _y);
+    }
+
+    void set_y (unit_t value)
+    {
+        set_position(_x, value);
+    }
+
     void set_level (unit_t value) { _level = value; }
     void set_width (unit_t value) { _w = value; }
     void set_height (unit_t value) { _h = value; }
@@ -56,15 +70,15 @@ public:
 
     geom_t geometry () const noexcept
     {
-        return geom_t {point_t{_x, _y}, dim_t{_w, _h}};
+        return geom_t {_x, _y, _w, _h};
     }
 
     void set_geometry (geom_t const & g)
     {
-        _x = g.a.x;
-        _y = g.a.y;
-        _w = g.b.w;
-        _h = g.b.h;
+        set_position(g.x, g.y);
+
+        _w = g.w;
+        _h = g.h;
     }
 
     dim_t dimension () const noexcept
@@ -76,6 +90,8 @@ public:
     {
         _scale_factor_x = factor_x;
         _scale_factor_y = factor_y;
+
+        // FIXME See `set_position_callback` usage
     }
 
     void set_scale (float factor)
@@ -85,8 +101,5 @@ public:
 
     virtual void render (renderer_ptr_t r) = 0;
 };
-
-template <typename Item, typename R>
-void render (Item & item, R & r/*enderer*/);
 
 } // namespace griotte

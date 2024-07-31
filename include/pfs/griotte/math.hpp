@@ -15,20 +15,20 @@ namespace griotte {
 inline rect2d center_in (rect2d const & r, dim2d const & d)
 {
     rect2d result;
-    result.a.x = r.a.x + (r.b.x - r.a.x - d.w) / 2;
-    result.a.y = r.a.y + (r.b.y - r.a.y - d.h) / 2;
-    result.b.x = result.a.x + d.w;
-    result.b.y = result.a.y + d.h;
+    result.x1 = r.x1 + (r.x2 - r.x1 - d.w) / 2;
+    result.y1 = r.y1 + (r.y2 - r.y1 - d.h) / 2;
+    result.x2 = result.x1 + d.w;
+    result.y2 = result.y1 + d.h;
     return result;
 }
 
 inline geom2d center_in (geom2d const & r, dim2d const & d)
 {
     geom2d result;
-    result.a.x = r.a.x + (r.b.w - d.w) / 2;
-    result.a.y = r.a.y + (r.b.h - d.h) / 2;
-    result.b.w = d.w;
-    result.b.h = d.h;
+    result.x = r.x + (r.w - d.w) / 2;
+    result.y = r.y + (r.h - d.h) / 2;
+    result.w = d.w;
+    result.h = d.h;
     return result;
 }
 
@@ -36,7 +36,7 @@ template <typename Float>
 inline geom2d apply (transform<Float> & t, geom2d const & g)
 {
     geom2d result;
-    t.map(g.a.x, g.a.y, g.b.w, g.b.h, & result.a.x, & result.a.y, & result.b.w, & result.b.h);
+    t.map(g.x, g.y, g.w, g.h, & result.x, & result.y, & result.w, & result.h);
     return result;
 }
 

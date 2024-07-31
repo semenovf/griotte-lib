@@ -25,15 +25,15 @@ struct dim2d
 
 struct rect2d
 {
-    point2d a; // top-left corner
-    point2d b; // bottom-right corner
+    unit_t x1, y1; // top-left corner
+    unit_t x2, y2; // bottom-right corner
 };
 
 // Geometry
 struct geom2d
 {
-    point2d a; // top-left corner
-    dim2d b;   // size
+    unit_t x, y; // top-left corner
+    unit_t w, h; // size
 };
 
 using point_t = point2d;

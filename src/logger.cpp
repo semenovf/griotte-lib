@@ -6,7 +6,7 @@
 // Changelog:
 //      2024.07.18 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
-#include "griotte/logger.hpp"
+#include "logger.hpp"
 #include <pfs/log.hpp>
 
 namespace griotte {

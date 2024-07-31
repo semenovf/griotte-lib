@@ -8,8 +8,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "casting.hpp"
 #include "log_guard.hpp"
-#include "griotte/SFML/font.hpp"
-#include "griotte/logger.hpp"
+#include "SFML/font.hpp"
+#include "logger.hpp"
 #include <pfs/i18n.hpp>
 #include <pfs/memory.hpp>
 #include <SFML/Graphics/Font.hpp>
@@ -27,6 +27,8 @@ bool font::add (std::string const & alias, std::unique_ptr<sf::Font> && f, bool 
         logger::e(tr::f_("font alias already occupied by font: {}", alias));
         return false;
     }
+
+    f->setSmooth(true);
 
     static_fonts[alias] = std::move(f);
 

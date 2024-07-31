@@ -30,6 +30,7 @@ cmrc_add_resource_library(griotte-rc-icons
 
 add_executable(${PROJECT_NAME}
     main.cpp
+    anchors_layout.cpp
     fixed_layout.cpp
     scale.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${_griotte_lib} rc::icons)

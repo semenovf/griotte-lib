@@ -7,7 +7,7 @@
 //      2024.07.21 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #include "log_guard.hpp"
-#include "griotte/image.hpp"
+#include "image.hpp"
 #include <pfs/memory.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -51,11 +51,11 @@ bool image::load (pfs::filesystem::path const & image_path)
     return true;
 }
 
-template <>
-void render<image, sf::RenderTarget> (image & item, sf::RenderTarget & r)
-{
-    item.render(& r);
-}
+// template <>
+// void render<image, sf::RenderTarget> (image & item, sf::RenderTarget & r)
+// {
+//     item.render(& r);
+// }
 
 void image::render (sf::RenderTarget * r)
 {

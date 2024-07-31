@@ -8,8 +8,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
-#include <griotte/fixed_layout.hpp>
-#include <griotte/button.hpp>
+#include <pfs/griotte/fixed_layout.hpp>
+#include <pfs/griotte/button.hpp>
 
 TEST_CASE("Basic") {
     griotte::fixed_layout layout1;

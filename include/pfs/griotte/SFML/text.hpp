@@ -4,13 +4,24 @@
 // This file is part of `griotte-lib`.
 //
 // Changelog:
-//      2024.07.16 Initial version.
+//      2024.07.27 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
-#include "fixed_layout.hpp"
+#pragma once
+#include <pfs/griotte/text.hpp>
+#include <SFML/Graphics/Text.hpp>
+
+namespace griotte {
+namespace SFML {
+
+struct text_rep
+{
+    sf::Text d;
+};
+
+}} // namespace griotte::SFML
 
 namespace griotte {
 
-void fixed_layout::update ()
-{}
+using text_t = text<SFML::text_rep>;
 
 } // namespace griotte

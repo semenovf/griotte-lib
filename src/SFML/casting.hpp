@@ -7,7 +7,7 @@
 //      2024.07.13 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include "griotte/color.hpp"
+#include "color.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System/String.hpp>
 #include <cstring>

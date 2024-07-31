@@ -12,6 +12,8 @@ namespace griotte {
 
 class node
 {
+protected:
+    void * _pdata {nullptr};
     node * _parent {nullptr};
     node * _prev   {nullptr};
     node * _next   {nullptr};
@@ -27,6 +29,11 @@ public:
     node & operator = (node const &) = delete;
     node & operator = (node &&) = delete;
 
+    void * pdata () const noexcept
+    {
+        return _pdata;
+    }
+
     node * first_child ()
     {
         return _child_first;
@@ -40,12 +47,12 @@ public:
     /**
      * Insert node before this one.
      */
-    void insert_before (node * n);
+    void insert_before (node * n, void * pdata);
 
     /**
      * Insert node after this one.
      */
-    void insert_after (node * n);
+    void insert_after (node * n, void * pdata);
 
     /**
      * Remove current node from list
@@ -55,7 +62,7 @@ public:
     /**
      * Add child node
      */
-    void add_child (node * n);
+    void add_child (node * n, void * pdata);
 
     /**
      * Remove child node.

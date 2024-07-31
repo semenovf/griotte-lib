@@ -35,6 +35,7 @@ if (NOT TARGET pfs::common)
 endif()
 
 list(APPEND _griotte__sources
+    ${CMAKE_CURRENT_LIST_DIR}/src/anchors_layout.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/circle.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/fixed_layout.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/layout.cpp
@@ -60,9 +61,11 @@ endif()
 
 foreach(_target IN LISTS _griotte__targets)
     portable_target(SOURCES ${_target} ${_griotte__sources})
-    portable_target(INCLUDE_DIRS ${_target} PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/include
-        ${CMAKE_CURRENT_LIST_DIR}/include/pfs)
+    portable_target(INCLUDE_DIRS ${_target}
+        PUBLIC
+            ${CMAKE_CURRENT_LIST_DIR}/include
+        PRIVATE
+            ${CMAKE_CURRENT_LIST_DIR}/include/pfs/griotte)
     portable_target(LINK ${_target} PUBLIC pfs::common)
 
 #    if (GRIOTTE__SDL2_BACKEND)

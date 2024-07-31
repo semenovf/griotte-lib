@@ -6,7 +6,7 @@
 // Changelog:
 //      2024.07.21 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
-#include "griotte/circle.hpp"
+#include "circle.hpp"
 
 namespace griotte {
 

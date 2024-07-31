@@ -7,8 +7,8 @@
 //      2024.07.20 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #include "log_guard.hpp"
-#include "griotte/SFML/font.hpp"
-#include "griotte/logger.hpp"
+#include "logger.hpp"
+#include "SFML/font.hpp"
 #include <pfs/i18n.hpp>
 #include <pfs/memory.hpp>
 #include <SFML/Graphics/Font.hpp>
