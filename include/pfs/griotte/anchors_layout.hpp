@@ -49,6 +49,8 @@ struct anchors
     // TODO anchors.topMargin : real
     // TODO anchors.verticalCenterOffset : real
 
+    unit_t width {0};
+    unit_t height {0};
     anchor_line left;
     anchor_line top;
     anchor_line right;
@@ -87,9 +89,12 @@ public:
     }
 
     void fill (item & i, item & rel);
-    void set_left (item & i, item & rel, anchor_spot rel_spot, griotte::unit_t margin);
-    void set_top (item & i, item & rel, anchor_spot rel_spot, griotte::unit_t margin);
-    void set_margins (item & i, griotte::unit_t m);
+    void set_width (item & i, unit_t w);
+    void set_height (item & i, unit_t h);
+    void set_left (item & i, item & rel, anchor_spot rel_spot, unit_t margin);
+    void set_top (item & i, item & rel, anchor_spot rel_spot, unit_t margin);
+    void set_right (item & i, item & rel, anchor_spot rel_spot, unit_t margin);
+    void set_margins (item & i, unit_t m);
 
     void update () override;
 };

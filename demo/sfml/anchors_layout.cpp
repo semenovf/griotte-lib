@@ -33,9 +33,16 @@ void anchors_layout (griotte::SFML::ui & ui)
     r2.set_color(griotte::color_t {0x2A, 0x9D, 0x8F});
 
     auto & r3 = l.create<griotte::rectangle>();
-    l.set_left(r3, r2, griotte::anchor_spot::left, griotte::unit_t{0});
-    l.set_top(r3, r2, griotte::anchor_spot::top, griotte::unit_t{0});
+    l.set_left(r3, r2, griotte::anchor_spot::left, griotte::unit_t{10});
+    l.set_top(r3, r2, griotte::anchor_spot::top, griotte::unit_t{10});
+    l.set_width(r3, 50);
+    l.set_height(r3, 50);
     r3.set_color(griotte::color_t {0x83, 0x38, 0xEC});
-    r3.set_width(50);
-    r3.set_height(50);
+
+    auto & r4 = l.create<griotte::rectangle>();
+    l.set_right(r4, r2, griotte::anchor_spot::right, griotte::unit_t{10});
+    l.set_top(r4, r2, griotte::anchor_spot::top, griotte::unit_t{10});
+    l.set_width(r4, 60);
+    l.set_height(r4, 60);
+    r4.set_color(griotte::color_t {0xC1, 0x12, 0x1F});
 }
