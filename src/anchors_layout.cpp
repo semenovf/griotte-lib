@@ -95,6 +95,14 @@ void anchors_layout::set_right (item & i, item & rel, anchor_spot rel_spot, grio
     a->right.margin = margin;
 }
 
+void anchors_layout::set_bottom (item & i, item & rel, anchor_spot rel_spot, unit_t margin)
+{
+    auto a = retrieve_anchors(& i);
+    a->bottom.rel = & rel;
+    a->bottom.spot = rel_spot;
+    a->bottom.margin = margin;
+}
+
 void anchors_layout::set_margins (item & i, griotte::unit_t m)
 {
     auto a = retrieve_anchors(& i);
@@ -158,7 +166,7 @@ void anchors_layout::update ()
                     break;
                 case anchor_spot::right:
                     if (a->width > unit_t{0}) {
-                        ptr->set_x(a->right.rel->x() + a->right.rel->width() - ptr->width() - a->right.margin);
+                        ptr->set_x(a->right.rel->x() + a->right.rel->width() - a->width - a->right.margin);
                         ptr->set_width(a->width);
                     } else {
                         // width - 2 * right_marging
@@ -185,8 +193,13 @@ void anchors_layout::update ()
                 case anchor_spot::right:
                     break;
                 case anchor_spot::bottom:
-                    // height - 2 * bottom_marging
-                    ptr->set_height(a->bottom.rel->height() - a->bottom.margin - a->bottom.margin);
+                    if (a->height > unit_t{0}) {
+                        ptr->set_y(a->bottom.rel->y() + a->bottom.rel->height() - a->height - a->bottom.margin);
+                        ptr->set_height(a->height);
+                    } else {
+                        // height - 2 * bottom_marging
+                        ptr->set_height(a->bottom.rel->height() - a->bottom.margin - a->bottom.margin);
+                    }
                     break;
                 case anchor_spot::horizontal_center:
                     break;

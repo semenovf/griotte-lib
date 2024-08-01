@@ -91,9 +91,10 @@ public:
     void fill (item & i, item & rel);
     void set_width (item & i, unit_t w);
     void set_height (item & i, unit_t h);
-    void set_left (item & i, item & rel, anchor_spot rel_spot, unit_t margin);
-    void set_top (item & i, item & rel, anchor_spot rel_spot, unit_t margin);
-    void set_right (item & i, item & rel, anchor_spot rel_spot, unit_t margin);
+    void set_left (item & i, item & rel, anchor_spot rel_spot, unit_t margin = 0);
+    void set_top (item & i, item & rel, anchor_spot rel_spot, unit_t margin = 0);
+    void set_right (item & i, item & rel, anchor_spot rel_spot, unit_t margin = 0);
+    void set_bottom (item & i, item & rel, anchor_spot rel_spot, unit_t margin = 0);
     void set_margins (item & i, unit_t m);
 
     void update () override;
