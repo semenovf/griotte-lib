@@ -23,15 +23,15 @@ enum class anchor_spot
     , top
     , right
     , bottom
-    , horizontal_center
-    , vertical_center
+    , hcenter
+    , vcenter
 };
 
 struct anchor_line
 {
     item * rel {nullptr}; // relative to this object
     anchor_spot spot {anchor_spot::none};
-    unit_t margin {0};
+    unit_t margin {0}; // offset for `hcenter` and `vcenter`
 };
 
 struct anchors
@@ -55,8 +55,8 @@ struct anchors
     anchor_line top;
     anchor_line right;
     anchor_line bottom;
-    anchor_line horizontal_center;
-    anchor_line vertical_center;
+    anchor_line hcenter;
+    anchor_line vcenter;
 };
 
 class anchors_layout: public layout
@@ -95,7 +95,10 @@ public:
     void set_top (item & i, item & rel, anchor_spot rel_spot, unit_t margin = 0);
     void set_right (item & i, item & rel, anchor_spot rel_spot, unit_t margin = 0);
     void set_bottom (item & i, item & rel, anchor_spot rel_spot, unit_t margin = 0);
+    void set_hcenter (item & i, item & rel, anchor_spot rel_spot, unit_t offset = 0);
+    void set_vcenter (item & i, item & rel, anchor_spot rel_spot, unit_t offset = 0);
     void set_margins (item & i, unit_t m);
+    void center_in (item & i, item & rel);
 
     void update () override;
 };

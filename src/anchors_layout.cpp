@@ -7,9 +7,9 @@
 //      2024.07.30 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #include "anchors_layout.hpp"
+#include "logger.hpp"
 #include <pfs/assert.hpp>
-
-#include <pfs/log.hpp>
+#include <pfs/i18n.hpp>
 
 namespace griotte {
 
@@ -73,6 +73,15 @@ void anchors_layout::fill (item & i, item & rel)
 
 void anchors_layout::set_left (item & i, item & rel, anchor_spot rel_spot, griotte::unit_t margin)
 {
+    auto valid = rel_spot == anchor_spot::left
+        || rel_spot == anchor_spot::right
+        || rel_spot == anchor_spot::hcenter;
+
+    if (!valid) {
+        logger::e(tr::_("bad anchor for left side"));
+        return;
+    }
+
     auto a = retrieve_anchors(& i);
     a->left.rel = & rel;
     a->left.spot = rel_spot;
@@ -81,6 +90,15 @@ void anchors_layout::set_left (item & i, item & rel, anchor_spot rel_spot, griot
 
 void anchors_layout::set_top (item & i, item & rel, anchor_spot rel_spot, griotte::unit_t margin)
 {
+    auto valid = rel_spot == anchor_spot::top
+        || rel_spot == anchor_spot::bottom
+        || rel_spot == anchor_spot::vcenter;
+
+    if (!valid) {
+        logger::e(tr::_("bad anchor for top side"));
+        return;
+    }
+
     auto a = retrieve_anchors(& i);
     a->top.rel = & rel;
     a->top.spot = rel_spot;
@@ -89,6 +107,15 @@ void anchors_layout::set_top (item & i, item & rel, anchor_spot rel_spot, griott
 
 void anchors_layout::set_right (item & i, item & rel, anchor_spot rel_spot, griotte::unit_t margin)
 {
+    auto valid = rel_spot == anchor_spot::left
+        || rel_spot == anchor_spot::right
+        || rel_spot == anchor_spot::hcenter;
+
+    if (!valid) {
+        logger::e(tr::_("bad anchor for right side"));
+        return;
+    }
+
     auto a = retrieve_anchors(& i);
     a->right.rel = & rel;
     a->right.spot = rel_spot;
@@ -97,10 +124,53 @@ void anchors_layout::set_right (item & i, item & rel, anchor_spot rel_spot, grio
 
 void anchors_layout::set_bottom (item & i, item & rel, anchor_spot rel_spot, unit_t margin)
 {
+    auto valid = rel_spot == anchor_spot::top
+        || rel_spot == anchor_spot::bottom
+        || rel_spot == anchor_spot::vcenter;
+
+    if (!valid) {
+        logger::e(tr::_("bad anchor for bottom side"));
+        return;
+    }
+
     auto a = retrieve_anchors(& i);
     a->bottom.rel = & rel;
     a->bottom.spot = rel_spot;
     a->bottom.margin = margin;
+}
+
+void anchors_layout::set_hcenter (item & i, item & rel, anchor_spot rel_spot, unit_t offset)
+{
+    auto valid = rel_spot == anchor_spot::left
+        || rel_spot == anchor_spot::right
+        || rel_spot == anchor_spot::hcenter;
+
+    if (!valid) {
+        logger::e(tr::_("bad anchor for horizontal center"));
+        return;
+    }
+
+    auto a = retrieve_anchors(& i);
+    a->hcenter.rel = & rel;
+    a->hcenter.spot = rel_spot;
+    a->hcenter.margin = offset;
+}
+
+void anchors_layout::set_vcenter (item & i, item & rel, anchor_spot rel_spot, unit_t offset)
+{
+    auto valid = rel_spot == anchor_spot::top
+        || rel_spot == anchor_spot::bottom
+        || rel_spot == anchor_spot::vcenter;
+
+    if (!valid) {
+        logger::e(tr::_("bad anchor for vertical center"));
+        return;
+    }
+
+    auto a = retrieve_anchors(& i);
+    a->vcenter.rel = & rel;
+    a->vcenter.spot = rel_spot;
+    a->vcenter.margin = offset;
 }
 
 void anchors_layout::set_margins (item & i, griotte::unit_t m)
@@ -109,7 +179,12 @@ void anchors_layout::set_margins (item & i, griotte::unit_t m)
     a->left.margin = a->top.margin = a->right.margin = a->bottom.margin = m;
 }
 
-// TODO IMPLEMENT
+void anchors_layout::center_in (item & i, item & rel)
+{
+    set_hcenter(i, rel, anchor_spot::hcenter, unit_t{0});
+    set_vcenter(i, rel, anchor_spot::vcenter, unit_t{0});
+}
+
 void anchors_layout::update ()
 {
     auto node = first_child();
@@ -123,35 +198,11 @@ void anchors_layout::update ()
                 case anchor_spot::left:
                     ptr->set_x(a->left.rel->x() + a->left.margin);
                     break;
-                case anchor_spot::top:
-                    break;
                 case anchor_spot::right:
+                    ptr->set_x(a->left.rel->x() + a->left.rel->width() + a->left.margin);
                     break;
-                case anchor_spot::bottom:
-                    break;
-                case anchor_spot::horizontal_center:
-                    break;
-                case anchor_spot::vertical_center:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        if (a->top.rel != nullptr && a->top.spot != anchor_spot::none) {
-            switch (a->top.spot) {
-                case anchor_spot::left:
-                    break;
-                case anchor_spot::top:
-                    ptr->set_y(a->top.rel->y() + a->top.margin);
-                    break;
-                case anchor_spot::right:
-                    break;
-                case anchor_spot::bottom:
-                    break;
-                case anchor_spot::horizontal_center:
-                    break;
-                case anchor_spot::vertical_center:
+                case anchor_spot::hcenter:
+                    // TODO IMPLEMENT
                     break;
                 default:
                     break;
@@ -161,8 +212,13 @@ void anchors_layout::update ()
         if (a->right.rel != nullptr && a->right.spot != anchor_spot::none) {
             switch (a->right.spot) {
                 case anchor_spot::left:
-                    break;
-                case anchor_spot::top:
+                    if (a->width > unit_t{0}) {
+                        ptr->set_x(a->right.rel->x() - a->width - a->right.margin);
+                        ptr->set_width(a->width);
+                    } else {
+                        auto w = a->right.rel->x() - ptr->x() - a->right.margin;
+                        ptr->set_width(w < 0 ? 0 : w);
+                    }
                     break;
                 case anchor_spot::right:
                     if (a->width > unit_t{0}) {
@@ -170,14 +226,28 @@ void anchors_layout::update ()
                         ptr->set_width(a->width);
                     } else {
                         // width - 2 * right_marging
-                        ptr->set_width(a->right.rel->width() - a->right.margin - a->right.margin);
+                        auto w = a->right.rel->width() - a->right.margin - a->right.margin;
+                        ptr->set_width(w < 0 ? 0 : w);
                     }
                     break;
+                case anchor_spot::hcenter:
+                    // TODO IMPLEMENT
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (a->top.rel != nullptr && a->top.spot != anchor_spot::none) {
+            switch (a->top.spot) {
+                case anchor_spot::top:
+                    ptr->set_y(a->top.rel->y() + a->top.margin);
+                    break;
                 case anchor_spot::bottom:
+                    // TODO IMPLEMENT
                     break;
-                case anchor_spot::horizontal_center:
-                    break;
-                case anchor_spot::vertical_center:
+                case anchor_spot::vcenter:
+                    // TODO IMPLEMENT
                     break;
                 default:
                     break;
@@ -186,11 +256,8 @@ void anchors_layout::update ()
 
         if (a->bottom.rel != nullptr && a->bottom.spot != anchor_spot::none) {
             switch (a->bottom.spot) {
-                case anchor_spot::left:
-                    break;
                 case anchor_spot::top:
-                    break;
-                case anchor_spot::right:
+                    // TODO IMPLEMENT
                     break;
                 case anchor_spot::bottom:
                     if (a->height > unit_t{0}) {
@@ -201,15 +268,48 @@ void anchors_layout::update ()
                         ptr->set_height(a->bottom.rel->height() - a->bottom.margin - a->bottom.margin);
                     }
                     break;
-                case anchor_spot::horizontal_center:
-                    break;
-                case anchor_spot::vertical_center:
+                case anchor_spot::vcenter:
+                    // TODO IMPLEMENT
                     break;
                 default:
                     break;
             }
         }
 
+        if (a->hcenter.rel != nullptr && a->hcenter.spot != anchor_spot::none) {
+            switch (a->hcenter.spot) {
+                case anchor_spot::left:
+                    // TODO IMPLEMENT
+                    break;
+                case anchor_spot::right:
+                    // TODO IMPLEMENT
+                    break;
+                case anchor_spot::hcenter:
+                    ptr->set_x(a->hcenter.rel->x() + (a->hcenter.rel->width() - ptr->width()) / 2 + a->hcenter.margin);
+                    break;
+                case anchor_spot::vcenter:
+                    // TODO IMPLEMENT
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (a->vcenter.rel != nullptr && a->vcenter.spot != anchor_spot::none) {
+            switch (a->vcenter.spot) {
+                case anchor_spot::top:
+                    // TODO IMPLEMENT
+                    break;
+                case anchor_spot::bottom:
+                    // TODO IMPLEMENT
+                    break;
+                case anchor_spot::vcenter:
+                    ptr->set_y(a->vcenter.rel->y() + (a->vcenter.rel->height() - ptr->height()) / 2 + a->vcenter.margin);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         node = next(node);
     }

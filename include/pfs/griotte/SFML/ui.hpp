@@ -41,7 +41,7 @@ private:
     unsigned int _win_w {0};
     unsigned int _win_h {0};
 
-    color_t _color {255, 255, 255, 255}; // background color
+    color_t _color {0xFF, 0xFF, 0xFF, 0xFF}; // white - background color
     std::unique_ptr<layout> _root_layout;
 
 private:

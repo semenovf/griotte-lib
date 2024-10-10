@@ -7,7 +7,7 @@
 // Changelog:
 //      2024.07.30 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
-// #include <pfs/griotte/circle.hpp>
+#include <pfs/griotte/circle.hpp>
 #include <pfs/griotte/anchors_layout.hpp>
 // #include <pfs/griotte/fontstyle.hpp>
 // #include <pfs/griotte/image.hpp>
@@ -63,4 +63,28 @@ void anchors_layout (griotte::SFML::ui & ui)
     l.set_width(r6, 120);
     l.set_height(r6, 120);
     r6.set_color(griotte::color_t {0xE4, 0xC1, 0xF9});
+
+    // Circle in the center
+    auto & c1 = l.create<griotte::circle>();
+    c1.set_radius(griotte::unit_t{80});
+    c1.set_color(griotte::color_t {0xFF, 0xD5, 0x00});
+    l.set_hcenter(c1, r2, griotte::anchor_spot::hcenter, griotte::unit_t{0});
+    l.set_vcenter(c1, r2, griotte::anchor_spot::vcenter, griotte::unit_t{10});
+
+    // Circle inside c1
+    auto & c2 = l.create<griotte::circle>();
+    c2.set_radius(griotte::unit_t{40});
+    c2.set_color(griotte::color_t {0x5F, 0xA8, 0xD3});
+    l.center_in(c2, c1);
+
+    // Rectangle bitween `r3` and `r4`
+    // FIXME
+    auto & r7 = l.create<griotte::rectangle>();
+    l.set_left(r7, r3, griotte::anchor_spot::right, griotte::unit_t{5});
+    l.set_right(r7, r4, griotte::anchor_spot::left, griotte::unit_t{5});
+    l.set_height(r7, 20);
+    // l.set_width(r7, 50);
+    l.set_vcenter(r7, r3, griotte::anchor_spot::vcenter, griotte::unit_t{0});
+    r7.set_color(griotte::color_t {0x9D, 0x81, 0x89});
+
 }
