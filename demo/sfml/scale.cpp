@@ -22,7 +22,7 @@ void scale (griotte::SFML::ui & ui)
     r1.set_color(griotte::color_t {0x2A, 0x92, 0x8f});
 
     auto g1 = griotte::center_in(griotte::geom_t{ 0, 0, ui.width_units(), ui.height_units() }
-        , griotte::dim_t{r1.width(), r1.height()});
+        , griotte::size_t{r1.width(), r1.height()});
     r1.set_geometry(g1);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ void scale (griotte::SFML::ui & ui)
     griotte::transform_t t2;
     t2.scale(0.5);
     auto g2 = griotte::apply(t2, r1.geometry());
-    g2 = griotte::center_in(r1.geometry(), griotte::dim_t{g2.w, g2.h});
+    g2 = griotte::center_in(r1.geometry(), griotte::size_t{g2.w, g2.h});
 
     auto & r2 = l.create<griotte::rectangle>();
     r2.set_color(griotte::color_t {0xE7, 0x6F, 0x51});

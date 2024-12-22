@@ -4,13 +4,17 @@
 // This file is part of `griotte-lib`.
 //
 // Changelog:
-//      2024.07.15 Initial version.
+//      2024.12.22 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.h"
-#include <pfs/griotte/fixed_layout.hpp>
-#include <pfs/griotte/button.hpp>
+#pragma once
+#include <cstdint>
 
-TEST_CASE("Basic") {
-    griotte::fixed_layout layout1;
-}
+namespace griotte {
+
+enum class direction
+{
+    left, top, right, bottom
+};
+
+} // namespace griotte
+

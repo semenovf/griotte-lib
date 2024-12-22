@@ -9,12 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <pfs/griotte/circle.hpp>
 #include <pfs/griotte/anchors_layout.hpp>
-// #include <pfs/griotte/fontstyle.hpp>
-// #include <pfs/griotte/image.hpp>
-// #include <pfs/griotte/math.hpp>
 #include <pfs/griotte/rectangle.hpp>
-// #include <pfs/griotte/SFML/text.hpp>
-// #include <pfs/griotte/SFML/font.hpp>
 #include <pfs/griotte/SFML/ui.hpp>
 #include <pfs/log.hpp>
 
@@ -78,13 +73,48 @@ void anchors_layout (griotte::SFML::ui & ui)
     l.center_in(c2, c1);
 
     // Rectangle bitween `r3` and `r4`
-    // FIXME
     auto & r7 = l.create<griotte::rectangle>();
     l.set_left(r7, r3, griotte::anchor_spot::right, griotte::unit_t{5});
     l.set_right(r7, r4, griotte::anchor_spot::left, griotte::unit_t{5});
     l.set_height(r7, 20);
-    // l.set_width(r7, 50);
     l.set_vcenter(r7, r3, griotte::anchor_spot::vcenter, griotte::unit_t{0});
     r7.set_color(griotte::color_t {0x9D, 0x81, 0x89});
 
+    // Circle c3 horizontally centered relative to the left side of c1
+    auto & c3 = l.create<griotte::circle>();
+    c3.set_radius(griotte::unit_t{30});
+    c3.set_color(griotte::color_t {0x06, 0xD6, 0xA0});
+    l.set_hcenter(c3, c1, griotte::anchor_spot::left, griotte::unit_t{0});
+    l.set_vcenter(c3, c1, griotte::anchor_spot::vcenter, griotte::unit_t{0});
+
+    // Circle c4 vertically centered relative to the top side of c1
+    auto & c4 = l.create<griotte::circle>();
+    c4.set_radius(griotte::unit_t{30});
+    c4.set_color(griotte::color_t {0xFF, 0x00, 0x54});
+    l.set_hcenter(c4, c1, griotte::anchor_spot::hcenter, griotte::unit_t{0});
+    l.set_vcenter(c4, c1, griotte::anchor_spot::top, griotte::unit_t{0});
+
+    // Rectangle inside `r6`
+    auto & r8 = l.create<griotte::rectangle>();
+    r8.set_width(r6.width() / 2 - 5);
+    r8.set_height(r6.height() / 2 - 5);
+    l.set_left(r8, r6, griotte::anchor_spot::hcenter, griotte::unit_t{0});
+    l.set_top(r8, r6, griotte::anchor_spot::vcenter, griotte::unit_t{0});
+    r8.set_color(griotte::color_t {0xFF, 0x66, 0xB3});
+
+    // Rectangle bitween `r6` and `r5`
+    auto & r9 = l.create<griotte::rectangle>();
+    l.set_left(r9, r6, griotte::anchor_spot::right, griotte::unit_t{5});
+    l.set_right(r9, r5, griotte::anchor_spot::right, griotte::unit_t{0});
+    l.set_height(r9, 30);
+    l.set_vcenter(r9, r5, griotte::anchor_spot::vcenter, griotte::unit_t{0});
+    r9.set_color(griotte::color_t {0x70, 0xD6, 0xFF});
+
+    // Rectangle bitween `r3` and `r6`
+    auto & r10 = l.create<griotte::rectangle>();
+    l.set_top(r10, r3, griotte::anchor_spot::bottom, griotte::unit_t{5});
+    l.set_bottom(r10, r6, griotte::anchor_spot::vcenter, griotte::unit_t{0});
+    l.set_width(r10, 25);
+    l.set_hcenter(r10, r3, griotte::anchor_spot::hcenter, griotte::unit_t{0});
+    r10.set_color(griotte::color_t {0x4A, 0x57, 0x59});
 }

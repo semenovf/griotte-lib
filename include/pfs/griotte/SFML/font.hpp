@@ -25,8 +25,8 @@ private:
     sf::Font const * _f {nullptr};
 
 private: // static
-    static std::unordered_map<std::string, std::unique_ptr<sf::Font>> static_fonts;
-    static font static_fallback_font;
+    static std::unordered_map<std::string, std::unique_ptr<sf::Font>> s_fonts;
+    static font s_fallback_font;
 
 private:
     font (sf::Font const * f): _f (f) {}
@@ -69,14 +69,14 @@ public: // static
     /**
      * Get font by alias
      */
-    static font get (std::string const & font_alias, font fallback_font = static_fallback_font);
+    static font get (std::string const & font_alias, font fallback_font = s_fallback_font);
 
     /**
      * Get default (fallback) font
      */
     static font get ()
     {
-        return static_fallback_font;
+        return s_fallback_font;
     }
 };
 

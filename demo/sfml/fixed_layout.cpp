@@ -80,7 +80,7 @@ void fixed_layout (griotte::SFML::ui & ui)
     s1.set_radius(radius);
     s1.set_color(griotte::color_t {0xE9, 0xB1, 0x10});
 
-    auto g1 = griotte::center_in(r1.geometry(), griotte::dim_t{radius * 2, radius * 2});
+    auto g1 = griotte::center_in(r1.geometry(), griotte::size_t{radius * 2, radius * 2});
     s1.set_geometry(g1);
     s1.set_x(r1.x() + margin);
 
@@ -88,7 +88,7 @@ void fixed_layout (griotte::SFML::ui & ui)
     s2.set_radius(radius);
     s2.set_color(griotte::color_t {0xFF, 0xB2, 0xB3});
 
-    auto g2 = griotte::center_in(r2.geometry(), griotte::dim_t{radius * 2, radius * 2});
+    auto g2 = griotte::center_in(r2.geometry(), griotte::size_t{radius * 2, radius * 2});
     s2.set_geometry(g2);
     s2.set_x(r2.x() + margin);
 
@@ -96,7 +96,7 @@ void fixed_layout (griotte::SFML::ui & ui)
     s3.set_radius(radius);
     s3.set_color(griotte::color_t {0x50, 0x3F, 0x0D});
 
-    auto g3 = griotte::center_in(r3.geometry(), griotte::dim_t{radius * 2, radius * 2});
+    auto g3 = griotte::center_in(r3.geometry(), griotte::size_t{radius * 2, radius * 2});
     s3.set_geometry(g3);
     s3.set_x(r3.x() + margin);
 
@@ -104,7 +104,7 @@ void fixed_layout (griotte::SFML::ui & ui)
     s4.set_radius(radius);
     s4.set_color(griotte::color_t {0xBA, 0x1B, 0x1B});
 
-    auto g4 = griotte::center_in(r4.geometry(), griotte::dim_t{radius * 2, radius * 2});
+    auto g4 = griotte::center_in(r4.geometry(), griotte::size_t{radius * 2, radius * 2});
     s4.set_geometry(g4);
     s4.set_x(r4.x() + margin);
 
@@ -112,7 +112,7 @@ void fixed_layout (griotte::SFML::ui & ui)
     s5.set_radius(radius);
     s5.set_color(griotte::color_t {0xE6, 0xD4, 0xC9});
 
-    auto g5 = griotte::center_in(r5.geometry(), griotte::dim_t{radius * 2, radius * 2});
+    auto g5 = griotte::center_in(r5.geometry(), griotte::size_t{radius * 2, radius * 2});
     s5.set_geometry(g5);
     s5.set_x(r5.x() + margin);
 
@@ -130,7 +130,7 @@ void fixed_layout (griotte::SFML::ui & ui)
         t1.set_color(griotte::color_t {0x34, 0x3A, 0x40});
         //t1.set_bgcolor(griotte::color_t {0x00, 0xFF, 0xFF}); // Cyan
         auto bg = t1.bounding_geom();
-        auto g = griotte::center_in(r1.geometry(), griotte::dim_t{bg.w, bg.h});
+        auto g = griotte::center_in(r1.geometry(), griotte::size_t{bg.w, bg.h});
         t1.set_position(s1.x() + s1.width() + margin, g.y);
         //t1.set_position(s1.x() + s1.width() + margin, 0/*r1.y()*/);
         // t1.set_position(0, 0);

@@ -8,14 +8,6 @@
 ################################################################################
 project(sfml-demo CXX C)
 
-if (TARGET pfs::griotte)
-    set(_griotte_lib pfs::griotte)
-elseif (TARGET pfs::griotte::static)
-    set(_griotte_lib pfs::griotte::static)
-else()
-    message(FATAL_ERROR "No any griotte TARGET found")
-endif()
-
 cmrc_add_resource_library(griotte-rc-icons
     ALIAS rc::icons
     NAMESPACE griotte
@@ -32,5 +24,6 @@ add_executable(${PROJECT_NAME}
     main.cpp
     anchors_layout.cpp
     fixed_layout.cpp
+    palette.cpp
     scale.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${_griotte_lib} rc::icons)
+target_link_libraries(${PROJECT_NAME} PRIVATE pfs::griotte rc::icons)

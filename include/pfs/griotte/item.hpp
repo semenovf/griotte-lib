@@ -81,9 +81,9 @@ public:
         _h = g.h;
     }
 
-    dim_t dimension () const noexcept
+    size_t size () const noexcept
     {
-        return dim_t{_w, _h};
+        return size_t {_w, _h};
     }
 
     void set_scale (float factor_x, float factor_y)

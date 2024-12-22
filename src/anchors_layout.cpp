@@ -25,26 +25,7 @@ inline anchors * retrieve_anchors (item * i)
     return retrieve_anchors(n);
 }
 
-anchors_layout::~anchors_layout ()
-{
-    auto node = first_child();
-
-    while (node != nullptr) {
-        PFS__TERMINATE(node->pdata() != nullptr, "");
-        auto curr_node = node;
-        node = next(node);
-        auto ptr = static_cast<item *>(curr_node);
-
-        // This call avoids the node from being destroyed again by the parent destructor.
-        remove_child(curr_node);
-
-        ptr->~item();
-
-        // auto raw = retrieve_begin_raw(curr_node);
-        auto raw = reinterpret_cast<char *>(curr_node->pdata());
-        delete [] raw;
-    }
-}
+anchors_layout::~anchors_layout () = default;
 
 void anchors_layout::set_width (item & i, unit_t w)
 {
@@ -202,7 +183,7 @@ void anchors_layout::update ()
                     ptr->set_x(a->left.rel->x() + a->left.rel->width() + a->left.margin);
                     break;
                 case anchor_spot::hcenter:
-                    // TODO IMPLEMENT
+                    ptr->set_x(a->left.rel->x() + a->left.rel->width() / 2 + a->left.margin);
                     break;
                 default:
                     break;
@@ -220,19 +201,29 @@ void anchors_layout::update ()
                         ptr->set_width(w < 0 ? 0 : w);
                     }
                     break;
+
                 case anchor_spot::right:
                     if (a->width > unit_t{0}) {
                         ptr->set_x(a->right.rel->x() + a->right.rel->width() - a->width - a->right.margin);
                         ptr->set_width(a->width);
                     } else {
-                        // width - 2 * right_marging
-                        auto w = a->right.rel->width() - a->right.margin - a->right.margin;
+                        auto w = a->right.rel->x() + a->right.rel->width() - ptr->x()
+                            - a->right.margin;
                         ptr->set_width(w < 0 ? 0 : w);
                     }
                     break;
+
                 case anchor_spot::hcenter:
-                    // TODO IMPLEMENT
+                    if (a->width > unit_t{0}) {
+                        ptr->set_x(a->right.rel->x() + a->right.rel->width() / 2 - a->width - a->right.margin);
+                        ptr->set_width(a->width);
+                    } else {
+                        auto w = a->right.rel->x() + a->right.rel->width() / 2 - ptr->x()
+                            - a->right.margin;
+                        ptr->set_width(w < 0 ? 0 : w);
+                    }
                     break;
+
                 default:
                     break;
             }
@@ -244,10 +235,10 @@ void anchors_layout::update ()
                     ptr->set_y(a->top.rel->y() + a->top.margin);
                     break;
                 case anchor_spot::bottom:
-                    // TODO IMPLEMENT
+                    ptr->set_y(a->top.rel->y() + a->top.rel->height() + a->top.margin);
                     break;
                 case anchor_spot::vcenter:
-                    // TODO IMPLEMENT
+                    ptr->set_y(a->top.rel->y() + a->top.rel->height() / 2 + a->top.margin);
                     break;
                 default:
                     break;
@@ -257,19 +248,35 @@ void anchors_layout::update ()
         if (a->bottom.rel != nullptr && a->bottom.spot != anchor_spot::none) {
             switch (a->bottom.spot) {
                 case anchor_spot::top:
-                    // TODO IMPLEMENT
+                    if (a->height > unit_t{0}) {
+                        ptr->set_y(a->bottom.rel->y() - a->height - a->bottom.margin);
+                        ptr->set_height(a->height);
+                    } else {
+                        auto h = a->bottom.rel->y() - ptr->y() - a->bottom.margin;
+                        ptr->set_height(h < 0 ? 0 : h);
+                    }
                     break;
                 case anchor_spot::bottom:
                     if (a->height > unit_t{0}) {
                         ptr->set_y(a->bottom.rel->y() + a->bottom.rel->height() - a->height - a->bottom.margin);
                         ptr->set_height(a->height);
                     } else {
-                        // height - 2 * bottom_marging
-                        ptr->set_height(a->bottom.rel->height() - a->bottom.margin - a->bottom.margin);
+                        auto h = a->bottom.rel->y() + a->bottom.rel->height()
+                            - ptr->y() - a->bottom.margin;
+                        ptr->set_height(h < 0 ? 0 : h);
                     }
                     break;
                 case anchor_spot::vcenter:
-                    // TODO IMPLEMENT
+                    if (a->height > unit_t{0}) {
+                        ptr->set_y(a->bottom.rel->y() + a->bottom.rel->height() / 2 - a->height - a->bottom.margin);
+                        ptr->set_height(a->height);
+                    } else {
+                        // ptr->set_height(a->bottom.rel->height() - a->bottom.margin);
+                        auto h = a->bottom.rel->y() + a->bottom.rel->height() / 2
+                            - ptr->y() - a->bottom.margin;
+                        ptr->set_height(h < 0 ? 0 : h);
+                    }
+
                     break;
                 default:
                     break;
@@ -279,16 +286,13 @@ void anchors_layout::update ()
         if (a->hcenter.rel != nullptr && a->hcenter.spot != anchor_spot::none) {
             switch (a->hcenter.spot) {
                 case anchor_spot::left:
-                    // TODO IMPLEMENT
+                    ptr->set_x(a->hcenter.rel->x() - ptr->width() / 2 + a->hcenter.margin);
                     break;
                 case anchor_spot::right:
                     // TODO IMPLEMENT
                     break;
                 case anchor_spot::hcenter:
                     ptr->set_x(a->hcenter.rel->x() + (a->hcenter.rel->width() - ptr->width()) / 2 + a->hcenter.margin);
-                    break;
-                case anchor_spot::vcenter:
-                    // TODO IMPLEMENT
                     break;
                 default:
                     break;
@@ -298,7 +302,7 @@ void anchors_layout::update ()
         if (a->vcenter.rel != nullptr && a->vcenter.spot != anchor_spot::none) {
             switch (a->vcenter.spot) {
                 case anchor_spot::top:
-                    // TODO IMPLEMENT
+                    ptr->set_y(a->vcenter.rel->y() - ptr->height() / 2 + a->vcenter.margin);
                     break;
                 case anchor_spot::bottom:
                     // TODO IMPLEMENT

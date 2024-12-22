@@ -12,7 +12,7 @@
 
 namespace griotte {
 
-inline rect2d center_in (rect2d const & r, dim2d const & d)
+inline rect2d center_in (rect2d const & r, size2d const & d)
 {
     rect2d result;
     result.x1 = r.x1 + (r.x2 - r.x1 - d.w) / 2;
@@ -22,7 +22,7 @@ inline rect2d center_in (rect2d const & r, dim2d const & d)
     return result;
 }
 
-inline geom2d center_in (geom2d const & r, dim2d const & d)
+inline geom2d center_in (geom2d const & r, size2d const & d)
 {
     geom2d result;
     result.x = r.x + (r.w - d.w) / 2;

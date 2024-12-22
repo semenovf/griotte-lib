@@ -13,7 +13,7 @@ namespace griotte {
 class node
 {
 protected:
-    void * _pdata {nullptr};
+    void * _pdata {nullptr};       // private data to store specific info, must contains only truv
     node * _parent {nullptr};
     node * _prev   {nullptr};
     node * _next   {nullptr};

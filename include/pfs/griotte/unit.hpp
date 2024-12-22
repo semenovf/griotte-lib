@@ -18,7 +18,7 @@ struct point2d
     unit_t x, y;
 };
 
-struct dim2d
+struct size2d
 {
     unit_t w, h;
 };
@@ -37,7 +37,7 @@ struct geom2d
 };
 
 using point_t = point2d;
-using dim_t   = dim2d;
+using size_t  = size2d;
 using rect_t  = rect2d;
 using geom_t  = geom2d;
 

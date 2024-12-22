@@ -28,6 +28,7 @@ using griotte::logger;
 extern void anchors_layout (griotte::SFML::ui &);
 extern void fixed_layout (griotte::SFML::ui &);
 extern void scale (griotte::SFML::ui &);
+extern void palette (griotte::SFML::ui &, int palette_index);
 
 namespace constants {
 
@@ -48,6 +49,16 @@ static void dump_embedded_fonts ()
     for (auto const & alias: emfonts) {
         fmt::println("    {}. {}", ++counter, alias);
     }
+}
+
+static void print_help (std::string const & progname)
+{
+    fmt::println("Usage:");
+    fmt::println("  {} --help", progname);
+    fmt::println("  {} fixed-layout | fl", progname);
+    fmt::println("  {} anchors-layout | al", progname);
+    fmt::println("  {} scale", progname);
+    fmt::println("  {} palette INDEX", progname);
 }
 
 int main (int argc, char * argv[])
@@ -79,14 +90,26 @@ int main (int argc, char * argv[])
     if (it.has_more()) {
         auto x = it.next();
 
-        if (x.arg() == "anchors_layout")
-            anchors_layout(ui);
-        else if (x.arg() == "fixed_layout")
-            fixed_layout(ui);
-        else if (x.arg() == "scale")
-            scale(ui);
-        else
-            fixed_layout(ui);
+        if (x.is_option()) {
+            if (x.optname() == "help") {
+                print_help(pfs::filesystem::utf8_encode(cl.program_name()));
+                return EXIT_SUCCESS;
+            } else {
+                fmt::println(stderr, "Bad option or command name");
+                return EXIT_FAILURE;
+            }
+        } else {
+            if (x.arg() == "al" || x.arg() == "anchors-layout")
+                anchors_layout(ui);
+            else if (x.arg() == "fl" || x.arg() == "fixed-layout")
+                fixed_layout(ui);
+            else if (x.arg() == "scale")
+                scale(ui);
+            else if (x.arg() == "palette")
+                palette(ui, 0); // TODO Set palette index from command line (< 0 -> randomize it)
+            else
+                fixed_layout(ui);
+        }
     } else {
         fixed_layout(ui);
     }

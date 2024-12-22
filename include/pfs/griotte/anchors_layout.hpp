@@ -39,15 +39,6 @@ struct anchors
     // TODO anchors.alignWhenCentered : bool
     // TODO anchors.baseline : AnchorLine
     // TODO anchors.baselineOffset : real
-    // TODO anchors.bottomMargin : real
-    // TODO anchors.centerIn : Item
-    // TODO anchors.fill : Item
-    // TODO anchors.horizontalCenterOffset : real
-    // TODO anchors.leftMargin : real
-    // TODO anchors.margins : real
-    // TODO anchors.rightMargin : real
-    // TODO anchors.topMargin : real
-    // TODO anchors.verticalCenterOffset : real
 
     unit_t width {0};
     unit_t height {0};
@@ -71,6 +62,7 @@ public:
     anchors_layout () = default;
     ~anchors_layout ();
 
+public:
     template <typename T, typename ...Args>
     typename std::enable_if<std::is_base_of<item, T>::value, T>::type &
     create (Args &&... args)

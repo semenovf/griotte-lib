@@ -17,23 +17,23 @@
 namespace griotte {
 namespace SFML {
 
-std::unordered_map<std::string, std::unique_ptr<sf::Font>> font::static_fonts;
-font font::static_fallback_font;
+std::unordered_map<std::string, std::unique_ptr<sf::Font>> font::s_fonts;
+font font::s_fallback_font;
 
 // [static]
 bool font::add (std::string const & alias, std::unique_ptr<sf::Font> && f, bool is_fallback)
 {
-    if (static_fonts.find(alias) != static_fonts.end()) {
+    if (s_fonts.find(alias) != s_fonts.end()) {
         logger::e(tr::f_("font alias already occupied by font: {}", alias));
         return false;
     }
 
     f->setSmooth(true);
 
-    static_fonts[alias] = std::move(f);
+    s_fonts[alias] = std::move(f);
 
     if (is_fallback)
-        static_fallback_font = font {& *static_fonts[alias]};
+        s_fallback_font = font {& *s_fonts[alias]};
 
     return true;
 }
@@ -53,9 +53,9 @@ bool font::load (std::string const & font_alias, pfs::filesystem::path const & p
 // [static]
 font font::get (std::string const & font_alias, font fallback_font)
 {
-    auto pos = static_fonts.find(font_alias);
+    auto pos = s_fonts.find(font_alias);
 
-    if (pos == static_fonts.end())
+    if (pos == s_fonts.end())
         return fallback_font;
 
     return font {& *pos->second};

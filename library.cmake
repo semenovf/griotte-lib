@@ -9,46 +9,32 @@
 cmake_minimum_required (VERSION 3.11)
 project(griotte LANGUAGES CXX C)
 
-option(GRIOTTE__BUILD_SHARED "Enable build shared library" OFF)
-option(GRIOTTE__BUILD_STATIC "Enable build static library" ON)
-#option(GRIOTTE__SDL2_BACKEND "Enable SDL2 backend" OFF)
-option(GRIOTTE__SFML_BACKEND "Enable SFML backend" ON)
-
-if (NOT PORTABLE_TARGET__CURRENT_PROJECT_DIR)
-    set(PORTABLE_TARGET__CURRENT_PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-endif()
-
 if (GRIOTTE__BUILD_SHARED)
-    portable_target(ADD_SHARED ${PROJECT_NAME} ALIAS pfs::griotte EXPORTS GRIOTTE__EXPORTS)
-    list(APPEND _griotte__targets ${PROJECT_NAME})
+    add_library(griotte SHARED)
+    target_compile_definitions(griotte PRIVATE IONIK__EXPORTS)
+else()
+    add_library(griotte STATIC)
+    target_compile_definitions(griotte PUBLIC IONIK__STATIC)
 endif()
 
-if (GRIOTTE__BUILD_STATIC)
-    set(STATIC_PROJECT_NAME ${PROJECT_NAME}-static)
-    portable_target(ADD_STATIC ${STATIC_PROJECT_NAME} ALIAS pfs::griotte::static EXPORTS GRIOTTE__STATIC)
-    list(APPEND _griotte__targets ${PROJECT_NAME}-static)
+add_library(pfs::griotte ALIAS griotte)
+
+if (MSVC)
+    target_compile_definitions(ionik PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
 
-if (NOT TARGET pfs::common)
-    portable_target(INCLUDE_PROJECT
-        ${PORTABLE_TARGET__CURRENT_PROJECT_DIR}/2ndparty/common/library.cmake)
-endif()
-
-list(APPEND _griotte__sources
+target_sources(griotte PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/src/anchors_layout.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/circle.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/fixed_layout.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/layout.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/linear_layout.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/logger.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/node.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/resources/fonts/roboto_regular.c)
 
-#if (GRIOTTE__SDL2_BACKEND)
-#    list(APPEND _griotte__sources ${CMAKE_CURRENT_LIST_DIR}/src/SDL2/gui.cpp)
-#endif()
-
 if (GRIOTTE__SFML_BACKEND)
-    list(APPEND _griotte__sources
+    target_sources(griotte PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/ui.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/circle.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/font.cpp
@@ -59,25 +45,51 @@ if (GRIOTTE__SFML_BACKEND)
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/RoundedRectangleShape.cpp)
 endif()
 
-foreach(_target IN LISTS _griotte__targets)
-    portable_target(SOURCES ${_target} ${_griotte__sources})
-    portable_target(INCLUDE_DIRS ${_target}
-        PUBLIC
-            ${CMAKE_CURRENT_LIST_DIR}/include
-        PRIVATE
-            ${CMAKE_CURRENT_LIST_DIR}/include/pfs/griotte)
-    portable_target(LINK ${_target} PUBLIC pfs::common)
 
-#    if (GRIOTTE__SDL2_BACKEND)
-#        add_dependencies(${_target} SDL2-ep SDL2)
-#        portable_target(LINK ${_target} PUBLIC $<TARGET_PROPERTY:SDL2,INTERFACE_LINK_LIBRARIES>)
-#        portable_target(INCLUDE_DIRS ${_target} PUBLIC $<TARGET_PROPERTY:SDL2,INTERFACE_INCLUDE_DIRECTORIES>)
-#    endif()
+if (NOT TARGET pfs::common)
+    set(FETCHCONTENT_UPDATES_DISCONNECTED_COMMON ON)
 
-    if (GRIOTTE__SFML_BACKEND)
-        add_dependencies(${_target} SFML-ep SFML)
-        portable_target(LINK ${_target} PUBLIC $<TARGET_PROPERTY:SFML,INTERFACE_LINK_LIBRARIES>)
-        portable_target(INCLUDE_DIRS ${_target} PUBLIC $<TARGET_PROPERTY:SFML,INTERFACE_INCLUDE_DIRECTORIES>)
-        target_link_directories(${_target} PUBLIC $<TARGET_PROPERTY:SFML,INTERFACE_LINK_DIRECTORIES>)
-    endif()
-endforeach()
+    message(STATUS "Fetching pfs::common ...")
+    include(FetchContent)
+    FetchContent_Declare(common
+        GIT_REPOSITORY https://github.com/semenovf/common-lib.git
+        GIT_TAG master
+        GIT_PROGRESS TRUE
+        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/2ndparty/common
+        SUBBUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/2ndparty/common)
+    FetchContent_MakeAvailable(common)
+    message(STATUS "Fetching pfs::common complete")
+endif()
+
+if (GRIOTTE__SFML_BACKEND)
+    set(FETCHCONTENT_UPDATES_DISCONNECTED_SFML ON)
+
+    set(SFML_BUILD_WINDOW TRUE CACHE BOOL "")
+    set(SFML_BUILD_GRAPHICS TRUE CACHE BOOL "")
+    set(SFML_BUILD_AUDIO FALSE CACHE BOOL "")
+    set(SFML_BUILD_NETWORK FALSE CACHE BOOL "")
+    set(SFML_BUILD_DOC FALSE CACHE BOOL "")
+    set(SFML_BUILD_EXAMPLES FALSE CACHE BOOL "")
+    set(SFML_BUILD_TEST_SUITE FALSE CACHE BOOL "")
+
+    message(STATUS "Fetching SFML ...")
+    include(FetchContent)
+    FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.6.2
+        GIT_PROGRESS TRUE
+        GIT_SHALLOW 1
+        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/SFML
+        SUBBUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/SFML)
+    FetchContent_MakeAvailable(SFML)
+    message(STATUS "Fetching SFML complete")
+
+    target_link_libraries(griotte PUBLIC sfml-graphics sfml-system sfml-window)
+    target_include_directories(griotte PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/SFML/include)
+endif()
+
+target_include_directories(griotte
+    PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include
+    PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include/pfs/griotte
+    PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include/pfs)
+target_link_libraries(griotte PUBLIC pfs::common)
