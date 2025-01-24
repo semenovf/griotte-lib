@@ -10,176 +10,137 @@
 // #include "logger.hpp"
 #include <pfs/assert.hpp>
 // #include <pfs/i18n.hpp>
+#include <type_traits>
 
 namespace griotte {
 
-// inline anchors * retrieve_anchors (node * n)
-// {
-//     auto raw = reinterpret_cast<char *>(n->pdata());
-//     return reinterpret_cast<anchors *>(raw);
-// }
-//
-// inline anchors * retrieve_anchors (item * i)
-// {
-//     auto n = static_cast<node *>(i);
-//     return retrieve_anchors(n);
-// }
-
 linear_layout::linear_layout (orientation orient)
     : _orient(orient)
-{}
+{
+    static_assert(std::is_trivially_destructible_v<elem>, "");
+}
 
 linear_layout::~linear_layout () = default;
 
+inline linear_layout::elem * linear_layout::elem_cast (node * n)
+{
+    return reinterpret_cast<linear_layout::elem *>(n->pdata());
+}
 
-// void anchors_layout::set_width (item & i, unit_t w)
-// {
-//     auto a = retrieve_anchors(& i);
-//     i.set_width(w);
-//     a->width = w;
-// }
-//
-// void anchors_layout::set_height (item & i, unit_t h)
-// {
-//     auto a = retrieve_anchors(& i);
-//     i.set_height(h);
-//     a->height = h;
-// }
-//
-// void anchors_layout::fill (item & i, item & rel)
-// {
-//     auto a = retrieve_anchors(& i);
-//
-//     a->left.rel = a->top.rel = a->right.rel = a->bottom.rel = & rel;
-//     a->left.spot   = anchor_spot::left;
-//     a->top.spot    = anchor_spot::top;
-//     a->right.spot  = anchor_spot::right;
-//     a->bottom.spot = anchor_spot::bottom;
-// }
-//
-// void anchors_layout::set_left (item & i, item & rel, anchor_spot rel_spot, griotte::unit_t margin)
-// {
-//     auto valid = rel_spot == anchor_spot::left
-//         || rel_spot == anchor_spot::right
-//         || rel_spot == anchor_spot::hcenter;
-//
-//     if (!valid) {
-//         logger::e(tr::_("bad anchor for left side"));
-//         return;
-//     }
-//
-//     auto a = retrieve_anchors(& i);
-//     a->left.rel = & rel;
-//     a->left.spot = rel_spot;
-//     a->left.margin = margin;
-// }
-//
-// void anchors_layout::set_top (item & i, item & rel, anchor_spot rel_spot, griotte::unit_t margin)
-// {
-//     auto valid = rel_spot == anchor_spot::top
-//         || rel_spot == anchor_spot::bottom
-//         || rel_spot == anchor_spot::vcenter;
-//
-//     if (!valid) {
-//         logger::e(tr::_("bad anchor for top side"));
-//         return;
-//     }
-//
-//     auto a = retrieve_anchors(& i);
-//     a->top.rel = & rel;
-//     a->top.spot = rel_spot;
-//     a->top.margin = margin;
-// }
-//
-// void anchors_layout::set_right (item & i, item & rel, anchor_spot rel_spot, griotte::unit_t margin)
-// {
-//     auto valid = rel_spot == anchor_spot::left
-//         || rel_spot == anchor_spot::right
-//         || rel_spot == anchor_spot::hcenter;
-//
-//     if (!valid) {
-//         logger::e(tr::_("bad anchor for right side"));
-//         return;
-//     }
-//
-//     auto a = retrieve_anchors(& i);
-//     a->right.rel = & rel;
-//     a->right.spot = rel_spot;
-//     a->right.margin = margin;
-// }
-//
-// void anchors_layout::set_bottom (item & i, item & rel, anchor_spot rel_spot, unit_t margin)
-// {
-//     auto valid = rel_spot == anchor_spot::top
-//         || rel_spot == anchor_spot::bottom
-//         || rel_spot == anchor_spot::vcenter;
-//
-//     if (!valid) {
-//         logger::e(tr::_("bad anchor for bottom side"));
-//         return;
-//     }
-//
-//     auto a = retrieve_anchors(& i);
-//     a->bottom.rel = & rel;
-//     a->bottom.spot = rel_spot;
-//     a->bottom.margin = margin;
-// }
-//
-// void anchors_layout::set_hcenter (item & i, item & rel, anchor_spot rel_spot, unit_t offset)
-// {
-//     auto valid = rel_spot == anchor_spot::left
-//         || rel_spot == anchor_spot::right
-//         || rel_spot == anchor_spot::hcenter;
-//
-//     if (!valid) {
-//         logger::e(tr::_("bad anchor for horizontal center"));
-//         return;
-//     }
-//
-//     auto a = retrieve_anchors(& i);
-//     a->hcenter.rel = & rel;
-//     a->hcenter.spot = rel_spot;
-//     a->hcenter.margin = offset;
-// }
-//
-// void anchors_layout::set_vcenter (item & i, item & rel, anchor_spot rel_spot, unit_t offset)
-// {
-//     auto valid = rel_spot == anchor_spot::top
-//         || rel_spot == anchor_spot::bottom
-//         || rel_spot == anchor_spot::vcenter;
-//
-//     if (!valid) {
-//         logger::e(tr::_("bad anchor for vertical center"));
-//         return;
-//     }
-//
-//     auto a = retrieve_anchors(& i);
-//     a->vcenter.rel = & rel;
-//     a->vcenter.spot = rel_spot;
-//     a->vcenter.margin = offset;
-// }
-//
-// void anchors_layout::set_margins (item & i, griotte::unit_t m)
-// {
-//     auto a = retrieve_anchors(& i);
-//     a->left.margin = a->top.margin = a->right.margin = a->bottom.margin = m;
-// }
-//
-// void anchors_layout::center_in (item & i, item & rel)
-// {
-//     set_hcenter(i, rel, anchor_spot::hcenter, unit_t{0});
-//     set_vcenter(i, rel, anchor_spot::vcenter, unit_t{0});
-// }
+inline linear_layout::elem * linear_layout::elem_cast (item * i)
+{
+    return elem_cast(static_cast<node *>(i));
+}
+
+void linear_layout::set_margins (item & i, unit_t margins[4])
+{
+    auto p = elem_cast(& i);
+    p->margins[0] = margins[0];
+    p->margins[1] = margins[1];
+    p->margins[2] = margins[2];
+    p->margins[3] = margins[3];
+}
+
+void linear_layout::set_margins (item & i, unit_t margins)
+{
+    auto p = elem_cast(& i);
+    p->margins[0] = p->margins[1] = p->margins[2] = p->margins[3] = margins;
+}
+
+void linear_layout::set_margin (item & i, direction dir, unit_t value)
+{
+    auto p = elem_cast(& i);
+    p->margins[static_cast<int>(dir)] = value;
+}
+
+void linear_layout::set_preferred_width (item & i, unit_t w)
+{
+    auto p = elem_cast(& i);
+    p->preferred_width = w;
+}
+
+void linear_layout::set_preferred_height (item & i, unit_t h)
+{
+    auto p = elem_cast(& i);
+    p->preferred_height = h;
+}
 
 void linear_layout::update ()
 {
-    auto node = first_child();
+    unit_t remaining_dim = _orient == orientation::horizontal ? width() : height();
+    unit_t dim = remaining_dim  / _count;
+    auto counter = _count;
+    auto node = last_child();
 
     while (node != nullptr) {
         auto ptr = static_cast<item *>(node);
+        auto el = elem_cast(node);
 
-        // TODO Implement linear layout
+        if (_orient == orientation::horizontal) {
+            if (el->preferred_width >= 0) {
+                ptr->set_width(el->preferred_width - el->margins[0] - el->margins[2]);
+                remaining_dim -= el->preferred_width + el->margins[0] + el->margins[2];
+                counter--;
+            } else {
+                remaining_dim -= el->margins[0] + el->margins[2];
+            }
+        } else {
+            if (el->preferred_height >= 0) {
+                ptr->set_height(el->preferred_height - el->margins[1] - el->margins[3]);
+                remaining_dim -= el->preferred_width + el->margins[1] + el->margins[3];
+                counter--;
+            } else {
+                remaining_dim -= el->margins[1] + el->margins[3];
+            }
+        }
 
+        node = prev(node);
+    }
+
+    dim = remaining_dim  / counter;
+    counter = _count;
+    node = first_child();
+    unit_t coord = _orient == orientation::horizontal ? x() : y();
+
+    while (node != nullptr) {
+        counter--;
+        auto ptr = static_cast<item *>(node);
+        auto el = elem_cast(node);
+
+        // if (counter == 0)
+        //     dim = remaining_dim;
+
+        if (_orient == orientation::horizontal) {
+            coord += el->margins[0];
+            ptr->set_x(coord);
+
+            if (el->preferred_width < 0) {
+                ptr->set_width(dim - el->margins[0] - el->margins[2]);
+            }
+
+            coord += ptr->width() + el->margins[2];
+
+            // FIXME
+            ptr->set_y(y() + el->margins[1]);
+            ptr->set_height(height() - el->margins[1] - el->margins[3]);
+        } else {
+            coord += el->margins[1];
+            ptr->set_y(coord);
+
+            if (el->preferred_height < 0) {
+                ptr->set_height(dim - el->margins[1] - el->margins[3]);
+            } else {
+
+            }
+
+            coord += ptr->height() + el->margins[2];
+
+            // FIXME
+            ptr->set_x(x() + el->margins[0]);
+            ptr->set_width(width() - el->margins[0] - el->margins[2]);
+        }
+
+        // remaining_dim -= dim;
         node = next(node);
     }
 }

@@ -31,14 +31,14 @@ target_sources(griotte PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/src/linear_layout.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/logger.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/node.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/src/resources/fonts/roboto_regular.c)
+    ${CMAKE_CURRENT_LIST_DIR}/src/resources/fonts/roboto_regular.c
+    ${CMAKE_CURRENT_LIST_DIR}/src/resources/fonts/inter_regular.c)
 
 if (GRIOTTE__SFML_BACKEND)
     target_sources(griotte PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/ui.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/circle.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/font.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/SFML/font_resources.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/image.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/rectangle.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/text.cpp

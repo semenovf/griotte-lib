@@ -17,7 +17,7 @@ namespace griotte {
 class layout: public item
 {
 protected:
-    unit_t _margins[4];
+    unit_t _paddings[4];
 
 public:
     layout ();
@@ -32,8 +32,9 @@ public:
         return *ptr;
     }
 
-    void set_margins (unit_t margins[4]);
-    void set_margin (direction dir, unit_t value);
+    void set_paddings (unit_t paddings[4]);
+    void set_paddings (unit_t paddings);
+    void set_padding (direction dir, unit_t value);
 
     void render (renderer_ptr_t r) override;
 

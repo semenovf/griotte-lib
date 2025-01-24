@@ -8,9 +8,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "casting.hpp"
 #include "logger.hpp"
-#include "SFML/font.hpp"
-#include "SFML/text.hpp"
+#include "font_impl.hpp"
 #include "RoundedRectangleShape.hpp"
+#include "griotte/text.hpp"
 #include <pfs/i18n.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -20,66 +20,66 @@
 
 namespace griotte {
 
-using rep_t = SFML::text_rep;
+class text::impl
+{
+public:
+    sf::Text text;
+};
 
-template <>
-text<rep_t>::text (): item () {}
-
-template <>
-text<rep_t>::text (std::string const & string)
+text::text ()
     : item ()
+    , _d(new impl)
+{}
+
+text::text (std::string const & string)
+    : item ()
+    , _d(new impl)
 {
-    _rep.d.setString(SFML::cast(string));
+    _d->text.setString(SFML::cast(string));
 }
 
-template <>
-text<rep_t>::~text () = default;
+text::~text () = default;
 
-template <>
-unsigned int text<rep_t>::pixel_size () const noexcept
+unsigned int text::pixel_size () const noexcept
 {
-    return _rep.d.getCharacterSize();
+    return _d->text.getCharacterSize();
 }
 
-template <>
-void text<rep_t>::set_pixel_size (unsigned int value)
+void text::set_pixel_size (unsigned int value)
 {
-    _rep.d.setCharacterSize(value); // in pixels, not points!
+    _d->text.setCharacterSize(value); // in pixels, not points!
 }
 
-template <>
-color_t text<rep_t>::color () const noexcept
+color_t text::color () const noexcept
 {
-    return SFML::cast_rgba(_rep.d.getFillColor());
+    return SFML::cast_rgba(_d->text.getFillColor());
 }
 
-template <>
-void text<rep_t>::set_color (color_t value)
+void text::set_color (color_t value)
 {
-    _rep.d.setFillColor(SFML::cast(value));
+    _d->text.setFillColor(SFML::cast(value));
 }
 
-template <>
-std::string text<rep_t>::string () const noexcept
+std::string text::string () const noexcept
 {
-    return SFML::cast(_rep.d.getString());
+    return SFML::cast(_d->text.getString());
 }
 
-template <>
-void text<rep_t>::set_string (std::string const & value)
+void text::set_string (std::string const & value)
 {
-    _rep.d.setString(SFML::cast(value));
+    _d->text.setString(SFML::cast(value));
 }
 
-template <>
-void text<rep_t>::set_font (font_t f)
+void text::set_font (font f)
 {
     _font = f;
-    _rep.d.setFont(*_font);
+    auto ptr = _font.native();
+
+    if (ptr != nullptr)
+        _d->text.setFont(*static_cast<sf::Font *>(ptr));
 }
 
-template <>
-void text<rep_t>::set_font_style (fontstyle fstyle)
+void text::set_font_style (fontstyle fstyle)
 {
     _font_style = fstyle;
 
@@ -97,44 +97,40 @@ void text<rep_t>::set_font_style (fontstyle fstyle)
     if (_font_style.is_strikeout())
         sf_font_style |= sf::Text::StrikeThrough;
 
-    _rep.d.setStyle(sf_font_style);
+    _d->text.setStyle(sf_font_style);
 }
 
-template <>
-geom2d text<rep_t>::bounding_geom () const
+geom2d text::bounding_geom () const
 {
-    sf::FloatRect bounds = _rep.d.getGlobalBounds();
-    return geom2d { _x, _y, bounds.width, bounds.height };
+    sf::FloatRect bounds = _d->text.getGlobalBounds();
+    return geom2d { _geom.x, _geom.y, bounds.width, bounds.height };
 }
 
-template <>
-rect2d text<rep_t>::bounding_rect () const
+rect2d text::bounding_rect () const
 {
-    sf::FloatRect bounds = _rep.d.getGlobalBounds();
-    return rect2d { _x, _y, bounds.width, bounds.height };
+    sf::FloatRect bounds = _d->text.getGlobalBounds();
+    return rect2d { _geom.x, _geom.y, bounds.width, bounds.height };
 }
 
-template <>
-void text<rep_t>::set_position (unit_t x, unit_t y)
+void text::set_position (unit_t x, unit_t y)
 {
     item::set_position(x, y);
-    sf::FloatRect bounds = _rep.d.getGlobalBounds();
-    _rep.d.setPosition(_x - bounds.left, _y - bounds.top);
+    sf::FloatRect bounds = _d->text.getGlobalBounds();
+    _d->text.setPosition(_geom.x - bounds.left, _geom.y - bounds.top);
 }
 
-template <>
-void text<rep_t>::render (sf::RenderTarget * r)
+void text::render (sf::RenderTarget * r)
 {
     if (_bgcolor) {
         sf::RectangleShape rr;
-        sf::FloatRect bounds = _rep.d.getGlobalBounds();
-        rr.setPosition(_x, _y);
+        sf::FloatRect bounds = _d->text.getGlobalBounds();
+        rr.setPosition(_geom.x, _geom.y);
         rr.setSize(sf::Vector2f(bounds.width, bounds.height));
         rr.setFillColor(SFML::cast(*_bgcolor));
         r->draw(rr);
     }
 
-    r->draw(_rep.d);
+    r->draw(_d->text);
 }
 
 } // namespace griotte::SFML

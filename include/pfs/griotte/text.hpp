@@ -12,16 +12,18 @@
 #include "fontstyle.hpp"
 #include "item.hpp"
 #include <pfs/optional.hpp>
+#include <memory>
 #include <string>
 
 namespace griotte {
 
-template <typename Rep>
 class text: public item
 {
+    class impl;
+
 protected:
-    Rep _rep;
-    font_t _font;
+    std::unique_ptr<impl> _d;
+    font _font;
     fontstyle _font_style;
     pfs::optional<color_t> _bgcolor;
 
@@ -39,12 +41,12 @@ public:
     std::string string () const noexcept;
     void set_string (std::string const & string);
 
-    font_t font () const noexcept
+    font get_font () const noexcept
     {
         return _font;
     }
 
-    void set_font (font_t f);
+    void set_font (font f);
 
     fontstyle font_style () const noexcept
     {

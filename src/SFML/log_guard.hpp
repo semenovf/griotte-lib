@@ -12,7 +12,6 @@
 #include <sstream>
 
 namespace griotte {
-namespace SFML {
 
 inline std::ostringstream & log_stream ()
 {
@@ -45,5 +44,5 @@ public:
     }
 };
 
-}} // namespace griotte::SFML
+} // namespace griotte::SFML
 

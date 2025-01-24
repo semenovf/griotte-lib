@@ -17,8 +17,8 @@ protected:
     node * _parent {nullptr};
     node * _prev   {nullptr};
     node * _next   {nullptr};
-    node * _child_first {nullptr}; // Ponter to the first child
-    node * _child_last {nullptr};
+    node * _child_first {nullptr}; // Pointer to the first child
+    node * _child_last {nullptr};  // Pointer to the last child
 
 public:
     node () = default;
@@ -39,9 +39,19 @@ public:
         return _child_first;
     }
 
+    node * last_child ()
+    {
+        return _child_last;
+    }
+
     node * next (node * n)
     {
         return n != nullptr ? n->_next : nullptr;
+    }
+
+    node * prev (node * n)
+    {
+        return n != nullptr ? n->_prev : nullptr;
     }
 
     /**

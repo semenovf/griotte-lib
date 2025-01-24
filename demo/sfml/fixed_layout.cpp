@@ -12,8 +12,8 @@
 #include <pfs/griotte/image.hpp>
 #include <pfs/griotte/math.hpp>
 #include <pfs/griotte/rectangle.hpp>
-#include <pfs/griotte/SFML/text.hpp>
-#include <pfs/griotte/SFML/font.hpp>
+#include <pfs/griotte/font.hpp>
+#include <pfs/griotte/text.hpp>
 #include <pfs/griotte/SFML/ui.hpp>
 #include <pfs/log.hpp>
 
@@ -121,9 +121,9 @@ void fixed_layout (griotte::SFML::ui & ui)
         griotte::fontstyle font_style1;
         font_style1.add_bold();
 
-        auto font1 = griotte::font_t::get("Inter");
+        auto font1 = griotte::font::get("Inter");
 
-        auto & t1 = l.create<griotte::text_t>("Primary");
+        auto & t1 = l.create<griotte::text>("Primary");
         t1.set_font(font1);
         t1.set_font_style(font_style1);
         t1.set_pixel_size(16);

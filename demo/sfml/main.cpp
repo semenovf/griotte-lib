@@ -7,11 +7,12 @@
 //      2024.07.12 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
 #include <pfs/griotte/logger.hpp>
-#include <pfs/griotte/SFML/font.hpp>
+#include <pfs/griotte/font.hpp>
 #include <pfs/griotte/SFML/ui.hpp>
 #include <pfs/argvapi.hpp>
 #include <pfs/filesystem.hpp>
 #include <pfs/i18n.hpp>
+#include <pfs/string_view.hpp>
 #include <cmrc/cmrc.hpp>
 #include <array>
 #include <cstdlib>
@@ -41,7 +42,7 @@ static std::array<std::pair<std::string, fs::path>, 2> const fonts = {
 
 static void dump_embedded_fonts ()
 {
-    auto emfonts = griotte::SFML::font::embedded_fonts();
+    auto emfonts = griotte::font::embedded_fonts();
 
     fmt::println("Embedded fonts:");
     int counter = 0;
@@ -58,7 +59,7 @@ static void print_help (std::string const & progname)
     fmt::println("  {} fixed-layout | fl", progname);
     fmt::println("  {} anchors-layout | al", progname);
     fmt::println("  {} scale", progname);
-    fmt::println("  {} palette INDEX", progname);
+    fmt::println("  {} palette_INDEX", progname);
 }
 
 int main (int argc, char * argv[])
@@ -75,7 +76,7 @@ int main (int argc, char * argv[])
     griotte::SFML::ui ui {std::move(opts)};
 
     for (auto const & f: constants::fonts) {
-        if (griotte::SFML::font::load(f.first, f.second)) {
+        if (griotte::font::load(f.first, f.second)) {
             logger::d(tr::f_("Font loaded: {} => {}", f.first, f.second));
         } else {
             return EXIT_FAILURE;
@@ -105,9 +106,10 @@ int main (int argc, char * argv[])
                 fixed_layout(ui);
             else if (x.arg() == "scale")
                 scale(ui);
-            else if (x.arg() == "palette")
-                palette(ui, 0); // TODO Set palette index from command line (< 0 -> randomize it)
-            else
+            else if (pfs::starts_with(x.arg(), "palette_")) {
+                auto index = std::stoi(std::string(x.arg().begin() + 8));
+                palette(ui, index);
+            } else
                 fixed_layout(ui);
         }
     } else {

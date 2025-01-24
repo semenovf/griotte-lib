@@ -14,7 +14,7 @@ namespace griotte {
 layout::layout ()
     : item ()
 {
-    _margins[0] = _margins[1] = _margins[2] = _margins[3] = 0;
+    _paddings[0] = _paddings[1] = _paddings[2] = _paddings[3] = 0;
 }
 
 layout::~layout ()
@@ -42,17 +42,22 @@ layout::~layout ()
     }
 }
 
-void layout::set_margins (unit_t margins[4])
+void layout::set_paddings (unit_t paddings[4])
 {
-    _margins[0] = margins[0];
-    _margins[1] = margins[1];
-    _margins[2] = margins[2];
-    _margins[3] = margins[3];
+    _paddings[0] = paddings[0];
+    _paddings[1] = paddings[1];
+    _paddings[2] = paddings[2];
+    _paddings[3] = paddings[3];
 }
 
-void layout::set_margin (direction dir, unit_t value)
+void layout::set_paddings (unit_t paddings)
 {
-    _margins[static_cast<int>(dir)] = value;
+    _paddings[0] = _paddings[1] = _paddings[2] = _paddings[3] = paddings;
+}
+
+void layout::set_padding (direction dir, unit_t value)
+{
+    _paddings[static_cast<int>(dir)] = value;
 }
 
 void layout::render (sf::RenderTarget * r)

@@ -12,23 +12,23 @@ namespace griotte {
 
 unit_t circle::radius () const noexcept
 {
-    return _w / 2;
+    return _geom.w / 2;
 }
 
 void circle::set_radius (unit_t value)
 {
-    _w = _h = value * 2;
+    _geom.w = _geom.h = value * 2;
 }
 
 point_t circle::origin () const noexcept
 {
-    return point_t{ _x + _w / 2, _y + _w / 2};
+    return point_t{ _geom.x + _geom.w / 2, _geom.y + _geom.w / 2};
 }
 
 void circle::set_origin (unit_t x, unit_t y)
 {
-    _x = x - _w / 2;
-    _y = y - _w / 2;
+    _geom.x = x - _geom.w / 2;
+    _geom.y = y - _geom.w / 2;
 }
 
 } // namespace griotte
