@@ -11,16 +11,16 @@ project(griotte LANGUAGES CXX C)
 
 if (GRIOTTE__BUILD_SHARED)
     add_library(griotte SHARED)
-    target_compile_definitions(griotte PRIVATE IONIK__EXPORTS)
+    target_compile_definitions(griotte PRIVATE GRIOTTE__EXPORTS)
 else()
     add_library(griotte STATIC)
-    target_compile_definitions(griotte PUBLIC IONIK__STATIC)
+    target_compile_definitions(griotte PUBLIC GRIOTTE__STATIC)
 endif()
 
 add_library(pfs::griotte ALIAS griotte)
 
 if (MSVC)
-    target_compile_definitions(ionik PRIVATE _CRT_SECURE_NO_WARNINGS)
+    target_compile_definitions(griotte PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
 
 target_sources(griotte PRIVATE
