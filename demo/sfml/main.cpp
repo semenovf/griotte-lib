@@ -107,7 +107,7 @@ int main (int argc, char * argv[])
             else if (x.arg() == "scale")
                 scale(ui);
             else if (pfs::starts_with(x.arg(), "palette_")) {
-                auto index = std::stoi(std::string(x.arg().begin() + 8));
+                auto index = std::stoi(std::string(x.arg().begin() + 8, x.arg().begin() + x.arg().size()));
                 palette(ui, index);
             } else
                 fixed_layout(ui);

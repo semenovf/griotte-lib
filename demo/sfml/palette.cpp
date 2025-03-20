@@ -11,6 +11,7 @@
 #include <pfs/griotte/rectangle.hpp>
 #include <pfs/griotte/SFML/ui.hpp>
 #include <pfs/fmt.hpp>
+#include <array>
 #include <utility>
 #include <vector>
 
