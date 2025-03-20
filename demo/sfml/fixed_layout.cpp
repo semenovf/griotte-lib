@@ -19,7 +19,7 @@
 
 void fixed_layout (griotte::SFML::ui & ui)
 {
-    auto & l = ui.acquire_layout<griotte::fixed_layout>();
+    auto & l = ui.create_layout<griotte::fixed_layout>();
 
     griotte::unit_t y = 10;
     griotte::unit_t margin = 10;

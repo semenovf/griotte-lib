@@ -14,7 +14,7 @@
 
 void scale (griotte::SFML::ui & ui)
 {
-    auto & l = ui.acquire_layout<griotte::fixed_layout>();
+    auto & l = ui.create_layout<griotte::fixed_layout>();
 
     auto & r1 = l.create<griotte::rectangle>();
     r1.set_width(400);

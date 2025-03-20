@@ -25,5 +25,6 @@ add_executable(${PROJECT_NAME}
     anchors_layout.cpp
     fixed_layout.cpp
     palette.cpp
-    scale.cpp)
+    scale.cpp
+    text_input.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE pfs::griotte rc::icons)

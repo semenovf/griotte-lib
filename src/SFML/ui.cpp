@@ -10,9 +10,9 @@
 #include "fixed_layout.hpp"
 #include "font.hpp"
 #include "SFML/ui.hpp"
+#include <pfs/countdown_timer.hpp>
 #include <pfs/i18n.hpp>
 #include <pfs/memory.hpp>
-#include <pfs/stopwatch.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -37,8 +37,13 @@ ui::ui (options && opts)
     settings.majorVersion = 3;
     settings.minorVersion = 0;
 
+    // FIXME What about Android?
+    auto video_mode = sf::VideoMode::getDesktopMode();
+    video_mode.width = opts.w;
+    video_mode.height = opts.h;
+
     // Create window
-    _win = pfs::make_unique<sf::RenderWindow>(sf::VideoMode(opts.w, opts.h)
+    _win = pfs::make_unique<sf::RenderWindow>(video_mode
         , sf::String::fromUtf8(opts.title.begin(), opts.title.end())
         , style, settings);
 
@@ -123,12 +128,6 @@ void ui::step (sf::Event * ev)
         }
     }
 
-    // Convert the event to our own type so that we can process it in a backend-independent way afterwards
-    // Event event;
-    //
-    // if (!convertEvent(sfmlEvent, event))
-    //     return false; // We don't process this type of event
-    //
     // if ((event.type == Event::Type::MouseButtonPressed) && (sfmlEvent.type == sf::Event::TouchBegan)) {
     //     // For touches, always send a mouse move event before the mouse press,
     //     // because widgets may assume that the mouse had to move to the clicked location first
@@ -140,6 +139,63 @@ void ui::step (sf::Event * ev)
     // }
 
     switch (ev->type) {
+        case sf::Event::MouseMoved:
+            //LOGD("MouseMoved", "position={},{}", ev->mouseMove.x, ev->mouseMove.y);
+            break;
+        case sf::Event::MouseButtonPressed:
+        case sf::Event::MouseButtonReleased:
+            LOGD(ev->type == sf::Event::MouseButtonPressed
+                ? "MouseButtonPressed"
+                : "MouseButtonReleased"
+                , "position={},{}; button={}"
+                , ev->mouseButton.x, ev->mouseButton.y
+                , ev->mouseButton.button == sf::Mouse::Button::Left
+                    ? "left"
+                    : ev->mouseButton.button == sf::Mouse::Button::Right
+                        ? "right"
+                        : ev->mouseButton.button == sf::Mouse::Button::Middle
+                            ? "middle"
+                            : ev->mouseButton.button == sf::Mouse::Button::XButton1
+                                ? "xbutton1"
+                                : ev->mouseButton.button == sf::Mouse::Button::XButton2
+                                    ? "xbutton2"
+                                    : "<unknown>");
+            break;
+        case sf::Event::MouseWheelScrolled: {
+            // delta:
+            //      -1 - wheel down
+            //       1 - wheel up
+            LOGD("MouseWheelScrolled", "position={},{}; delta={}"
+                , ev->mouseWheelScroll.x, ev->mouseWheelScroll.y
+                , ev->mouseWheelScroll.delta);
+
+            // switch (event.type) {
+            //     case Event::Type::MouseMoved:
+            //         return m_container->processMouseMoveEvent(mouseCoords);
+            //
+            //     case Event::Type::MouseWheelScrolled:
+            //         if (m_container->processScrollEvent(event.mouseWheel.delta, mouseCoords, false))
+            //             return true;
+            //
+            //         // Even if no scrollbar moved, we will still absorb the scroll event when the mouse is on top of a widget
+            //         return m_container->getWidgetAtPos(mouseCoords, false) != nullptr;
+            //
+            //     case Event::Type::MouseButtonPressed:
+            //         return m_container->processMousePressEvent(event.mouseButton.button, mouseCoords);
+            //
+            //     case Event::Type::MouseButtonReleased: {
+            //         bool const eventHandled = m_container->processMouseReleaseEvent(event.mouseButton.button, mouseCoords);
+            //
+            //         if (event.mouseButton.button == Event::MouseButton::Left)
+            //             m_container->leftMouseButtonNoLongerDown();
+            //         else if (event.mouseButton.button == Event::MouseButton::Right)
+            //             m_container->rightMouseButtonNoLongerDown();
+            //
+            //         return eventHandled;
+            //     }
+                break;
+            }
+
         case sf::Event::Closed:
             _running = false;
             break;
@@ -152,8 +208,25 @@ void ui::step (sf::Event * ev)
             sf::FloatRect visibleArea(0, 0, _win_w, _win_h);
             _win->setView(sf::View(visibleArea));
 
-            //LOG_TRACE_1("sf::Event::Resized: {}x{}", _win_w, _win_h);
+            //LOGD("sf::Event::Resized: {}x{}", _win_w, _win_h);
             _update_required = true;
+            break;
+        }
+
+        case sf::Event::KeyPressed: {
+            LOGD("~~~", "KEY PRESSED: {}", static_cast<std::underlying_type<sf::Keyboard::Key>::type>(ev->key.code));
+            // FIXME
+            if (/*isTabKeyUsageEnabled() && */(ev->key.code == sf::Keyboard::Tab)) {
+            //     if (event.key.shift)
+            //         focusPreviousWidget(true);
+            //     else
+            //         focusNextWidget(true);
+            //
+            //     return true;
+            } else {
+            //     return m_container->processKeyPressEvent(event.key);
+            }
+
             break;
         }
 
@@ -185,85 +258,6 @@ void ui::step (sf::Event * ev)
             // m_container->mouseNoLongerOnWidget();
             break;
 
-        case sf::Event::MouseMoved:
-        case sf::Event::MouseButtonPressed:
-        case sf::Event::MouseButtonReleased:
-        case sf::Event::MouseWheelScrolled: {
-            // FIXME
-            // Vector2f mouseCoords;
-            //
-            // switch (event.type) {
-            //     case Event::Type::MouseMoved:
-            //         m_lastMousePos = {event.mouseMove.x, event.mouseMove.y};
-            //         mouseCoords = mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
-            //         break;
-            //     case Event::Type::MouseWheelScrolled:
-            //         m_lastMousePos = {event.mouseWheel.x, event.mouseWheel.y};
-            //         mouseCoords = mapPixelToCoords({event.mouseWheel.x, event.mouseWheel.y});
-            //         break;
-            //     default: // Event::Type::MouseButtonPressed || Event::Type::MouseButtonReleased
-            //         m_lastMousePos = {event.mouseButton.x, event.mouseButton.y};
-            //         mouseCoords = mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-            //         break;
-            // }
-            //
-            // // If a tooltip is visible then hide it now
-            // if (m_visibleToolTip != nullptr) {
-            //     // Correct the position of the tool tip so that it is relative again
-            //     m_visibleToolTip->setPosition(m_toolTipRelativePos);
-            //
-            //     remove(m_visibleToolTip);
-            //     m_visibleToolTip = nullptr;
-            // }
-            //
-            // // Reset the data for the tooltip since the mouse has moved
-            // m_tooltipTime = {};
-            // m_tooltipPossible = true;
-            //
-            // switch (event.type) {
-            //     case Event::Type::MouseMoved:
-            //         return m_container->processMouseMoveEvent(mouseCoords);
-            //
-            //     case Event::Type::MouseWheelScrolled:
-            //         if (m_container->processScrollEvent(event.mouseWheel.delta, mouseCoords, false))
-            //             return true;
-            //
-            //         // Even if no scrollbar moved, we will still absorb the scroll event when the mouse is on top of a widget
-            //         return m_container->getWidgetAtPos(mouseCoords, false) != nullptr;
-            //
-            //     case Event::Type::MouseButtonPressed:
-            //         return m_container->processMousePressEvent(event.mouseButton.button, mouseCoords);
-            //
-            //     case Event::Type::MouseButtonReleased: {
-            //         bool const eventHandled = m_container->processMouseReleaseEvent(event.mouseButton.button, mouseCoords);
-            //
-            //         if (event.mouseButton.button == Event::MouseButton::Left)
-            //             m_container->leftMouseButtonNoLongerDown();
-            //         else if (event.mouseButton.button == Event::MouseButton::Right)
-            //             m_container->rightMouseButtonNoLongerDown();
-            //
-            //         return eventHandled;
-            //     }
-                break;
-            }
-
-        case sf::Event::KeyPressed: {
-            LOGD("~~~", "KEY PRESSED: {}", static_cast<std::underlying_type<sf::Keyboard::Key>::type>(ev->key.code));
-            // FIXME
-            if (/*isTabKeyUsageEnabled() && */(ev->key.code == sf::Keyboard::Tab)) {
-            //     if (event.key.shift)
-            //         focusPreviousWidget(true);
-            //     else
-            //         focusNextWidget(true);
-            //
-            //     return true;
-            } else {
-            //     return m_container->processKeyPressEvent(event.key);
-            }
-
-            break;
-        }
-
         default:
             break;
     }
@@ -294,26 +288,13 @@ void ui::run ()
 {
     // TODO Must be initialized with analogue from SFML of SDL_DisplayMode.refresh_rate value
     // returned by SDL_GetDesktopDisplayMode()
-    float millis_per_frame = 1000.0 / 60.0;
-
-    pfs::stopwatch<std::milli, std::int32_t> stopwatch;
+    std::chrono::microseconds micros_per_frame {1000000 / 60};
+    pfs::countdown_timer<std::micro, std::int32_t> countdown_timer{micros_per_frame};
 
     while (_running) {
-        stopwatch.start();
+        countdown_timer.reset();
         step();
-        stopwatch.stop();
-
-        /* figure out how much time we have left, and then sleep */
-        auto remain_millis = static_cast<std::int32_t>(millis_per_frame - stopwatch.count());
-
-        if (remain_millis < 0) {
-            remain_millis = 0;
-        } else if (remain_millis > millis_per_frame) {
-            remain_millis = millis_per_frame;
-        }
-
-        if (remain_millis > 0)
-            std::this_thread::sleep_for(std::chrono::milliseconds{remain_millis});
+        std::this_thread::sleep_for(countdown_timer.remain());
     }
 }
 

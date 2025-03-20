@@ -18,6 +18,7 @@ class layout: public item
 {
 protected:
     unit_t _paddings[4];
+    item * _focused_item {nullptr};
 
 public:
     layout ();

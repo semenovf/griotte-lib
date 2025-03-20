@@ -57,7 +57,7 @@ void palette (griotte::SFML::ui & ui, int palette_index)
     auto i = palette_index % palettes.size();
     fmt::println("Palette: {}", palettes[i].first);
 
-    auto & l = ui.acquire_layout<griotte::linear_layout>(griotte::orientation::horizontal);
+    auto & l = ui.create_layout<griotte::linear_layout>(griotte::orientation::horizontal);
 
     auto & r1 = l.create<griotte::rectangle>();
     auto & r2 = l.create<griotte::rectangle>();

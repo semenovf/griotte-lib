@@ -27,6 +27,9 @@ protected:
     /// The item receives mouse and keyboard events if @c true.
     bool _enabled {true};
 
+    /// The item in focus now if @c true.
+    bool _focused {false};
+
     float _scale_factor_x {1.0f};
     float _scale_factor_y {1.0f};
     float _rotation {0.0f};

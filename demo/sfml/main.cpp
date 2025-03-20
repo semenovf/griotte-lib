@@ -30,6 +30,7 @@ extern void anchors_layout (griotte::SFML::ui &);
 extern void fixed_layout (griotte::SFML::ui &);
 extern void scale (griotte::SFML::ui &);
 extern void palette (griotte::SFML::ui &, int palette_index);
+extern void text_input (griotte::SFML::ui &);
 
 namespace constants {
 
@@ -54,12 +55,15 @@ static void dump_embedded_fonts ()
 
 static void print_help (std::string const & progname)
 {
-    fmt::println("Usage:");
-    fmt::println("  {} --help", progname);
-    fmt::println("  {} fixed-layout | fl", progname);
-    fmt::println("  {} anchors-layout | al", progname);
-    fmt::println("  {} scale", progname);
-    fmt::println("  {} palette_INDEX", progname);
+    fmt::println(
+        "Usage:\n"
+        "  {0} --help\n"
+        "  {0} fixed-layout | fl\n"
+        "  {0} anchors-layout | al\n"
+        "  {0} scale\n"
+        "  {0} palette_INDEX\n"
+        "  {0} text-input"
+        , progname);
 }
 
 int main (int argc, char * argv[])
@@ -109,7 +113,9 @@ int main (int argc, char * argv[])
             else if (pfs::starts_with(x.arg(), "palette_")) {
                 auto index = std::stoi(std::string(x.arg().begin() + 8));
                 palette(ui, index);
-            } else
+            } else if (x.arg() == "text-input")
+                text_input(ui);
+            else
                 fixed_layout(ui);
         }
     } else {
