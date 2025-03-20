@@ -11,8 +11,8 @@
 #include "font.hpp"
 #include "fontstyle.hpp"
 #include "item.hpp"
-#include <pfs/optional.hpp>
 #include <memory>
+#include <optional>
 #include <string>
 
 namespace griotte {
@@ -25,7 +25,7 @@ protected:
     std::unique_ptr<impl> _d;
     font _font;
     fontstyle _font_style;
-    pfs::optional<color_t> _bgcolor;
+    std::optional<color_t> _bgcolor;
 
 public:
     text ();
@@ -65,7 +65,7 @@ public:
         _bgcolor = pfs::nullopt;
     }
 
-    pfs::optional<color_t> bgcolor () const noexcept
+    std::optional<color_t> bgcolor () const noexcept
     {
         return _bgcolor;
     }

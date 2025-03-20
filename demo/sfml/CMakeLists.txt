@@ -25,7 +25,8 @@ add_executable(${PROJECT_NAME}
     anchors_layout.cpp
     fixed_layout.cpp
     palette.cpp
-    scale.cpp)
+    scale.cpp
+    text_input.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE pfs::griotte rc::icons)
 
@@ -37,6 +38,6 @@ endif()
 
 add_custom_command(TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/../../resources/fonts/Inter.ttf ${_runtime_output_directory}/Inter.ttf
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/../../resources/fonts/Roboto-Regular.ttf ${_runtime_output_directory}/Roboto-Regular.ttf
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_LIST_DIR}/../../resources/fonts/Inter.ttf" "${_runtime_output_directory}/Inter.ttf"
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_LIST_DIR}/../../resources/fonts/Roboto-Regular.ttf" "${_runtime_output_directory}/Roboto-Regular.ttf"
     VERBATIM)

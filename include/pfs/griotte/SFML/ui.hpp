@@ -54,7 +54,7 @@ public:
     void set_color (color_t value);
 
     template <typename L, typename ...Args>
-    L & acquire_layout (Args &&... args)
+    L & create_layout (Args &&... args)
     {
         auto ptr = new L(std::forward<Args>(args)...);
         _root_layout.reset(ptr);

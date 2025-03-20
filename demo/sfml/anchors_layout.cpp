@@ -15,7 +15,7 @@
 
 void anchors_layout (griotte::SFML::ui & ui)
 {
-    auto & l = ui.acquire_layout<griotte::anchors_layout>();
+    auto & l = ui.create_layout<griotte::anchors_layout>();
 
     auto & r1 = l.create<griotte::rectangle>();
     l.fill(r1, l);
