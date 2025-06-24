@@ -1,12 +1,13 @@
 ################################################################################
-# Copyright (c) 2024 Vladislav Trifochkin
+# Copyright (c) 2024-2025 Vladislav Trifochkin
 #
 # This file is part of `griotte-lib`.
 #
 # Changelog:
 #      2024.06.05 Initial version.
+#      2025.06.24 Min CMake version is 3.19.
 ################################################################################
-cmake_minimum_required (VERSION 3.11)
+cmake_minimum_required (VERSION 3.19)
 project(griotte LANGUAGES CXX C)
 
 if (GRIOTTE__BUILD_SHARED)
@@ -45,47 +46,9 @@ if (GRIOTTE__SFML_BACKEND)
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/RoundedRectangleShape.cpp)
 endif()
 
-
-if (NOT TARGET pfs::common)
-    set(FETCHCONTENT_UPDATES_DISCONNECTED_COMMON ON)
-
-    message(STATUS "Fetching pfs::common ...")
-    include(FetchContent)
-    FetchContent_Declare(common
-        GIT_REPOSITORY https://github.com/semenovf/common-lib.git
-        GIT_TAG master
-        GIT_PROGRESS TRUE
-        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/2ndparty/common
-        SUBBUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/2ndparty/common)
-    FetchContent_MakeAvailable(common)
-    message(STATUS "Fetching pfs::common complete")
-endif()
-
 if (GRIOTTE__SFML_BACKEND)
-    set(FETCHCONTENT_UPDATES_DISCONNECTED_SFML ON)
-
-    set(SFML_BUILD_WINDOW TRUE CACHE BOOL "")
-    set(SFML_BUILD_GRAPHICS TRUE CACHE BOOL "")
-    set(SFML_BUILD_AUDIO FALSE CACHE BOOL "")
-    set(SFML_BUILD_NETWORK FALSE CACHE BOOL "")
-    set(SFML_BUILD_DOC FALSE CACHE BOOL "")
-    set(SFML_BUILD_EXAMPLES FALSE CACHE BOOL "")
-    set(SFML_BUILD_TEST_SUITE FALSE CACHE BOOL "")
-
-    message(STATUS "Fetching SFML ...")
-    include(FetchContent)
-    FetchContent_Declare(SFML
-        GIT_REPOSITORY https://github.com/SFML/SFML.git
-        GIT_TAG 2.6.2
-        GIT_PROGRESS TRUE
-        GIT_SHALLOW 1
-        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/SFML
-        SUBBUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/SFML)
-    FetchContent_MakeAvailable(SFML)
-    message(STATUS "Fetching SFML complete")
-
     target_link_libraries(griotte PUBLIC sfml-graphics sfml-system sfml-window)
-    target_include_directories(griotte PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/SFML/include)
+    # target_include_directories(griotte PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/SFML/include)
 endif()
 
 target_include_directories(griotte

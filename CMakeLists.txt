@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (c) 2021-2024 Vladislav Trifochkin
+# Copyright (c) 2021-2025 Vladislav Trifochkin
 #
 # This file is part of `griotte-lib`.
 #
@@ -18,23 +18,7 @@ option(GRIOTTE__BUILD_DEMO "Build demo" OFF)
 
 option(GRIOTTE__BUILD_SHARED "Enable build shared library" OFF)
 option(GRIOTTE__SFML_BACKEND "Enable SFML backend" ON)
-
-set(GRIOTTE__OUTPUT_DIR "${CMAKE_BINARY_DIR}/output")
-get_property(_runtime_output_directory GLOBAL PROPERTY RUNTIME_OUTPUT_DIRECTORY)
-get_property(_library_output_directory GLOBAL PROPERTY LIBRARY_OUTPUT_DIRECTORY)
-get_property(_archive_output_directory GLOBAL PROPERTY ARCHIVE_OUTPUT_DIRECTORY)
-
-if (NOT _runtime_output_directory)
-    set_property(GLOBAL PROPERTY RUNTIME_OUTPUT_DIRECTORY ${GRIOTTE__OUTPUT_DIR})
-endif()
-
-if (NOT _library_output_directory)
-    set_property(GLOBAL PROPERTY LIBRARY_OUTPUT_DIRECTORY ${GRIOTTE__OUTPUT_DIR})
-endif()
-
-if (NOT _archive_output_directory)
-    set_property(GLOBAL PROPERTY ARCHIVE_OUTPUT_DIRECTORY ${GRIOTTE__OUTPUT_DIR})
-endif()
+option(GRIOTTE__DISABLE_FETCH_CONTENT "Disable fetch content if sources of dependencies already exists in the working tree (checks .git subdirectory)" OFF)
 
 if (GRIOTTE__BUILD_STRICT)
     if (NOT CMAKE_CXX_STANDARD)
@@ -45,31 +29,35 @@ if (GRIOTTE__BUILD_STRICT)
     set(CMAKE_CXX_EXTENSIONS OFF) # use -std=c++XX rather than -std=gnu++XX
 endif()
 
-message(STATUS "C++ compiler: ${CMAKE_CXX_COMPILER}")
-message(STATUS "C++ compiler version: ${CMAKE_CXX_COMPILER_VERSION}")
+set(GRIOTTE__OUTPUT_DIR "${CMAKE_BINARY_DIR}/output")
+get_property(_runtime_output_directory GLOBAL PROPERTY RUNTIME_OUTPUT_DIRECTORY)
+get_property(_library_output_directory GLOBAL PROPERTY LIBRARY_OUTPUT_DIRECTORY)
+get_property(_archive_output_directory GLOBAL PROPERTY ARCHIVE_OUTPUT_DIRECTORY)
+
+if (NOT _runtime_output_directory)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${GRIOTTE__OUTPUT_DIR})
+endif()
+
+if (NOT _library_output_directory)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${GRIOTTE__OUTPUT_DIR})
+endif()
+
+if (NOT _archive_output_directory)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${GRIOTTE__OUTPUT_DIR})
+endif()
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED_CMRC ON)
 
-message(STATUS "Fetching cmrc ...")
-include(FetchContent)
-FetchContent_Declare(cmrc
-    GIT_REPOSITORY https://github.com/vector-of-bool/cmrc.git
-    GIT_TAG master
-    GIT_PROGRESS TRUE
-    GIT_SHALLOW 1
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cmrc
-    SUBBUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rdparty/cmrc)
-FetchContent_MakeAvailable(cmrc)
-message(STATUS "Fetching cmrc complete")
-
+add_subdirectory(3rdparty)
+add_subdirectory(2ndparty)
 include(${CMAKE_CURRENT_LIST_DIR}/library.cmake)
 
-if (GRIOTTE__BUILD_TESTS)
+if (GRIOTTE__BUILD_TESTS AND EXISTS ${CMAKE_CURRENT_LIST_DIR}/tests)
     enable_testing()
     add_subdirectory(tests)
 endif()
 
-if (GRIOTTE__BUILD_DEMO)
+if (GRIOTTE__BUILD_DEMO AND EXISTS ${CMAKE_CURRENT_LIST_DIR}/demo)
     add_subdirectory(demo)
 endif()
 

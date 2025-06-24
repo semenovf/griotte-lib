@@ -114,7 +114,7 @@ bool font::load (std::string const & font_alias, pfs::filesystem::path const & p
     auto f = std::make_unique<impl>();
     log_guard lg;
 
-    if (!f->loadFromFile(pfs::filesystem::utf8_encode(path)))
+    if (!f->loadFromFile(pfs::utf8_encode_path(path)))
         return false;
 
     return impl::add(font_alias, std::move(f), is_fallback);

@@ -97,7 +97,7 @@ int main (int argc, char * argv[])
 
         if (x.is_option()) {
             if (x.optname() == "help") {
-                print_help(pfs::filesystem::utf8_encode(cl.program_name()));
+                print_help(pfs::utf8_encode_path(cl.program_name()));
                 return EXIT_SUCCESS;
             } else {
                 fmt::println(stderr, "Bad option or command name");

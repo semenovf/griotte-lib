@@ -30,10 +30,14 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} PRIVATE pfs::griotte rc::icons)
 
-get_property(_runtime_output_directory GLOBAL PROPERTY RUNTIME_OUTPUT_DIRECTORY)
+# get_property(_runtime_output_directory GLOBAL PROPERTY RUNTIME_OUTPUT_DIRECTORY)
+
+get_property(_runtime_output_directory
+    TARGET ${PROJECT_NAME}
+    PROPERTY RUNTIME_OUTPUT_DIRECTORY)
 
 if (NOT _runtime_output_directory)
-    message(FATAL_ERROR "_runtime_output_directory NOT SET")
+    message(FATAL_ERROR "_runtime_output_directory NOT SET properly")
 endif()
 
 add_custom_command(TARGET ${PROJECT_NAME}

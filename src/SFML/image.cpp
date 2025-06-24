@@ -34,7 +34,7 @@ bool image::load (pfs::filesystem::path const & image_path)
     log_guard lg;
 
     auto pimpl = pfs::make_unique<impl>();
-    auto success = pimpl->image.loadFromFile(pfs::filesystem::utf8_encode(image_path));
+    auto success = pimpl->image.loadFromFile(pfs::utf8_encode_path(image_path));
 
     if (!success)
         return false;
