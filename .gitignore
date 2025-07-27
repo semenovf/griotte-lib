@@ -1,5 +1,10 @@
-/2ndparty/
-/3rdparty/
+!/2ndparty/
+/2ndparty/*
+!/2ndparty/CMakeLists.txt
+
+!/3rdparty/
+/3rdparty/*
+!/3rdparty/CMakeLists.txt
 
 ### KDevelop ###
 *.kdev4
@@ -13,4 +18,3 @@
 ### VSCode
 .vscode/
 /build/
-

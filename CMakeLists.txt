@@ -18,7 +18,7 @@ option(GRIOTTE__BUILD_DEMO "Build demo" OFF)
 
 option(GRIOTTE__BUILD_SHARED "Enable build shared library" OFF)
 option(GRIOTTE__SFML_BACKEND "Enable SFML backend" ON)
-option(GRIOTTE__DISABLE_FETCH_CONTENT "Disable fetch content if sources of dependencies already exists in the working tree (checks .git subdirectory)" OFF)
+option(GRIOTTE__DISABLE_FETCH_CONTENT "Disable fetch content if sources of dependencies already exists in the working tree (checks .git subdirectory)" ON)
 
 if (GRIOTTE__BUILD_STRICT)
     if (NOT CMAKE_CXX_STANDARD)
