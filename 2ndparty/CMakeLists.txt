@@ -11,7 +11,7 @@
 include(FetchContent)
 
 foreach (_dep common)
-    if (NOT TARGET ${_dep})
+    if (NOT TARGET pfs::${_dep})
         if (GRIOTTE__DISABLE_FETCH_CONTENT AND EXISTS ${CMAKE_CURRENT_LIST_DIR}/${_dep}/.git)
             add_subdirectory(${_dep})
         else()
