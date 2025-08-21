@@ -1,10 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2024 Vladislav Trifochkin
+// Copyright (c) 2024-2025 Vladislav Trifochkin
 //
 // This file is part of `griotte-lib`.
 //
 // Changelog:
 //      2024.07.19 Initial version.
+//      2025.08.21 Refused to use PIMPL idiom.
 ////////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include <pfs/filesystem.hpp>
@@ -13,28 +14,42 @@
 
 namespace griotte {
 
-class font
+class font_t
 {
-public:
-    class impl;
-
 private:
-    impl * _d {nullptr};
-
-private:
-    font (impl * d);
+    std::string _alias;
 
 public:
-    font () = default;
-    ~font () = default;
+    /**
+     * Constructs empty font.
+     */
+    font_t ();
+
+    font_t (std::string const & alias);
+
+    font_t (font_t const &) = default;
+    font_t (font_t &&) noexcept = default;
+    font_t & operator = (font_t const &) = default;
+    font_t & operator = (font_t &&) noexcept = default;
+
+    ~font_t () = default;
 
 public:
-    operator bool () const noexcept;
-
-    void * native ();
+    std::string const & alias () const noexcept
+    {
+        return _alias;
+    }
 
 public: // static
-    static std::vector<std::string> embedded_fonts ();
+    /**
+     * Returns aliases of embedded and loaded fonts.
+     */
+    static std::vector<std::string> fonts_available ();
+
+    /**
+     * Returns aliases of loaded fonts.
+     */
+    static std::vector<std::string> fonts_loaded ();
 
     /**
      * Load font from file
@@ -47,20 +62,16 @@ public: // static
     static bool load (std::string const & font_alias, bool is_fallback = false);
 
     /**
-     * Load fallback font from memory
+     * Get font by alias.
+     *
+     * @return Specified font or a fallback font if the first is not found.
      */
-    static bool load ();
-
-    /**
-     * Get font by alias
-     */
-    static font get (std::string const & font_alias, font fallback_font);
-    static font get (std::string const & font_alias);
+    static font_t get (std::string const & font_alias);
 
     /**
      * Get default (fallback) font
      */
-    static font get ();
+    static font_t get ();
 };
 
 } // namespace griotte

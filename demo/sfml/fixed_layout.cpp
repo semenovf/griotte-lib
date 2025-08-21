@@ -6,15 +6,16 @@
 // Changelog:
 //      2024.07.23 Initial version.
 ////////////////////////////////////////////////////////////////////////////////
-#include <pfs/griotte/circle.hpp>
-#include <pfs/griotte/fixed_layout.hpp>
-#include <pfs/griotte/fontstyle.hpp>
-#include <pfs/griotte/image.hpp>
-#include <pfs/griotte/math.hpp>
-#include <pfs/griotte/rectangle.hpp>
-#include <pfs/griotte/font.hpp>
-#include <pfs/griotte/text.hpp>
-#include <pfs/griotte/SFML/ui.hpp>
+#include "pfs/griotte/circle.hpp"
+#include "pfs/griotte/fixed_layout.hpp"
+#include "pfs/griotte/font_style.hpp"
+#include "pfs/griotte/image.hpp"
+#include "pfs/griotte/label.hpp"
+#include "pfs/griotte/math.hpp"
+#include "pfs/griotte/rectangle.hpp"
+#include "pfs/griotte/font.hpp"
+#include "pfs/griotte/text.hpp"
+#include "pfs/griotte/SFML/ui.hpp"
 #include <pfs/log.hpp>
 
 void fixed_layout (griotte::SFML::ui & ui)
@@ -118,37 +119,38 @@ void fixed_layout (griotte::SFML::ui & ui)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     {
-        griotte::fontstyle font_style1;
-        font_style1.add_bold();
+        griotte::font_style_t font_style1;
+        font_style1.set_bold();
 
-        auto font1 = griotte::font::get("Inter");
+        auto font1 = griotte::font_t::get("Inter");
 
-        auto & t1 = l.create<griotte::text>("Primary");
-        t1.set_font(font1);
-        t1.set_font_style(font_style1);
-        t1.set_pixel_size(16);
-        t1.set_color(griotte::color_t {0x34, 0x3A, 0x40});
+        auto & t1 = l.create<griotte::text_t>("Primary (bold)");
+        t1.font = font1;
+        t1.font_style = font_style1;
+        t1.pixel_size = 16;
+        t1.color = griotte::color_t {0x34, 0x3A, 0x40};
         //t1.set_bgcolor(griotte::color_t {0x00, 0xFF, 0xFF}); // Cyan
         auto bg = t1.bounding_geom();
         auto g = griotte::center_in(r1.geometry(), griotte::size_t{bg.w, bg.h});
         t1.set_position(s1.x() + s1.width() + margin, g.y);
-        //t1.set_position(s1.x() + s1.width() + margin, 0/*r1.y()*/);
-        // t1.set_position(0, 0);
     }
 
-#if __COMMENT__
     {
-        // Get default (fallback) font
-        auto font2 = griotte::font_t::get();
+        griotte::font_style_t font_style2;
+        font_style2.set_bold();
+        font_style2.set_italic();
 
-        auto & t2 = l.create<griotte::text_t>("Hello another world");
-        t2.set_x(0);
-        t2.set_y(0);
-        t2.set_font(font2);
-        t2.set_pixel_size(24);
-        t2.set_color(griotte::color_t {0x26, 0x46, 0x53});
+        auto font2 = griotte::font_t::get("Inter");
+
+        auto & l1 = l.create<griotte::label_t>("Label (bold, italic)");
+        l1.font = font2;
+        l1.font_style = font_style2;
+        l1.pixel_size = 16;
+        l1.color = griotte::color_t {0x34, 0x3A, 0x40};
+        auto bg = l1.bounding_geom();
+        auto g = griotte::center_in(r2.geometry(), griotte::size_t{bg.w, bg.h});
+        l1.set_position(s2.x() + s2.width() + margin, g.y);
     }
-#endif
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Circle

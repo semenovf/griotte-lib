@@ -9,71 +9,29 @@
 #pragma once
 #include "color.hpp"
 #include "font.hpp"
-#include "fontstyle.hpp"
+#include "font_style.hpp"
 #include "item.hpp"
 #include <memory>
-#include <optional>
 #include <string>
 
 namespace griotte {
 
-class text: public item
+class text_t: public item
 {
-    class impl;
-
-protected:
-    std::unique_ptr<impl> _d;
-    font _font;
-    fontstyle _font_style;
-    std::optional<color_t> _bgcolor;
+public:
+    std::string content;
+    unsigned int pixel_size {12};
+    color_t color {78, 78, 78, 255};
+    font_t font;
+    font_style_t font_style;
 
 public:
-    text ();
-    text (std::string const & value);
-    ~text ();
-
-    unsigned int pixel_size () const noexcept;
-    void set_pixel_size (unsigned int value);
-
-    color_t color () const noexcept;
-    void set_color (color_t value);
-
-    std::string string () const noexcept;
-    void set_string (std::string const & string);
-
-    font get_font () const noexcept
-    {
-        return _font;
-    }
-
-    void set_font (font f);
-
-    fontstyle font_style () const noexcept
-    {
-        return _font_style;
-    }
-
-    void set_font_style (fontstyle value);
-
-    void set_bgcolor (color_t value)
-    {
-        _bgcolor = value;
-    }
-
-    void clear_bgcolor ()
-    {
-        _bgcolor = pfs::nullopt;
-    }
-
-    std::optional<color_t> bgcolor () const noexcept
-    {
-        return _bgcolor;
-    }
+    text_t ();
+    explicit text_t (std::string content);
+    virtual ~text_t ();
 
     geom2d bounding_geom () const;
     rect2d bounding_rect () const;
-
-    void set_position (unit_t x, unit_t y) override;
 
     void render (renderer_ptr_t r) override;
 };

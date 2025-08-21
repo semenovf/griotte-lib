@@ -46,9 +46,8 @@ void node::add_child (node * n, void * pdata)
     n->_prev = nullptr;
     n->_next = nullptr;
 
-    if (_child_first == nullptr) {
+    if (_child_first == nullptr)
         _child_first = n;
-    }
 
     if (_child_last == nullptr) {
         _child_last = n;
@@ -100,4 +99,3 @@ void node::remove_child (node * n)
 }
 
 } // namespace griotte
-

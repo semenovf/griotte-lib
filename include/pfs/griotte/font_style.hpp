@@ -10,7 +10,7 @@
 
 namespace griotte {
 
-class fontstyle
+class font_style_t
 {
     enum style_enum
     {
@@ -24,8 +24,8 @@ class fontstyle
     std::underlying_type<style_enum>::type _value {style_enum::regular};
 
 public:
-    fontstyle () = default;
-    ~fontstyle () = default;
+    font_style_t () = default;
+    ~font_style_t () = default;
 
     /**
      * Clear all styles and set to regular.
@@ -38,7 +38,7 @@ public:
     /**
      * Add bold style.
      */
-    void add_bold () noexcept
+    void set_bold () noexcept
     {
         _value |= style_enum::bold;
     }
@@ -46,7 +46,7 @@ public:
     /**
      * Add italic style.
      */
-    void add_italic () noexcept
+    void set_italic () noexcept
     {
         _value |= style_enum::italic;
     }
@@ -54,7 +54,7 @@ public:
     /**
      * Add underlined style.
      */
-    void add_underlined () noexcept
+    void set_underlined () noexcept
     {
         _value |= style_enum::underlined;
     }
@@ -62,7 +62,7 @@ public:
     /**
      * Add strikeout style.
      */
-    void add_strikeout () noexcept
+    void set_strikeout () noexcept
     {
         _value |= style_enum::strikeout;
     }

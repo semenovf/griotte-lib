@@ -41,14 +41,14 @@ static std::array<std::pair<std::string, fs::path>, 2> const fonts = {
 
 } // namespace constants
 
-static void dump_embedded_fonts ()
+static void dump_fonts_available ()
 {
-    auto emfonts = griotte::font::embedded_fonts();
+    auto fonts = griotte::font_t::fonts_available();
 
-    fmt::println("Embedded fonts:");
+    fmt::println("Available fonts:");
     int counter = 0;
 
-    for (auto const & alias: emfonts) {
+    for (auto const & alias: fonts) {
         fmt::println("    {}. {}", ++counter, alias);
     }
 }
@@ -75,17 +75,17 @@ int main (int argc, char * argv[])
     opts.h = SCREEN_HEIGHT;
     opts.title = "SFML Demo";
 
-    dump_embedded_fonts();
-
     griotte::SFML::ui ui {std::move(opts)};
 
     for (auto const & f: constants::fonts) {
-        if (griotte::font::load(f.first, f.second)) {
+        if (griotte::font_t::load(f.first, f.second)) {
             logger::d(tr::f_("Font loaded: {} => {}", f.first, f.second));
         } else {
             return EXIT_FAILURE;
         }
     }
+
+    dump_fonts_available();
 
     ui.set_color(griotte::color_t{0xFF, 0xF8, 0xF2});
 

@@ -41,6 +41,7 @@ if (GRIOTTE__SFML_BACKEND)
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/circle.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/font.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/image.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/SFML/label.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/rectangle.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/text.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/SFML/RoundedRectangleShape.cpp)

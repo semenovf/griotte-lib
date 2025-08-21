@@ -8,7 +8,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "casting.hpp"
 #include "logger.hpp"
-#include "font_impl.hpp"
 #include "RoundedRectangleShape.hpp"
 #include "griotte/text.hpp"
 #include <pfs/i18n.hpp>
@@ -20,117 +19,67 @@
 
 namespace griotte {
 
-class text::impl
-{
-public:
-    sf::Text text;
-};
+extern sf::Font const & native_font (font_t const & f);
 
-text::text ()
-    : item ()
-    , _d(new impl)
+text_t::text_t () = default;
+
+text_t::text_t (std::string s)
+    : content(std::move(s))
 {}
 
-text::text (std::string const & string)
-    : item ()
-    , _d(new impl)
+text_t::~text_t () = default;
+
+static void populate (text_t const * src, sf::Text * target)
 {
-    _d->text.setString(SFML::cast(string));
-}
+    target->setString(SFML::cast(src->content));
+    target->setCharacterSize(src->pixel_size); // in pixels, not points!
+    target->setFillColor(SFML::cast(src->color));
+    target->setFont(native_font(src->font));
 
-text::~text () = default;
-
-unsigned int text::pixel_size () const noexcept
-{
-    return _d->text.getCharacterSize();
-}
-
-void text::set_pixel_size (unsigned int value)
-{
-    _d->text.setCharacterSize(value); // in pixels, not points!
-}
-
-color_t text::color () const noexcept
-{
-    return SFML::cast_rgba(_d->text.getFillColor());
-}
-
-void text::set_color (color_t value)
-{
-    _d->text.setFillColor(SFML::cast(value));
-}
-
-std::string text::string () const noexcept
-{
-    return SFML::cast(_d->text.getString());
-}
-
-void text::set_string (std::string const & value)
-{
-    _d->text.setString(SFML::cast(value));
-}
-
-void text::set_font (font f)
-{
-    _font = f;
-    auto ptr = _font.native();
-
-    if (ptr != nullptr)
-        _d->text.setFont(*static_cast<sf::Font *>(ptr));
-}
-
-void text::set_font_style (fontstyle fstyle)
-{
-    _font_style = fstyle;
-
+    // Configure and set font style
     sf::Uint32 sf_font_style = sf::Text::Regular;
 
-    if (_font_style.is_bold())
+    if (src->font_style.is_bold())
         sf_font_style |= sf::Text::Bold;
 
-    if (_font_style.is_italic())
+    if (src->font_style.is_italic())
         sf_font_style |= sf::Text::Italic;
 
-    if (_font_style.is_underlined())
+    if (src->font_style.is_underlined())
         sf_font_style |= sf::Text::Underlined;
 
-    if (_font_style.is_strikeout())
+    if (src->font_style.is_strikeout())
         sf_font_style |= sf::Text::StrikeThrough;
 
-    _d->text.setStyle(sf_font_style);
+    target->setStyle(sf_font_style);
+
+    sf::FloatRect bounds = target->getGlobalBounds();
+    auto geom = src->geometry();
+
+    target->setPosition(geom.x - bounds.left, geom.y - bounds.top);
 }
 
-geom2d text::bounding_geom () const
+geom2d text_t::bounding_geom () const
 {
-    sf::FloatRect bounds = _d->text.getGlobalBounds();
+    sf::Text text;
+    populate(this, & text);
+    sf::FloatRect bounds = text.getGlobalBounds();
     return geom2d { _geom.x, _geom.y, bounds.width, bounds.height };
 }
 
-rect2d text::bounding_rect () const
+rect2d text_t::bounding_rect () const
 {
-    sf::FloatRect bounds = _d->text.getGlobalBounds();
-    return rect2d { _geom.x, _geom.y, bounds.width, bounds.height };
+    sf::Text text;
+    populate(this, & text);
+    sf::FloatRect bounds = text.getGlobalBounds();
+    return rect2d { _geom.x, _geom.y, _geom.x + bounds.width, _geom.y + bounds.height };
 }
 
-void text::set_position (unit_t x, unit_t y)
+void text_t::render (sf::RenderTarget * r)
 {
-    item::set_position(x, y);
-    sf::FloatRect bounds = _d->text.getGlobalBounds();
-    _d->text.setPosition(_geom.x - bounds.left, _geom.y - bounds.top);
-}
-
-void text::render (sf::RenderTarget * r)
-{
-    if (_bgcolor) {
-        sf::RectangleShape rr;
-        sf::FloatRect bounds = _d->text.getGlobalBounds();
-        rr.setPosition(_geom.x, _geom.y);
-        rr.setSize(sf::Vector2f(bounds.width, bounds.height));
-        rr.setFillColor(SFML::cast(*_bgcolor));
-        r->draw(rr);
-    }
-
-    r->draw(_d->text);
+    sf::Text text;
+    populate(this, & text);
+    r->draw(text);
 }
 
 } // namespace griotte::SFML

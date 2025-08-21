@@ -60,11 +60,6 @@ ui::ui (options && opts)
     _win_h = size.y;
 
     _root_layout = pfs::make_unique<fixed_layout>();
-
-    // Load default (fallback font)
-    if (!font::load()) {
-        throw std::runtime_error(tr::_("loading default font failure"));
-    }
 }
 
 ui::~ui ()
@@ -73,7 +68,6 @@ ui::~ui ()
     if (_win)
         _win.reset();
 }
-
 
 unsigned int ui::width () const noexcept
 {

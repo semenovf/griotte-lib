@@ -17,4 +17,3 @@ enum class direction
 };
 
 } // namespace griotte
-

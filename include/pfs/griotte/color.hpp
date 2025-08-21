@@ -12,7 +12,7 @@
 
 namespace griotte {
 
-class rgba_color
+class rgba_color final
 {
     std::uint8_t _alpha;
     std::uint8_t _red;
@@ -20,6 +20,9 @@ class rgba_color
     std::uint8_t _blue;
 
 public:
+    /**
+     * Constructs transparent color.
+     */
     constexpr rgba_color () noexcept
         : _alpha(0)
         , _red(0)
@@ -41,6 +44,8 @@ public:
     constexpr std::uint8_t red ()   const noexcept { return _red; }
     constexpr std::uint8_t green () const noexcept { return _green; }
     constexpr std::uint8_t blue ()  const noexcept { return _blue; }
+
+    constexpr bool is_transparent () const noexcept { return _alpha == 0; }
 };
 
 using color_t = rgba_color;
